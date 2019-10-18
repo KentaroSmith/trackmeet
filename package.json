@@ -1,8 +1,9 @@
 {
-  "name": "project-3",
+  "name": "trackmeet",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "mdbootstrap": "^4.8.10",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-scripts": "3.2.0"

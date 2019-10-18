@@ -18,6 +18,7 @@ function App() {
         >
           Learn React
         </a>
+        <div id="calendar"></div>
       </header>
     </div>
   );
