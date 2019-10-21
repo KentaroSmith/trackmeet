@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "express": "^4.16.3",
+    "fullcalendar-reactwrapper": "^1.0.7",
     "if-env": "^1.0.4"
   }
 }
