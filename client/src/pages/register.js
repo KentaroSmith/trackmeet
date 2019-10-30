@@ -1,15 +1,32 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import API from "../utils/API";
+import { FirebaseContext } from '../components/Firebase';
 
-class Register extends Component {
-    state = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        passwordConfirm: ""
-    };
+const Register = () => (
+    <div>
+        <h1>Sign Up</h1>
+        <FirebaseContext.Consumer>
+            {firebase => <SignUpForm firebase={firebase} />}
+        </FirebaseContext.Consumer>
+    </div>
+);
+
+const INITIAL_STATE = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    passwordConfirm: "",
+    error: null,
+};
+
+class SignUpForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...INITIAL_STATE };
+    }
 
     handleInputChange = event => {
         // Getting the value and name of the input which triggered the change
@@ -22,9 +39,22 @@ class Register extends Component {
     };
 
     addUser = event => {
+
+        // create user in Firebase
+        const { email, password } = this.state;
+        this.props.firebase
+            .doCreateUserWithEmailAndPassword(email, password)
+            .then(authUser => {
+                this.setState({ ...INITIAL_STATE });
+            })
+            .catch(error => {
+                this.setState({ error });
+            });
+
         // Preventing the default behavior of the form submit (which is to refresh the page)
         event.preventDefault();
 
+        // Save non-authorization user data to MongoDB
         API.saveUser({
             firstName: this.state.firstName,
             lastName: this.state.lastName,
@@ -35,6 +65,20 @@ class Register extends Component {
     };
 
     render() {
+        const {
+            firstName,
+            lastName,
+            email,
+            password,
+            passwordConfirm,
+            error,
+        } = this.state;
+
+        const isInvalid =
+            password !== passwordConfirm ||
+            password === '' ||
+            email === '';
+
         return (
             <Form>
                 <FormGroup>
@@ -62,6 +106,14 @@ class Register extends Component {
                     />
                 </FormGroup>
                 <FormGroup>
+                    <Label for="phone">Phone</Label>
+                    <Input
+                        type="phone" name="phone" id="phone" placeholder="Phone"
+                        value={this.state.phone}
+                        onChange={this.handleInputChange}
+                    />
+                </FormGroup>
+                <FormGroup>
                     <Label for="password">Password</Label>
                     <Input
                         type="password" name="password" id="password" placeholder="Password"
@@ -70,17 +122,22 @@ class Register extends Component {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="passwordConfirm">Password</Label>
+                    <Label for="passwordConfirm">Confirm Password</Label>
                     <Input
                         type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password"
                         value={this.state.passwordConfirm}
                         onChange={this.handleInputChange}
                     />
                 </FormGroup>
-                <Button onClick={this.addUser} >Submit</Button>
+                <Button
+                    onClick={this.addUser}
+                    disabled={isInvalid}>Submit</Button>
+                {error && <p>{error.message}</p>}
             </Form>
         );
     }
 }
 
 export default Register;
+
+export { SignUpForm };
