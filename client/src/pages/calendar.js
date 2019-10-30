@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Navbar from '../components/navbar/index'
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import "./style/calendar.css"
 /* import 'react-big-calendar/lib/addons/dragAndDrop/styles'; */
 
 import moment from 'moment';
