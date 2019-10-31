@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Register from "./pages/register";
+import SignIn from "./pages/signin";
 import Calendar from "./pages/calendar";
 import HomePage from "./pages/home";
 
@@ -12,6 +13,7 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/register" component={Register} />
+          <Route exact path="/signin" component={SignIn} />
           <Route exact path="/calendar" component={Calendar} />
           <Route exact path="/" component={HomePage} />
         </div>

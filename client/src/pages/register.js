@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { Link, withRouter } from 'react-router-dom';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import API from "../utils/API";
 import { FirebaseContext } from '../components/Firebase';
+import * as ROUTES from '../constants/routes';
 
 const Register = () => (
     <div>
@@ -131,13 +133,19 @@ class SignUpForm extends Component {
                 </FormGroup>
                 <Button
                     onClick={this.addUser}
-                    disabled={isInvalid}>Submit</Button>
+                    disabled={isInvalid}>Sign Up</Button>
                 {error && <p>{error.message}</p>}
             </Form>
         );
     }
 }
 
+const SignUpLink = () => (
+    <p>
+        Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+    </p>
+);
+
 export default Register;
 
-export { SignUpForm };
+export { SignUpForm, SignUpLink };
