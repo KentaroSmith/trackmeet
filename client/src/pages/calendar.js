@@ -10,8 +10,8 @@ class CalendarPage extends Component {
     state = {
         events: [
             {
-                start: new Date(),
-                end: new Date(moment().add(1, "days")),
+                start: new Date(moment("20191122")),
+                end: new Date(moment("20191120")),
                 title: "Some title"
             }
         ]
