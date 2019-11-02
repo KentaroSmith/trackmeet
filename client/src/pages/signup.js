@@ -4,71 +4,53 @@ import app from "../components/Firebase/firebase";
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import API from "../utils/API";
 
+// save new User data (except for password) to the database
+const saveUserData = (firstName, lastName, phone, email) => {
+    API.saveUser({
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        email: email
+    })
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+}
+
 const SignUp = ({ history }) => {
-    const [firstName, setFirstName] = useState("f");
-    const [lastName, setLastName] = useState("l");
-    const [email, setEmail] = useState("e");
-    const [message, setMessage] = useState('default');
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
 
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
 
-        console.log(`adding user ${firstName} ${lastName} ${message}`);
-
-        const { email, password } = event.target.elements;
+        const { emailAddress, password } = event.target.elements;
         try {
             await app
                 .auth()
-                .createUserWithEmailAndPassword(email.value, password.value);
+                .createUserWithEmailAndPassword(emailAddress.value, password.value);
             history.push("/confirm");
         } catch (error) {
             alert(error);
         }
 
-        saveUserData();
+        saveUserData(firstName, lastName, phone, email);
 
-    }, [history]);
-
-    const saveUserData = () => {
-        console.log(`adding user ${firstName} ${lastName} ${message}`);
-        API.saveUser({
-            firstName: firstName,
-            lastName: lastName,
-            email: email
-        })
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
-    }
+    }, [history, firstName, lastName, phone, email]);
 
     return (
         <div>
-            <div>
-                <input
-                    type="text"
-                    value={message}
-                    placeholder="Enter a message"
-                    onChange={ e => {
-                        const newMessage = e.target.value;
-                        setMessage(prev => prev + newMessage);
-                    } }
-                />
-                <p>
-                    <strong>{message}</strong>
-                </p>
-            </div>
             <h1>Sign up</h1>
             <Form onSubmit={handleSignUp}>
                 <FormGroup>
                     <Label>
                         First Name
-                        <input
+                        <Input
                             name="firstName" type="text" placeholder="First Name"
                             value={firstName}
                             onChange={event => setFirstName(event.target.value)}
                         />
-                        <p>
-                            <strong>{firstName}</strong>
-                        </p>
                     </Label>
                 </FormGroup>
                 <FormGroup>
@@ -77,23 +59,27 @@ const SignUp = ({ history }) => {
                         <Input
                             name="lastName" type="text" placeholder="Last Name"
                             value={lastName}
-                            onChange={({ target }) => setLastName(target.value)}
+                            onChange={event => setLastName(event.target.value)}
                         />
                     </Label>
                 </FormGroup>
                 <FormGroup>
                     <Label>
                         Phone
-                    <Input name="phone" type="phone" placeholder="Phone" />
+                        <Input
+                            name="phone" type="phone" placeholder="Phone"
+                            value={phone}
+                            onChange={event => setPhone(event.target.value)}
+                        />
                     </Label>
                 </FormGroup>
                 <FormGroup>
                     <Label>
                         Email
                         <Input
-                            name="email" type="email" placeholder="Email"
+                            name="emailAddress" type="email" placeholder="Email"
                             value={email}
-                            onChange={({ target }) => setEmail(target.value)}
+                            onChange={event => setEmail(event.target.value)}
                         />
                     </Label>
                 </FormGroup>
