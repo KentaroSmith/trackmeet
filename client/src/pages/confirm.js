@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import app from "../components/Firebase";
 
 const Confirm = () => {
@@ -7,5 +7,7 @@ const Confirm = () => {
         <h1>Reservation confirmed:</h1>
         <button onClick={() => app.auth().signOut()}>Sign out</button>
         </>
-    )
-}
+    );
+};
+
+export default Confirm;
