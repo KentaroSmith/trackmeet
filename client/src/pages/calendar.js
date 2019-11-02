@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index'
+import Navbar from '../components/navbar/index';
+import Filter from "../components/filter/index";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 /* import 'react-big-calendar/lib/addons/dragAndDrop/styles'; */
@@ -21,6 +22,7 @@ class CalendarPage extends Component {
         return (
             <div className="Calendardiv">
                 <Navbar />
+                <Filter />
                 <Calendar
                     localizer={localizer}
                     events={this.state.events}
