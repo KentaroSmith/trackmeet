@@ -6,7 +6,8 @@ const roomSchema = new Schema({
     amenities: { type: Array, required: true },
     building: { type: String, required: true },
     occupancy: Number,
-    timeAvailable: String
+    timeOpen: String,
+    timeClosed: String
 });
 
 const Room = mongoose.model("Room", roomSchema);
