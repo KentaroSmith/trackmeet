@@ -12,7 +12,7 @@ const Login = ({ history }) => {
                 await app
                     .auth()
                     .signInWithEmailAndPassword(email.value, password.value);
-                history.push("/confirm");
+                history.push("/confirm"); // this page loads on successful user login
             } catch (error) {
                 alert(error);
             }

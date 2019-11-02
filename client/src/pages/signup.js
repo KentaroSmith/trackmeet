@@ -1,7 +1,7 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { withRouter } from "react-router";
 import app from "../components/Firebase/firebase";
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import API from "../utils/API";
 
 // save new User data (except for password) to the database
@@ -25,12 +25,20 @@ const SignUp = ({ history }) => {
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
 
-        const { emailAddress, password } = event.target.elements;
+        const { emailAddress, password, passwordConfirm } = event.target.elements;
+
+        if (password.value !== passwordConfirm.value ||
+            password.value === '' ||
+            email.value === '') { 
+                alert("Invalid email or password values.")
+                return; 
+        }
+
         try {
             await app
                 .auth()
                 .createUserWithEmailAndPassword(emailAddress.value, password.value);
-            history.push("/confirm");
+            history.push("/confirm"); // this page loads upon successful user creation in Firebase
         } catch (error) {
             alert(error);
         }
@@ -87,6 +95,12 @@ const SignUp = ({ history }) => {
                     <Label>
                         Password
                     <Input name="password" type="password" placeholder="Password" />
+                    </Label>
+                </FormGroup>
+                <FormGroup>
+                    <Label>
+                        Confirm Password
+                    <Input name="passwordConfirm" type="passwordConfirm" placeholder="Confirm Password" />
                     </Label>
                 </FormGroup>
 
