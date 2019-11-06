@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { withRouter } from "react-router";
 import app from "../components/Firebase/firebase";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import API from "../utils/API";
+import API from "../utils/api";
 
 // save new User data (except for password) to the database
 const saveUserData = (firstName, lastName, phone, email) => {
