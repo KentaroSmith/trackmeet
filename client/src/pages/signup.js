@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { withRouter } from "react-router";
 import app from "../components/Firebase/firebase";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import API from "../utils/api";
+import API from "../utils/API";
 
 // save new User data (except for password) to the database
 const saveUserData = (firstName, lastName, phone, email) => {
@@ -29,9 +29,9 @@ const SignUp = ({ history }) => {
 
         if (password.value !== passwordConfirm.value ||
             password.value === '' ||
-            email.value === '') { 
-                alert("Invalid email or password values.")
-                return; 
+            email.value === '') {
+            alert("Invalid email or password values.")
+            return;
         }
 
         try {
