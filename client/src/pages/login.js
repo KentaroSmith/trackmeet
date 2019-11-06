@@ -4,18 +4,24 @@ import app from "../components/Firebase/firebase";
 import { AuthContext } from "../components/Firebase/auth";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import API from "../utils/api";
+import { useSelector, useDispatch } from 'react-redux';
+import {increment, decrement } from "../actions";
 
 // save new User data (except for password) to the database
 const getUserData = (email) => {
     API.getUser(email)
         .then(res => {
-            console.log(res)
+            //console.log(res);
+            console.log(res.data[0]);
             // now push the user data into global state
         })
         .catch(err => console.log(err));
 }
 
 const Login = ({ history }) => {
+    const counter = useSelector(state => state.counter);
+    const dispatch = useDispatch();
+    
     const handleLogin = useCallback(
         async event => {
             event.preventDefault();
@@ -24,7 +30,7 @@ const Login = ({ history }) => {
                 await app
                     .auth()
                     .signInWithEmailAndPassword(email.value, password.value);
-                getUserData(email.value);    
+                getUserData(email.value);
                 //history.push("/confirm"); // this page loads on successful user login
             } catch (error) {
                 alert(error);
@@ -38,9 +44,14 @@ const Login = ({ history }) => {
         return <Redirect to="/confirm" />
     }
 
+
+
     return (
         <div>
             <h1>Log in</h1>
+            <h2>Counter: {counter}</h2>
+            <button onClick={() => dispatch(increment())}>+</button>
+            <button onClick={() => dispatch(decrement())}>-</button>
             <Form onSubmit={handleLogin}>
                 <FormGroup>
                     <Label>
