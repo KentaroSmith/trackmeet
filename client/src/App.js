@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SignUp from "./pages/signup";
-//import SignIn from "./pages/signin";
 import LogIn from "./pages/login";
 import Calendar from "./pages/calendar";
 import Confirm from "./pages/confirm";

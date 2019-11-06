@@ -1,5 +1,5 @@
 import React from "react";
-import app from "../components/Firebase";
+import app from "../components/Firebase/firebase";
 
 const Confirm = () => {
     return (

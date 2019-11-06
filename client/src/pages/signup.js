@@ -100,7 +100,7 @@ const SignUp = ({ history }) => {
                 <FormGroup>
                     <Label>
                         Confirm Password
-                    <Input name="passwordConfirm" type="passwordConfirm" placeholder="Confirm Password" />
+                    <Input name="passwordConfirm" type="password" placeholder="Confirm Password" />
                     </Label>
                 </FormGroup>
 
