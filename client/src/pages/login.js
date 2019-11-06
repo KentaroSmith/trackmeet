@@ -3,6 +3,17 @@ import { withRouter, Redirect } from "react-router";
 import app from "../components/Firebase/firebase";
 import { AuthContext } from "../components/Firebase/auth";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import API from "../utils/api";
+
+// save new User data (except for password) to the database
+const getUserData = (email) => {
+    API.getUser(email)
+        .then(res => {
+            console.log(res)
+            // now push the user data into global state
+        })
+        .catch(err => console.log(err));
+}
 
 const Login = ({ history }) => {
     const handleLogin = useCallback(
@@ -13,7 +24,8 @@ const Login = ({ history }) => {
                 await app
                     .auth()
                     .signInWithEmailAndPassword(email.value, password.value);
-                history.push("/confirm"); // this page loads on successful user login
+                getUserData(email.value);    
+                //history.push("/confirm"); // this page loads on successful user login
             } catch (error) {
                 alert(error);
             }
