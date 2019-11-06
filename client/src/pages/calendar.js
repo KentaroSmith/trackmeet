@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index'
+import Navbar from '../components/navbar/index';
+import Filter from "../components/filter/index";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 /* import 'react-big-calendar/lib/addons/dragAndDrop/styles'; */
-
+import './calendar.css'
 import moment from 'moment';
 const localizer = momentLocalizer(moment)
 class CalendarPage extends Component {
     state = {
         events: [
             {
-                start: new Date(),
-                end: new Date(moment().add(1, "days")),
+                start: new Date(moment("2019-11-04 09:30")),
+                end: new Date(moment("2019-11-04 11:30")),
                 title: "Some title"
             }
         ]
@@ -21,6 +22,7 @@ class CalendarPage extends Component {
         return (
             <div className="Calendardiv">
                 <Navbar />
+                <Filter />
                 <Calendar
                     localizer={localizer}
                     events={this.state.events}
