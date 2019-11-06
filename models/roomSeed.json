@@ -1,0 +1,43 @@
+[
+    {
+        "features": [
+            "whiteboard",
+            "conference table"
+        ],
+        "_id": "5dc0dfd0b416b830fc4da21a",
+        "roomName": "Study Room A",
+        "building": "Regnier Hall",
+        "occupancy": 6,
+        "timeOpen": "09:00",
+        "timeClosed": "22:00",
+        "__v": 0
+    },
+    {
+        "features": [
+            "whiteboard",
+            "conference table"
+        ],
+        "_id": "5dc0dfeeb416b830fc4da21b",
+        "roomName": "Study Room B",
+        "building": "Regnier Hall",
+        "occupancy": 4,
+        "timeOpen": "09:00",
+        "timeClosed": "22:00",
+        "__v": 0
+    },
+    {
+        "features": [
+            "whiteboard",
+            "conference table",
+            "Projector",
+            "Computer"
+        ],
+        "_id": "5dc0dff8b416b830fc4da21c",
+        "roomName": "Study Room C",
+        "building": "Regnier Hall",
+        "occupancy": 10,
+        "timeOpen": "09:00",
+        "timeClosed": "22:00",
+        "__v": 0
+    }
+]

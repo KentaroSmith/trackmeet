@@ -6,8 +6,8 @@ import { Jumbotron, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 class RoomSearch extends Component {
 
     state = {
-        location: "",
-        technologies: ""
+        roomName: "",
+        features: ""
     }
 
     handleInputForm = event => {
@@ -28,12 +28,12 @@ class RoomSearch extends Component {
                 <Jumbotron>
                     <Form>
                         <FormGroup>
-                            <Label for="location">Location: {this.setState.location}</Label>
+                            <Label for="location">Location: {this.setState.roomName}</Label>
                             <Input type="select" name="select" id="selectLocation"
                                 type="text"
                                 placeholder="Location"
                                 name="location"
-                                value={this.state.location}
+                                value={this.state.roomName}
                                 onChange={this.handleInputForm}
                             />
                         </FormGroup>
@@ -52,14 +52,14 @@ class RoomSearch extends Component {
                     </Form>
 
                     <Form>
-                        <Label for="technologies">Technologies: {this.setState.technologies}</Label>
+                        <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
                                 <Input type="checkbox" id="checkBox"
                                     type="text"
-                                    placeholder="Technologies"
-                                    name="technologies"
-                                    value={this.state.technologies}
+                                    placeholder="Features"
+                                    name="features"
+                                    value={this.state.features}
                                     onChange={this.handleInputForm}
                                 />{' '}
                             </Label>
