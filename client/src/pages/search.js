@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index'
+import Navbar from '../components/navbar/index';
+import Results from "../components/results/index";
 import { Jumbotron, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-
+import API from "../utils/api";
 
 class RoomSearch extends Component {
 
     state = {
+        rooms: [],
         roomName: "",
         features: ""
     }
@@ -19,7 +21,16 @@ class RoomSearch extends Component {
             [name]: name
         });
     };
-
+    handleSearch = event => {
+        event.preventDefault();
+        //testing the roomname search first
+        API.searchRooms(this.state.roomName)
+            .then(res => {
+                this.setState({
+                    rooms: res.data
+                })
+            })
+    }
 
     render() {
         return (
@@ -89,7 +100,10 @@ class RoomSearch extends Component {
                     </Button>
 
                 </Jumbotron>
+                <Results />
+
             </div>
+
             // <p className="lead">
             //     <Button color="primary" href="/results">Search</Button>
             // </p>
