@@ -19,7 +19,7 @@ export default {
 
   //going to use the params from the search page to narrow down the room results
   searchRooms: function (query) {
-    return axios.get("/api/rooms", { params: { q: query } });
+    return axios.get("/api/rooms", query);
   },
   /* // Gets all books in local database
   getBooks: function () {
