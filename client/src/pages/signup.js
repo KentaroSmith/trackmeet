@@ -3,16 +3,22 @@ import { withRouter } from "react-router";
 import app from "../components/Firebase/firebase";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import API from "../utils/api";
+import { useDispatch } from 'react-redux';
+import { updateUser } from "../actions";
 
 // save new User data (except for password) to the database
-const saveUserData = (firstName, lastName, phone, email) => {
+const saveUserData = (firstName, lastName, phone, email, callback) => {
     API.saveUser({
         firstName: firstName,
         lastName: lastName,
         phone: phone,
         email: email
     })
-        .then(res => console.log(res))
+        .then(res => {
+            console.log(res.data);
+            // now push the user data into global state
+            callback(res.data);
+        })
         .catch(err => console.log(err));
 }
 
@@ -21,6 +27,7 @@ const SignUp = ({ history }) => {
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
+    const dispatch = useDispatch();
 
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
@@ -38,12 +45,14 @@ const SignUp = ({ history }) => {
             await app
                 .auth()
                 .createUserWithEmailAndPassword(emailAddress.value, password.value);
+            //getUserData(email.value, (user) => dispatch(updateUser(user)));
+            saveUserData(firstName, lastName, phone, email, (user) => dispatch(updateUser(user)));
             history.push("/confirm"); // this page loads upon successful user creation in Firebase
         } catch (error) {
             alert(error);
         }
 
-        saveUserData(firstName, lastName, phone, email);
+        //saveUserData(firstName, lastName, phone, email, );
 
     }, [history, firstName, lastName, phone, email]);
 
