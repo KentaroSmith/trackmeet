@@ -1,103 +1,45 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index';
-import Results from "../components/results/index";
-import { 
-    Jumbotron, 
-    Button, 
-    Form, 
-    FormGroup, 
-    Label, 
-    Input, 
-    Container, 
-    Row, 
-    Col,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown
-} from 'reactstrap';
-import API from "../utils/api";
+import Navbar from '../components/navbar/index'
+import { Jumbotron, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+
 
 class RoomSearch extends Component {
 
     state = {
-        rooms: [],
         roomName: "",
-        features: "",
-        building: "",
-        occupancy: ""
+        features: ""
     }
 
-    /*     handleInputForm = event => {
-            // Pull the name and value properties off of the event.target (the element which triggered the event)
-            const { name } = event.target;
-    
-            // Set the state for the appropriate input field
-            this.setState({
-                [name]: name
-            });
-        }; */
-    handleSearch = event => {
+    handleInputForm = event => {
+        // Pull the name and value properties off of the event.target (the element which triggered the event)
+        const { name } = event.target;
 
-        //testing the roomname search first
-        API.searchRooms(this.state.roomName)
-            .then(res => {
-                this.setState({
-                    rooms: res.data,
-                    roomName: res.data.roomName,
-                    occupancy: res.data.occupancy,
-                    features: res.data.features,
-                    building: res.data.building
-                })
-            })
+        // Set the state for the appropriate input field
+        this.setState({
+            [name]: name
+        });
     };
-    //See if redux can handle global state in a way that can carry over to the calendar page
-    /*    seeSchedule=event=>{
-           event.preventDefault();
-           API.showSchedule(this.state.roomName)
-           .then()
-       } */
+
 
     render() {
         return (
             <div className="search">
                 <Navbar />
                 <Jumbotron>
-                <UncontrolledDropdown>
-                <DropdownToggle Button caret>
-                        Search By
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem>
-                            By Room Name
-                        </DropdownItem>
-                        <DropdownItem>
-                            By Room Features
-                        </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledDropdown>
-                    
                     <Form>
                         <FormGroup>
-                            <Label>Rooms:</Label>
-                            <Input type="select" name="select" id="roomName">
-                                <option>All Rooms</option>
-                                <option>Study Room A</option>
-                                <option>Study Room B</option>
-                                <option>Study Room C</option>
-                            </Input>
-                            {/*                             <Label for="location">Location: {this.setState.roomName}</Label>
+                            <Label for="location">Location: {this.setState.roomName}</Label>
                             <Input type="select" name="select" id="selectLocation"
                                 type="text"
                                 placeholder="Location"
                                 name="location"
                                 value={this.state.roomName}
                                 onChange={this.handleInputForm}
-                            /> */}
+                            />
                         </FormGroup>
                     </Form>
 
-{/*                     <Form>
+                    <Form>
                         <FormGroup>
                             <Label for="room">Meeting Size</Label>
                             <Input type="select" name="select" id="roomSize">
@@ -107,43 +49,24 @@ class RoomSearch extends Component {
                                 <option>16-20</option>
                             </Input>
                         </FormGroup>
-                    </Form> */}
+                    </Form>
 
                     <Form>
                         <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
                                 <Input type="checkbox" id="checkBox"
-/*                                     type="text"
+                                    type="text"
                                     placeholder="Features"
                                     name="features"
                                     value={this.state.features}
-                                    onChange={this.handleInputForm} */
-                                />{' '} projector
-                            </Label>
-                        </FormGroup>
-                        <FormGroup check>
-                        <Label check>
-                                <Input type="checkbox" id="checkBox"
-                                />{' '} whiteboard
-                            </Label>
-                        </FormGroup>
-
-                        <FormGroup check>
-                        <Label check>
-                                <Input type="checkbox" id="checkBox"
-                                />{' '} conference table
-                            </Label>
-                        </FormGroup>
-                        <FormGroup check>
-                        <Label check>
-                                <Input type="checkbox" id="checkBox"
-                                />{' '} computer
+                                    onChange={this.handleInputForm}
+                                />{' '}
                             </Label>
                         </FormGroup>
                     </Form>
 
-{/*                     <FormGroup>
+                    <FormGroup>
                         <Label for="meeting-time">Enter a date and time for your party booking: </Label>
                         <Input id="meetingTime" type="datetime-local" name="dateTime" min="2019-10-01T00:00" max="2024-01-01T24:00">
                         </Input>
@@ -159,34 +82,14 @@ class RoomSearch extends Component {
                                 <option>4</option>
                             </Input>
                         </FormGroup>
-                    </Form> */}
+                    </Form>
 
                     <Button className="lead" size="lg">
-                        <Button color="primary" onClick={this.handleSearch()}>Search</Button>
+                        <Button color="primary" href="/search">Search</Button>
                     </Button>
 
                 </Jumbotron>
-
-                <Container>
-                    <Row>
-                        <Col size="md-12">
-                            <h1>Results:</h1>
-                            {this.state.rooms.length === 0 ? "" :
-                                this.state.rooms.map(room => (
-                                    <Results
-                                        key={room.id}
-                                        roomName={this.state.roomName}
-                                        features={this.state.features}
-                                        occupancy={this.state.occupancy}
-                                        building={this.state.building}
-                                    /* seeSchedule={event => this.seeSchedule()} */
-                                    />
-                                ))}
-                        </Col>
-                    </Row>
-                </Container>
             </div>
-
             // <p className="lead">
             //     <Button color="primary" href="/results">Search</Button>
             // </p>
