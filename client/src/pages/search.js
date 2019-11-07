@@ -53,6 +53,7 @@ class RoomSearch extends Component {
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName">
+                                <option>All Rooms</option>
                                 <option>Study Room A</option>
                                 <option>Study Room B</option>
                                 <option>Study Room C</option>
@@ -68,7 +69,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form>
 
-                    <Form>
+{/*                     <Form>
                         <FormGroup>
                             <Label for="room">Meeting Size</Label>
                             <Input type="select" name="select" id="roomSize">
@@ -78,24 +79,43 @@ class RoomSearch extends Component {
                                 <option>16-20</option>
                             </Input>
                         </FormGroup>
-                    </Form>
+                    </Form> */}
 
                     <Form>
                         <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
                                 <Input type="checkbox" id="checkBox"
-                                    type="text"
+/*                                     type="text"
                                     placeholder="Features"
                                     name="features"
                                     value={this.state.features}
-                                    onChange={this.handleInputForm}
-                                />{' '}
+                                    onChange={this.handleInputForm} */
+                                />{' '} projector
+                            </Label>
+                        </FormGroup>
+                        <FormGroup check>
+                        <Label check>
+                                <Input type="checkbox" id="checkBox"
+                                />{' '} whiteboard
+                            </Label>
+                        </FormGroup>
+
+                        <FormGroup check>
+                        <Label check>
+                                <Input type="checkbox" id="checkBox"
+                                />{' '} conference table
+                            </Label>
+                        </FormGroup>
+                        <FormGroup check>
+                        <Label check>
+                                <Input type="checkbox" id="checkBox"
+                                />{' '} computer
                             </Label>
                         </FormGroup>
                     </Form>
 
-                    <FormGroup>
+{/*                     <FormGroup>
                         <Label for="meeting-time">Enter a date and time for your party booking: </Label>
                         <Input id="meetingTime" type="datetime-local" name="dateTime" min="2019-10-01T00:00" max="2024-01-01T24:00">
                         </Input>
@@ -111,7 +131,7 @@ class RoomSearch extends Component {
                                 <option>4</option>
                             </Input>
                         </FormGroup>
-                    </Form>
+                    </Form> */}
 
                     <Button className="lead" size="lg">
                         <Button color="primary" onClick={this.handleSearch()}>Search</Button>
