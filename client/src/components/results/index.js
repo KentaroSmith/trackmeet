@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Jumbotron,
     Button
 } from 'reactstrap';
 
-const Results = (props) => {
+const Results = ({ roomName, features, building, occupancy, id }) => {
     return (
-        <div>
-            <Jumbotron>
+        <div className="search-result">
+
+            {/* <Jumbotron>
                 <h1 className="display-3">Results:</h1>
                 <p className="lead"></p>
                 <hr className="my-2"></hr>
@@ -15,7 +16,15 @@ const Results = (props) => {
                 <p className="lead">
                     <Button color="primary">Learn More</Button>
                 </p>
+            </Jumbotron> */}
+            <Jumbotron>
+                <h3 className="roomName">{roomName}</h3>
+                <p className="features"> {features} </p>
+                <p className="building"> {building} </p>
+                <p className="occupancy"> {occupancy} </p>
+                <Button href="#" key={id}>Reserve this room</Button>
             </Jumbotron>
+
         </div>
     );
 }

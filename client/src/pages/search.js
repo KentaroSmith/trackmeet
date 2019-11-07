@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Navbar from '../components/navbar/index';
 import Results from "../components/results/index";
-import { Jumbotron, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Jumbotron, Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import API from "../utils/api";
 
 class RoomSearch extends Component {
@@ -9,28 +9,40 @@ class RoomSearch extends Component {
     state = {
         rooms: [],
         roomName: "",
-        features: ""
+        features: "",
+        building: "",
+        occupancy: ""
     }
 
-    handleInputForm = event => {
-        // Pull the name and value properties off of the event.target (the element which triggered the event)
-        const { name } = event.target;
-
-        // Set the state for the appropriate input field
-        this.setState({
-            [name]: name
-        });
-    };
+    /*     handleInputForm = event => {
+            // Pull the name and value properties off of the event.target (the element which triggered the event)
+            const { name } = event.target;
+    
+            // Set the state for the appropriate input field
+            this.setState({
+                [name]: name
+            });
+        }; */
     handleSearch = event => {
-        event.preventDefault();
+
         //testing the roomname search first
         API.searchRooms(this.state.roomName)
             .then(res => {
                 this.setState({
-                    rooms: res.data
+                    rooms: res.data,
+                    roomName: res.data.roomName,
+                    occupancy: res.data.occupancy,
+                    features: res.data.features,
+                    building: res.data.building
                 })
             })
-    }
+    };
+    //See if redux can handle global state in a way that can carry over to the calendar page
+    /*    seeSchedule=event=>{
+           event.preventDefault();
+           API.showSchedule(this.state.roomName)
+           .then()
+       } */
 
     render() {
         return (
@@ -39,14 +51,20 @@ class RoomSearch extends Component {
                 <Jumbotron>
                     <Form>
                         <FormGroup>
-                            <Label for="location">Location: {this.setState.roomName}</Label>
+                            <Label>Rooms:</Label>
+                            <Input type="select" name="select" id="roomName">
+                                <option>Study Room A</option>
+                                <option>Study Room B</option>
+                                <option>Study Room C</option>
+                            </Input>
+                            {/*                             <Label for="location">Location: {this.setState.roomName}</Label>
                             <Input type="select" name="select" id="selectLocation"
                                 type="text"
                                 placeholder="Location"
                                 name="location"
                                 value={this.state.roomName}
                                 onChange={this.handleInputForm}
-                            />
+                            /> */}
                         </FormGroup>
                     </Form>
 
@@ -96,12 +114,29 @@ class RoomSearch extends Component {
                     </Form>
 
                     <Button className="lead" size="lg">
-                        <Button color="primary" href="/search">Search</Button>
+                        <Button color="primary" onClick={this.handleSearch()}>Search</Button>
                     </Button>
 
                 </Jumbotron>
-                <Results />
 
+                <Container>
+                    <Row>
+                        <Col size="md-12">
+                            <h1>Results:</h1>
+                            {this.state.rooms.length === 0 ? "" :
+                                this.state.rooms.map(room => (
+                                    <Results
+                                        key={room.id}
+                                        roomName={this.state.roomName}
+                                        features={this.state.features}
+                                        occupancy={this.state.occupancy}
+                                        building={this.state.building}
+                                    /* seeSchedule={event => this.seeSchedule()} */
+                                    />
+                                ))}
+                        </Col>
+                    </Row>
+                </Container>
             </div>
 
             // <p className="lead">
