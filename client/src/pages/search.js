@@ -1,7 +1,21 @@
 import React, { Component } from "react";
 import Navbar from '../components/navbar/index';
 import Results from "../components/results/index";
-import { Jumbotron, Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
+import { 
+    Jumbotron, 
+    Button, 
+    Form, 
+    FormGroup, 
+    Label, 
+    Input, 
+    Container, 
+    Row, 
+    Col,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    UncontrolledDropdown
+} from 'reactstrap';
 import API from "../utils/api";
 
 class RoomSearch extends Component {
@@ -49,6 +63,20 @@ class RoomSearch extends Component {
             <div className="search">
                 <Navbar />
                 <Jumbotron>
+                <UncontrolledDropdown>
+                <DropdownToggle Button caret>
+                        Search By
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem>
+                            By Room Name
+                        </DropdownItem>
+                        <DropdownItem>
+                            By Room Features
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+                    
                     <Form>
                         <FormGroup>
                             <Label>Rooms:</Label>
