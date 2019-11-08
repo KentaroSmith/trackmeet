@@ -8,6 +8,7 @@ router.route("/")
 
 // Matches with "/api/users/:id"
 router.route("/:id")
+  .get(usersController.findByEmail)
   .delete(usersController.remove);
 
 module.exports = router;
