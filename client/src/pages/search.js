@@ -81,10 +81,10 @@ class RoomSearch extends Component {
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName">
-                                <option>All Rooms</option>
-                                <option>Study Room A</option>
-                                <option>Study Room B</option>
-                                <option>Study Room C</option>
+                                <option value="allRooms">All Rooms</option>
+                                <option value="0">Study Room A</option>
+                                <option value="1">Study Room B</option>
+                                <option value="2">Study Room C</option>
                             </Input>
                             {/*                             <Label for="location">Location: {this.setState.roomName}</Label>
                             <Input type="select" name="select" id="selectLocation"

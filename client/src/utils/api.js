@@ -25,6 +25,9 @@ export default {
   searchRooms: function (query) {
     return axios.get("/api/rooms", query);
   },
+  searchEvents: function (query) {
+    return axios.get("api/events", query)
+  },
   /* // Gets all books in local database
   getBooks: function () {
     return axios.get("/api/books");

@@ -5,6 +5,10 @@ import {
 } from 'reactstrap';
 
 const Results = ({ roomName, features, building, occupancy, id }) => {
+    let featureList = [];
+    for (let i = 0; i < features.length; i++) {
+        featureList.push(features[i] + " ")
+    };
     return (
         <div className="search-result">
 
@@ -19,9 +23,9 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
             </Jumbotron> */}
             <Jumbotron>
                 <h3 className="roomName">{roomName}</h3>
-                <p className="features"> {features} </p>
-                <p className="building"> {building} </p>
-                <p className="occupancy"> {occupancy} </p>
+                <p className="features"><strong>Room Features: </strong>{featureList} </p>
+                <p className="building"><strong>Location: </strong>{building} </p>
+                <p className="occupancy"><strong>Max Occupancy: </strong>{occupancy} </p>
                 <Button href="#" key={id}>Reserve this room</Button>
             </Jumbotron>
 

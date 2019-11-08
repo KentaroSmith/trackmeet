@@ -6,6 +6,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 /* import 'react-big-calendar/lib/addons/dragAndDrop/styles'; */
 import './calendar.css'
 import moment from 'moment';
+import API from "../utils/api";
 const localizer = momentLocalizer(moment)
 class CalendarPage extends Component {
     state = {
@@ -17,7 +18,16 @@ class CalendarPage extends Component {
             }
         ]
     };
-
+    handleSearch = event => {
+        API.searchEvents()
+            .then(res => {
+                this.setState({
+                    start: res.data.startTime,
+                    end: res.data.endTime,
+                    title: res.data.userName
+                })
+            })
+    }
     render() {
         return (
             <div className="Calendardiv">
@@ -29,7 +39,7 @@ class CalendarPage extends Component {
                     startAccessor="start"
                     endAccessor="end"
                 />
-
+                {this.handleSearch()}
             </div>
         );
     }
