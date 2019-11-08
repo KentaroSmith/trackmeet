@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import Navbar from '../components/navbar/index';
 import Results from "../components/results/index";
-import { 
-    Jumbotron, 
-    Button, 
-    Form, 
-    FormGroup, 
-    Label, 
-    Input, 
-    Container, 
-    Row, 
+import {
+    Jumbotron,
+    Button,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Container,
+    Row,
     Col,
     DropdownToggle,
     DropdownMenu,
@@ -63,20 +63,20 @@ class RoomSearch extends Component {
             <div className="search">
                 <Navbar />
                 <Jumbotron>
-                <UncontrolledDropdown>
-                <DropdownToggle Button caret>
-                        Search By
+                    <UncontrolledDropdown>
+                        <DropdownToggle Button caret>
+                            Search By
                     </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem>
-                            By Room Name
+                        <DropdownMenu>
+                            <DropdownItem>
+                                By Room Name
                         </DropdownItem>
-                        <DropdownItem>
-                            By Room Features
+                            <DropdownItem>
+                                By Room Features
                         </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledDropdown>
-                    
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+
                     <Form>
                         <FormGroup>
                             <Label>Rooms:</Label>
@@ -97,7 +97,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form>
 
-{/*                     <Form>
+                    {/*                     <Form>
                         <FormGroup>
                             <Label for="room">Meeting Size</Label>
                             <Input type="select" name="select" id="roomSize">
@@ -114,36 +114,36 @@ class RoomSearch extends Component {
                         <FormGroup check>
                             <Label check>
                                 <Input type="checkbox" id="checkBox"
-/*                                     type="text"
-                                    placeholder="Features"
-                                    name="features"
-                                    value={this.state.features}
-                                    onChange={this.handleInputForm} */
+                                /*                                     type="text"
+                                                                    placeholder="Features"
+                                                                    name="features"
+                                                                    value={this.state.features}
+                                                                    onChange={this.handleInputForm} */
                                 />{' '} projector
                             </Label>
                         </FormGroup>
                         <FormGroup check>
-                        <Label check>
+                            <Label check>
                                 <Input type="checkbox" id="checkBox"
                                 />{' '} whiteboard
                             </Label>
                         </FormGroup>
 
                         <FormGroup check>
-                        <Label check>
+                            <Label check>
                                 <Input type="checkbox" id="checkBox"
                                 />{' '} conference table
                             </Label>
                         </FormGroup>
                         <FormGroup check>
-                        <Label check>
+                            <Label check>
                                 <Input type="checkbox" id="checkBox"
                                 />{' '} computer
                             </Label>
                         </FormGroup>
                     </Form>
 
-{/*                     <FormGroup>
+                    {/*                     <FormGroup>
                         <Label for="meeting-time">Enter a date and time for your party booking: </Label>
                         <Input id="meetingTime" type="datetime-local" name="dateTime" min="2019-10-01T00:00" max="2024-01-01T24:00">
                         </Input>
@@ -161,9 +161,9 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Button className="lead" size="lg">
-                        <Button color="primary" onClick={this.handleSearch()}>Search</Button>
-                    </Button>
+
+                    <Button size="lg" color="primary" onClick={this.handleSearch()}>Search</Button>
+
 
                 </Jumbotron>
 
@@ -175,10 +175,10 @@ class RoomSearch extends Component {
                                 this.state.rooms.map(room => (
                                     <Results
                                         key={room.id}
-                                        roomName={this.state.roomName}
-                                        features={this.state.features}
-                                        occupancy={this.state.occupancy}
-                                        building={this.state.building}
+                                        roomName={room.roomName}
+                                        features={room.features}
+                                        occupancy={room.occupancy}
+                                        building={room.building}
                                     /* seeSchedule={event => this.seeSchedule()} */
                                     />
                                 ))}
