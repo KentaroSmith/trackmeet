@@ -25,6 +25,10 @@ export default {
   searchRooms: function (query) {
     return axios.get("/api/rooms", query);
   },
+
+  saveEvent: function (eventData) {
+    return axios.post("/api/events", eventData);
+  }
   /* // Gets all books in local database
   getBooks: function () {
     return axios.get("/api/books");

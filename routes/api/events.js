@@ -1,12 +1,12 @@
 const router = require("express").Router();
 const eventsController = require("../../controllers/eventsController");
 
-//"/api/rooms"
+//"/api/events"
 router.route("/")
     .get(eventsController.findAll)
     .post(eventsController.create);
 
-// "/api/rooms/:id"
+// "/api/events/:id"
 router.route("/:id")
     .delete(eventsController.remove);
 
