@@ -1,11 +1,11 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import {
     Jumbotron,
     Button
-} from 'reactstrap';
+} from 'reactstrap'; 
 import { useDispatch } from 'react-redux';
 import { updateRoom } from "../../actions";
-
 
 const Results = ({ roomName, features, building, occupancy, id }) => {
     const dispatch = useDispatch();
@@ -29,12 +29,14 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                 <p className="occupancy"> {occupancy} </p>
                 <Button
                     onClick={() => dispatch(updateRoom({
+                        id: id,
+                        building: building,
                         roomName: roomName,
                         features: features,
-                        building: building,
                         occupancy: occupancy
                     }))}
                     key={id}>Reserve this room</Button>
+                <Link to="/login">Continue</Link>    
             </Jumbotron>
 
         </div>

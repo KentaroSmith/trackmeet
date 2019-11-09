@@ -6,6 +6,7 @@ module.exports = {
         db.Event
             .find(req.query)
             .populate("user")
+            .populate("room")
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

@@ -42,6 +42,7 @@ class RoomSearch extends Component {
         //testing the roomname search first
         API.searchRooms(this.state.roomName)
             .then(res => {
+                console.log(res); //temp
                 this.setState({
                     rooms: res.data,
                     roomName: res.data.roomName,
@@ -162,7 +163,7 @@ class RoomSearch extends Component {
                     </Form> */}
 
 
-                    <Button size="lg" color="primary" onClick={this.handleSearch()}>Search</Button>
+                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Search</Button>
 
 
                 </Jumbotron>
@@ -174,7 +175,8 @@ class RoomSearch extends Component {
                             {this.state.rooms.length === 0 ? "" :
                                 this.state.rooms.map(room => (
                                     <Results
-                                        key={room.id}
+                                        key={room._id}
+                                        id={room._id}
                                         roomName={room.roomName}
                                         features={room.features}
                                         occupancy={room.occupancy}

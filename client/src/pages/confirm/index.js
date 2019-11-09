@@ -29,16 +29,35 @@ const makeReservation = (user) => {
 
 const Confirm = () => {
     const userData = useSelector(state => state.user);
+    const roomData = useSelector(state => state.room);
 
     return (
         <>
             <Navbar />
-            <h1>Reservation confirmed:</h1>
-            <p>User: {userData.firstName} {userData.lastName}</p>
-            <p>Email: {userData.email}</p>
-            <p>Phone: {userData.phone}</p>
-            <Button onClick={() => makeReservation(userData)}>Reserve room</Button>
-            <Button onClick={() => app.auth().signOut()}>Sign out</Button>
+            <Card className="mx-auto shadow-lg">
+                <CardBody>
+                    <CardTitle>Reservation confirmed:</CardTitle>
+                    <p>User: {userData.firstName} {userData.lastName}</p>
+                    <p>Email: {userData.email}</p>
+                    <p>Phone: {userData.phone}</p>
+                    <p>Location: {roomData.building}</p>
+                    <p>Room: {roomData.roomName}</p>
+                    <p>Max capacity: {roomData.occupancy}</p>
+                    <p>Features:</p>
+                    <ul>
+                    {!roomData.features || 
+                    roomData.features.map((feature, index) => ( 
+                        <li key={feature}>{feature}</li>
+                    ))}
+                    </ul>
+                    <p>Reservation period:</p>
+                    <p>Wednesday, Nov. 13</p>
+                    <p>6:00 - 8:00pm</p>
+
+                    <Button onClick={() => makeReservation(userData)} className="btn-block">Reserve room</Button>
+                    <Button onClick={() => app.auth().signOut()} className="btn-block">Sign out</Button>
+                </CardBody>
+            </Card>
         </>
     );
 };
