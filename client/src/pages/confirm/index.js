@@ -15,7 +15,7 @@ const makeReservation = (user) => {
     // save reservation to database
     API.saveEvent({
         user: mongojs.ObjectId(user._id),
-        userName: "Bob",
+        userName: `${user.firstName} ${user.lastName}`,
         roomName: "Study Room 4",
         startTime: "12:00",
         endTime: "16:00"
