@@ -21,6 +21,7 @@ import API from "../utils/api";
 class RoomSearch extends Component {
 
     state = {
+        locationSearch: [],
         rooms: [],
         roomName: "",
         features: "",
@@ -28,15 +29,15 @@ class RoomSearch extends Component {
         occupancy: ""
     }
 
-    /*     handleInputForm = event => {
-            // Pull the name and value properties off of the event.target (the element which triggered the event)
-            const { name } = event.target;
-    
-            // Set the state for the appropriate input field
-            this.setState({
-                [name]: name
-            });
-        }; */
+    handleInputForm = event => {
+        // Pull the name and value properties off of the event.target (the element which triggered the event)
+        const { searchTerm } = event.target;
+
+        // Set the state for the appropriate input field
+        this.setState({
+            [locationSearch]: searchTerm
+        });
+    };
     handleSearch = event => {
 
         //testing the roomname search first
@@ -51,6 +52,11 @@ class RoomSearch extends Component {
                 })
             })
     };
+    locationSelect = event => {
+        this.setState({
+            locationSearch: this.value
+        })
+    }
     //See if redux can handle global state in a way that can carry over to the calendar page
     /*    seeSchedule=event=>{
            event.preventDefault();
