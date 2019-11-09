@@ -9,14 +9,15 @@ import Navbar from '../../components/navbar/index';
 import API from "../../utils/api";
 const mongojs = require("mongojs");
 
-const makeReservation = (user) => {
+const makeReservation = (user, room) => {
     console.log("making reservation");
 
     // save reservation to database
     API.saveEvent({
         user: mongojs.ObjectId(user._id),
         userName: `${user.firstName} ${user.lastName}`,
-        roomName: "Study Room 4",
+        room: mongojs.ObjectId(room.id),
+        roomName: room.roomName,
         startTime: "12:00",
         endTime: "16:00"
     })
@@ -37,7 +38,7 @@ const Confirm = () => {
             <Card className="mx-auto shadow-lg">
                 <CardBody>
                     <CardTitle>Reservation confirmed:</CardTitle>
-                    <p>User: {userData.firstName} {userData.lastName}</p>
+                    <p>Reserved by: {userData.firstName} {userData.lastName}</p>
                     <p>Email: {userData.email}</p>
                     <p>Phone: {userData.phone}</p>
                     <p>Location: {roomData.building}</p>
@@ -54,7 +55,7 @@ const Confirm = () => {
                     <p>Wednesday, Nov. 13</p>
                     <p>6:00 - 8:00pm</p>
 
-                    <Button onClick={() => makeReservation(userData)} className="btn-block">Reserve room</Button>
+                    <Button onClick={() => makeReservation(userData, roomData)} className="btn-block">Reserve room</Button>
                     <Button onClick={() => app.auth().signOut()} className="btn-block">Sign out</Button>
                 </CardBody>
             </Card>
