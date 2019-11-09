@@ -22,7 +22,7 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                 <p className="features"> {features} </p>
                 <p className="building"> {building} </p>
                 <p className="occupancy"> {occupancy} </p>
-                <Button href="#" key={id}>Reserve this room</Button>
+                <Button href="/login" key={id}>Reserve this room</Button>
             </Jumbotron>
 
         </div>
