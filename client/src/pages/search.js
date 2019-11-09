@@ -28,6 +28,10 @@ class RoomSearch extends Component {
         building: "",
         occupancy: ""
     }
+    searchChoice = {
+        location: true,
+        features: false
+    }
 
     handleInputForm = event => {
         // Pull the name and value properties off of the event.target (the element which triggered the event)
@@ -63,7 +67,9 @@ class RoomSearch extends Component {
            API.showSchedule(this.state.roomName)
            .then()
        } */
+    chooseRoom = event => {
 
+    }
     render() {
         return (
             <div className="search">
@@ -168,7 +174,7 @@ class RoomSearch extends Component {
                     </Form> */}
 
 
-                    <Button size="lg" color="primary" onClick={this.handleSearch()}>Search</Button>
+                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Search</Button>
 
 
                 </Jumbotron>
