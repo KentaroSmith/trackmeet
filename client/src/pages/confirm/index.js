@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router";
 import app from "../../components/Firebase/firebase";
 import { useSelector } from 'react-redux';
 import {
@@ -7,7 +8,10 @@ import {
 } from 'reactstrap';
 import Navbar from '../../components/navbar/index';
 import API from "../../utils/api";
+import "./style.css";
+
 const mongojs = require("mongojs");
+
 
 const makeReservation = (user, room) => {
     console.log("making reservation");
@@ -35,7 +39,7 @@ const Confirm = () => {
     return (
         <>
             <Navbar />
-            <Card className="mx-auto shadow-lg">
+            <Card id="confirm-card" className="mx-auto shadow-lg">
                 <CardBody>
                     <CardTitle>Reservation confirmed:</CardTitle>
                     <p>Reserved by: {userData.firstName} {userData.lastName}</p>
@@ -63,4 +67,4 @@ const Confirm = () => {
     );
 };
 
-export default Confirm;
+export default withRouter(Confirm);

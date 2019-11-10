@@ -24,7 +24,7 @@ class App extends Component {
             <PrivateRoute exact path="/confirm" component={Confirm} />
             <Route exact path="/" component={HomePage} />
             <Route exact path="/search" component={RoomSearch} />
-            <Route exact path="/reservations" component={Reservations} />
+            <PrivateRoute exact path="/reservations" component={Reservations} />
           </div>
         </Router>
       </AuthProvider>

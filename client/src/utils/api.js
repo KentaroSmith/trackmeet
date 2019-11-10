@@ -31,11 +31,15 @@ export default {
   },
   getEvents: function () {
     return axios.get("/api/events");
+  },
+  deleteEvent: function (id) {
+    return axios.delete("/api/events/" + id);
   }
   /* // Gets all books in local database
   getBooks: function () {
     return axios.get("/api/books");
   },
+  
   // Deletes the book with the given id
   deleteBook: function (id) {
     return axios.delete("/api/books/" + id);
