@@ -21,7 +21,7 @@ import API from "../utils/api";
 class RoomSearch extends Component {
 
     state = {
-        locationSearch: [],
+        locationSearch: "",
         rooms: [],
         roomName: "",
         features: "",
@@ -36,11 +36,11 @@ class RoomSearch extends Component {
     handleInputForm = event => {
         // Pull the name and value properties off of the event.target (the element which triggered the event)
         const { searchTerm } = event.target;
-
+        console.log(searchTerm)
         // Set the state for the appropriate input field
-        this.setState({
-            [locationSearch]: searchTerm
-        });
+        /*         this.setState({
+                    locationSearch: searchTerm
+                }); */
     };
     handleSearch = event => {
 
@@ -57,9 +57,21 @@ class RoomSearch extends Component {
             })
     };
     locationSelect = event => {
-        this.setState({
-            locationSearch: this.value
-        })
+        console.log(event.target.value)
+        API.searchRoomsByLocation(event.target.value)
+            .then(res => {
+                this.setState({
+                    rooms: res.data,
+                    roomName: res.data.roomName,
+                    occupancy: res.data.occupancy,
+                    features: res.data.features,
+                    building: res.data.building
+                })
+            })
+        /*         this.setState({
+                    locationSearch: this.value
+        
+                }) */
     }
     //See if redux can handle global state in a way that can carry over to the calendar page
     /*    seeSchedule=event=>{
@@ -92,11 +104,11 @@ class RoomSearch extends Component {
                     <Form>
                         <FormGroup>
                             <Label>Rooms:</Label>
-                            <Input type="select" name="select" id="roomName">
-                                <option>All Rooms</option>
-                                <option>Study Room A</option>
-                                <option>Study Room B</option>
-                                <option>Study Room C</option>
+                            <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
+                                <option value="all">All Rooms</option>
+                                <option value="Study Room A">Study Room A</option>
+                                <option value="Study Room B">Study Room B</option>
+                                <option value="Study Room C">Study Room C</option>
                             </Input>
                             {/*                             <Label for="location">Location: {this.setState.roomName}</Label>
                             <Input type="select" name="select" id="selectLocation"
@@ -125,7 +137,7 @@ class RoomSearch extends Component {
                         <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="projector"
                                 /*                                     type="text"
                                                                     placeholder="Features"
                                                                     name="features"
@@ -136,20 +148,20 @@ class RoomSearch extends Component {
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="whiteboard"
                                 />{' '} whiteboard
                             </Label>
                         </FormGroup>
 
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="conference table"
                                 />{' '} conference table
                             </Label>
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="computer"
                                 />{' '} computer
                             </Label>
                         </FormGroup>
