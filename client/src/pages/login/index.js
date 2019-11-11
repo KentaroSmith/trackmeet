@@ -38,7 +38,7 @@ const Login = ({ history }) => {
                     .auth()
                     .signInWithEmailAndPassword(email.value, password.value);
                 getUserData(email.value, (user) => dispatch(updateUser(user)));
-                history.push("/confirm"); // this page loads on successful user login
+                history.push("/"); // this page loads on successful user login
             } catch (error) {
                 alert(error);
             }
@@ -48,7 +48,7 @@ const Login = ({ history }) => {
     const { currentUser } = useContext(AuthContext);
 
     if (currentUser) {
-        return <Redirect to="/confirm" />
+        return <Redirect to="/" />
     }
 
     return (

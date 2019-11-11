@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import app from "../../components/Firebase/firebase";
 import Reservation from "../../components/reservation/index";
 import { useSelector } from 'react-redux';
@@ -9,60 +9,56 @@ import {
 import Navbar from '../../components/navbar/index';
 import API from "../../utils/api";
 
-class Reservations extends Component {
+const Reservations = () => {
+    const [events, setEvents] = useState([]);
 
-    state = {
-        events: [],
-    }
+    useEffect(
+        () => {
+            loadReservations();
+        }, 
+        []);
 
-    componentDidMount() {
-        this.loadReservations();
-    };
-
-    loadReservations = () => {
+    const loadReservations = () => {
         API.getEvents()
             .then(res => {
                 console.log(res.data);
-                this.setState({
-                    events: res.data
-                });
+                setEvents(res.data);
             })
             .catch(err => console.log(err));
     };
 
-    deleteReservation(id) {
+    const deleteReservation = (id) => {
         API.deleteEvent(id)
             .then(res => {
                 console.log(res.data);
-                this.loadReservations();
+                loadReservations();
             })
             .catch(err => console.log(err));
     };
 
-    render() {
-        return (
-            <>
-                <Navbar />
-                <Container>
-                    <Row>
-                        <Col size="md-12">
-                            <h1>Active reservations ({this.state.events.length}):</h1>
-                            {!this.state.events ||
-                                this.state.events.map(event => (
-                                    <div>
-                                        <Reservation
-                                            key={event._id}
-                                            event={event}
-                                            onDelete={() => this.deleteReservation(event._id)}
-                                        />
-                                    </div>
-                                ))}
-                        </Col>
-                    </Row>
-                </Container>
-            </>
-        );
-    };
+    return (
+        <>
+            <Navbar />
+            <Container>
+                <Row>
+                    <Col size="md-12">
+                        <h1>Active reservations ({events.length}):</h1>
+                        {!events ||
+                            events.map(event => (
+                                <div>
+                                    <Reservation
+                                        key={event._id}
+                                        event={event}
+                                        onDelete={() => deleteReservation(event._id)}
+                                    />
+                                </div>
+                            ))}
+                    </Col>
+                </Row>
+            </Container>
+        </>
+    );
+
 };
 
 export default Reservations;

@@ -36,7 +36,7 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                         occupancy: occupancy
                     }))}
                     key={id}>Reserve this room</Button>
-                <Link to="/login">Continue</Link>    
+                <Link to="/confirm">Continue</Link>    
             </Jumbotron>
 
         </div>

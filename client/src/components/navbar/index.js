@@ -8,6 +8,7 @@ import {
     NavItem,
     NavLink,
 } from 'reactstrap';
+import app from "../Firebase/firebase";
 
 const NavigationBar = (props) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,10 +26,19 @@ const NavigationBar = (props) => {
                             <NavLink href="/">Home</NavLink>
                         </NavItem>
                         <NavItem>
+                            <NavLink href="/calendar">Calendar</NavLink>
+                        </NavItem>
+                        <NavItem>
                             <NavLink href="/search">Search</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/calendar">Calendar</NavLink>
+                            <NavLink href="/reservations">Reservations</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="/login">Login</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="/login" onClick={() => app.auth().signOut()}>Logout</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>

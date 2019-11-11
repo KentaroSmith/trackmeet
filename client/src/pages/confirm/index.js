@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import app from "../../components/Firebase/firebase";
 import { useSelector } from 'react-redux';
 import {
@@ -27,6 +28,8 @@ const makeReservation = (user, room) => {
     })
         .then(res => {
             console.log(res.data);
+            // redirect to the /reservations page
+
         })
         .catch(err => console.log(err));
 
@@ -50,10 +53,10 @@ const Confirm = () => {
                     <p>Max capacity: {roomData.occupancy}</p>
                     <p>Features:</p>
                     <ul>
-                    {!roomData.features || 
-                    roomData.features.map((feature, index) => ( 
-                        <li key={feature}>{feature}</li>
-                    ))}
+                        {!roomData.features ||
+                            roomData.features.map((feature, index) => (
+                                <li key={feature}>{feature}</li>
+                            ))}
                     </ul>
                     <p>Reservation period:</p>
                     <p>Wednesday, Nov. 13</p>
@@ -61,6 +64,7 @@ const Confirm = () => {
 
                     <Button onClick={() => makeReservation(userData, roomData)} className="btn-block">Reserve room</Button>
                     <Button onClick={() => app.auth().signOut()} className="btn-block">Sign out</Button>
+                    <Link to="/reservations">Go to reservations</Link>  
                 </CardBody>
             </Card>
         </>
