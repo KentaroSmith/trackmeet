@@ -29,7 +29,7 @@ class RoomSearch extends Component {
         occupancy: ""
     }
     searchChoice = {
-        location: true,
+        location: false,
         features: false
     }
 
@@ -79,20 +79,45 @@ class RoomSearch extends Component {
            API.showSchedule(this.state.roomName)
            .then()
        } */
-    chooseRoom = event => {
-
+    chooseFilter = event => {
+        console.log(event.target.value)
+        let searchOne = document.getElementById("roomName");
+        let searchTwo = document.getElementById("featureList");
+        if (event.target.value === "roomName") {
+            this.searchChoice.location = true;
+            this.searchChoice.features = false;
+            console.log("Location is set to: " + this.searchChoice.location)
+        }
+        else if (event.target.value === "featureList") {
+            this.searchChoice.features = true;
+            this.searchChoice.location = false;
+            console.log("Features is set to: " + this.searchChoice.features)
+        }
     }
     render() {
+        const featureStyle = !this.searchChoice.features ? { display: "none" } : {};
+        const locationStyle = !this.searchChoice.location ? { display: "block" } : {};
         return (
             <div className="search">
                 <Navbar />
                 <Jumbotron>
-                    <UncontrolledDropdown>
-                        <DropdownToggle Button caret>
+                    <Form>
+                        <FormGroup>
+                            <Label>Search Method: </Label>
+                            <Input type="select" name="select" id="filterChoice" onChange={this.chooseFilter}>
+                                <option > </option>
+                                <option value="roomName">Sort by Room Name</option>
+                                <option value="featureList">Sort by Room Feature</option>
+                            </Input>
+
+                        </FormGroup>
+                    </Form>
+                    <UncontrolledDropdown >
+                        <DropdownToggle Button caret onChange={this.chooseFilter}>
                             Search By
                     </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem>
+                            <DropdownItem value="roomName">
                                 By Room Name
                         </DropdownItem>
                             <DropdownItem>
@@ -101,7 +126,7 @@ class RoomSearch extends Component {
                         </DropdownMenu>
                     </UncontrolledDropdown>
 
-                    <Form>
+                    <Form id="roomNameList" style={locationStyle}>
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
@@ -133,7 +158,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form>
+                    <Form id="featureList" style={featureStyle}>
                         <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
@@ -186,7 +211,7 @@ class RoomSearch extends Component {
                     </Form> */}
 
 
-                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Search</Button>
+                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
 
                 </Jumbotron>
