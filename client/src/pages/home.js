@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index'
 import { Jumbotron, Button, ButtonGroup } from 'reactstrap';
 
 class HomePage extends Component {
     render() {
         return (
             <div className="Homediv">
-                <Navbar activePage="home"/>
                 <Jumbotron>
                     <h1 className="display-3">TrackMeet</h1>
                     <p className="lead">Now you're booking it!</p>

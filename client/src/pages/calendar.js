@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index';
 /* import Filter from "../components/filter/index"; */
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -21,7 +20,6 @@ class CalendarPage extends Component {
     render() {
         return (
             <div className="Calendardiv">
-                <Navbar activePage="calendar"/>
                 {/* <Filter /> */}
                 <Calendar
                     localizer={localizer}

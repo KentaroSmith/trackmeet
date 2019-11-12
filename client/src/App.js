@@ -11,6 +11,7 @@ import RoomSearch from "./pages/search";
 import Reservations from "./pages/reservations";
 import { AuthProvider } from "./components/Firebase/auth";
 import PrivateRoute from "./components/Firebase/PrivateRoute";
+import Navbar from './components/navbar';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
       <AuthProvider>
         <Router>
           <div>
+            <Navbar />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={LogIn} />
             <Route exact path="/calendar" component={Calendar} />

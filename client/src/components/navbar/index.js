@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink as RRNavLink } from 'react-router-dom';
 import {
     Collapse,
     Navbar,
@@ -12,8 +12,9 @@ import {
 } from 'reactstrap';
 import app from "../Firebase/firebase";
 import { AuthContext } from "../Firebase/auth";
+import "./style.css";
 
-const NavigationBar = ({activePage}) => {
+const NavigationBar = ({ activePage }) => {
     const { currentUser } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -28,19 +29,21 @@ const NavigationBar = ({activePage}) => {
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <NavLink href="/" active={activePage === "home"}>Home</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/calendar" active={activePage === "calendar"}>Calendar</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/search" active={activePage === "search"}>Search</NavLink>
-                        </NavItem>
+                        
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/" activeClassName="chosen">Home</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/calendar" activeClassName="chosen">Calendar</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/search" activeClassName="chosen">Search</NavLink>
+                            </NavItem>
+                        
                         {!currentUser
                             ?
                             <NavItem>
-                                <NavLink href="/login" active={activePage === "login"}>Login</NavLink>
+                                <NavLink href="/login" activeClassName="chosen">Login</NavLink>
                             </NavItem>
                             :
                             <UncontrolledDropdown nav inNavbar>

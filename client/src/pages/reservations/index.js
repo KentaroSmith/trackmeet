@@ -6,7 +6,6 @@ import {
     Button,
     Container, Row, Col
 } from 'reactstrap';
-import Navbar from '../../components/navbar/index';
 import API from "../../utils/api";
 import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
@@ -24,14 +23,10 @@ const Reservations = () => {
         () => {
             // load user info into global state (Redux) if we haven't already
             getUserData(currentUser.email, (user) => {
-                console.log(user);
                 dispatch(updateUser(user));
-                console.log(user);
                 // load user data from database
-                //loadReservations();
                 API.getEventsByUser(user._id)
                     .then(res => {
-                        console.log(res.data);
                         setEvents(res.data);
                     })
                     .catch(err => console.log(err));
@@ -79,7 +74,6 @@ const Reservations = () => {
 
     return (
         <>
-            <Navbar />
             <Container>
                 <Row>
                     <Col size="md-12">

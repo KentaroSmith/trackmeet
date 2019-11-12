@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Navbar from '../components/navbar/index';
 import Results from "../components/results/index";
 import {
     Jumbotron,
@@ -62,7 +61,6 @@ class RoomSearch extends Component {
     render() {
         return (
             <div className="search">
-                <Navbar activePage="search" />
                 <Jumbotron>
                     <UncontrolledDropdown>
                         <DropdownToggle Button caret>
