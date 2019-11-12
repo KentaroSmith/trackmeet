@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navbar from '../components/navbar/index';
 import Results from "../components/results/index";
+import Checkboxes from "../components/feature";
 import {
     Jumbotron,
     Button,
@@ -119,7 +120,7 @@ class RoomSearch extends Component {
                 allFeatures.sort();
                 console.log(allFeatures);
                 //This is currently not working. this.featuresArray.push() is not recognized.
-                this.featuresArray.push(this.featuresArray, allFeatures)
+                this.featuresArray= allFeatures;
                 console.log(this.featuresArray)
             })
 
@@ -204,6 +205,9 @@ class RoomSearch extends Component {
                             </Label>
                         </FormGroup>
                     </Form>
+                    <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
+                    feature={this.featuresArray}
+                    />
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
 
