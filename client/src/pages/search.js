@@ -62,7 +62,7 @@ class RoomSearch extends Component {
     render() {
         return (
             <div className="search">
-                <Navbar />
+                <Navbar activePage="search" />
                 <Jumbotron>
                     <UncontrolledDropdown>
                         <DropdownToggle Button caret>

@@ -54,7 +54,7 @@ const SignUp = ({ history }) => {
                 .createUserWithEmailAndPassword(emailAddress.value, password.value);
             //getUserData(email.value, (user) => dispatch(updateUser(user)));
             saveUserData(firstName, lastName, phone, email, (user) => dispatch(updateUser(user)));
-            history.push("/confirm"); // this page loads upon successful user creation in Firebase
+            history.push("/"); // this page loads upon successful user creation in Firebase
         } catch (error) {
             alert(error);
         }

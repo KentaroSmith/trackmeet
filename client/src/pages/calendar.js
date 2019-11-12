@@ -21,7 +21,7 @@ class CalendarPage extends Component {
     render() {
         return (
             <div className="Calendardiv">
-                <Navbar />
+                <Navbar activePage="calendar"/>
                 {/* <Filter /> */}
                 <Calendar
                     localizer={localizer}

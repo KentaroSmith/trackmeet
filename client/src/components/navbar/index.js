@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import {
     Collapse,
     Navbar,
@@ -7,13 +8,18 @@ import {
     Nav,
     NavItem,
     NavLink,
+    UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 import app from "../Firebase/firebase";
+import { AuthContext } from "../Firebase/auth";
 
-const NavigationBar = (props) => {
+const NavigationBar = ({activePage}) => {
+    const { currentUser } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
+
+    console.log(activePage);
 
     return (
         <div>
@@ -23,23 +29,35 @@ const NavigationBar = (props) => {
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink href="/">Home</NavLink>
+                            <NavLink href="/" active={activePage === "home"}>Home</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/calendar">Calendar</NavLink>
+                            <NavLink href="/calendar" active={activePage === "calendar"}>Calendar</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/search">Search</NavLink>
+                            <NavLink href="/search" active={activePage === "search"}>Search</NavLink>
                         </NavItem>
-                        <NavItem>
-                            <NavLink href="/reservations">Reservations</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/login">Login</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink href="/login" onClick={() => app.auth().signOut()}>Logout</NavLink>
-                        </NavItem>
+                        {!currentUser
+                            ?
+                            <NavItem>
+                                <NavLink href="/login" active={activePage === "login"}>Login</NavLink>
+                            </NavItem>
+                            :
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav caret>
+                                    {currentUser.email}
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    <DropdownItem tag={Link} to="/reservations">
+                                        Reservations
+                                </DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem href="/login" onClick={() => app.auth().signOut()}>
+                                        Logout
+                                </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                        }
                     </Nav>
                 </Collapse>
             </Navbar>

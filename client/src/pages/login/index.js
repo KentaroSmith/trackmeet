@@ -53,7 +53,7 @@ const Login = ({ history }) => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar activePage="login"/>
             <div>
                 <Card id="login-card" className="mx-auto shadow-lg">
                     <CardImg top width="100%" src={logo} alt="TrackMeet logo" />
