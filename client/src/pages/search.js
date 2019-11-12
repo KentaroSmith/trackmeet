@@ -10,11 +10,7 @@ import {
     Input,
     Container,
     Row,
-    Col,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown
+    Col
 } from 'reactstrap';
 import API from "../utils/api";
 
@@ -31,6 +27,9 @@ class RoomSearch extends Component {
     searchChoice = {
         location: false,
         features: false
+    }
+    featuresArray = {
+        features: []
     }
 
     handleInputForm = event => {
@@ -81,7 +80,7 @@ class RoomSearch extends Component {
        } */
     chooseFilter = event => {
         console.log(event.target.value)
-        let searchOne = document.getElementById("roomName");
+        let searchOne = document.getElementById("roomNameList");
         let searchTwo = document.getElementById("featureList");
         if (event.target.value === "roomName") {
             this.searchChoice.location = true;
@@ -93,10 +92,42 @@ class RoomSearch extends Component {
             this.searchChoice.location = false;
             console.log("Features is set to: " + this.searchChoice.features)
         }
+        else {
+            this.searchChoice.features = false;
+            this.searchChoice.location = false;
+        }
+        if (this.searchChoice.location) {
+            searchOne.style.display = "block";
+            searchTwo.style.display = "none";
+        }
+        else if (this.searchChoice.features) {
+            searchOne.style.display = "none";
+            searchTwo.style.display = "block";
+        }
+    }
+    getAllFeatures = () => {
+        let allFeatures = [];
+        API.searchRooms()
+            .then(res => {
+                console.log(res.data);
+                for (let i = 0; i < res.data.length; i++) {
+                    console.log(res.data[i].features)
+                    allFeatures.push.apply(allFeatures, res.data[i].features);
+                    console.log(allFeatures)
+
+                }
+                allFeatures.sort();
+                console.log(allFeatures);
+                //This is currently not working. this.featuresArray.push() is not recognized.
+                this.featuresArray.push(this.featuresArray, allFeatures)
+                console.log(this.featuresArray)
+            })
+
     }
     render() {
-        const featureStyle = !this.searchChoice.features ? { display: "none" } : {};
-        const locationStyle = !this.searchChoice.location ? { display: "block" } : {};
+        let hiddenElements = {
+            display: "none"
+        }
         return (
             <div className="search">
                 <Navbar />
@@ -105,28 +136,15 @@ class RoomSearch extends Component {
                         <FormGroup>
                             <Label>Search Method: </Label>
                             <Input type="select" name="select" id="filterChoice" onChange={this.chooseFilter}>
-                                <option > </option>
+                                <option value="none"> </option>
                                 <option value="roomName">Sort by Room Name</option>
                                 <option value="featureList">Sort by Room Feature</option>
                             </Input>
 
                         </FormGroup>
                     </Form>
-                    <UncontrolledDropdown >
-                        <DropdownToggle Button caret onChange={this.chooseFilter}>
-                            Search By
-                    </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem value="roomName">
-                                By Room Name
-                        </DropdownItem>
-                            <DropdownItem>
-                                By Room Features
-                        </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
 
-                    <Form id="roomNameList" style={locationStyle}>
+                    <Form id="roomNameList" style={hiddenElements}>
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
@@ -158,16 +176,11 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form id="featureList" style={featureStyle}>
-                        <Label for="Features">Features: {this.setState.features}</Label>
+                    <Form id="featureList" style={hiddenElements} onChange={this.getAllFeatures}>
+                        <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
                                 <Input type="checkbox" id="checkBox" value="projector"
-                                /*                                     type="text"
-                                                                    placeholder="Features"
-                                                                    name="features"
-                                                                    value={this.state.features}
-                                                                    onChange={this.handleInputForm} */
                                 />{' '} projector
                             </Label>
                         </FormGroup>
@@ -191,26 +204,6 @@ class RoomSearch extends Component {
                             </Label>
                         </FormGroup>
                     </Form>
-
-                    {/*                     <FormGroup>
-                        <Label for="meeting-time">Enter a date and time for your party booking: </Label>
-                        <Input id="meetingTime" type="datetime-local" name="dateTime" min="2019-10-01T00:00" max="2024-01-01T24:00">
-                        </Input>
-                    </FormGroup>
-
-                    <Form>
-                        <FormGroup>
-                            <Label for="room">Meeting Duration(hours)</Label>
-                            <Input type="select" name="select" id="roomSize">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </Input>
-                        </FormGroup>
-                    </Form> */}
-
-
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
 
