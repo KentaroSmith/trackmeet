@@ -28,6 +28,9 @@ class RoomSearch extends Component {
         location: false,
         features: false
     }
+    featuresArray = {
+        features: []
+    }
 
     handleInputForm = event => {
         // Pull the name and value properties off of the event.target (the element which triggered the event)
@@ -102,6 +105,25 @@ class RoomSearch extends Component {
             searchTwo.style.display = "block";
         }
     }
+    getAllFeatures = () => {
+        let allFeatures = [];
+        API.searchRooms()
+            .then(res => {
+                console.log(res.data);
+                for (let i = 0; i < res.data.length; i++) {
+                    console.log(res.data[i].features)
+                    allFeatures.push.apply(allFeatures, res.data[i].features);
+                    console.log(allFeatures)
+
+                }
+                allFeatures.sort();
+                console.log(allFeatures);
+                //This is currently not working. this.featuresArray.push() is not recognized.
+                this.featuresArray.push(this.featuresArray, allFeatures)
+                console.log(this.featuresArray)
+            })
+
+    }
     render() {
         let hiddenElements = {
             display: "none"
@@ -154,16 +176,11 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form id="featureList" style={hiddenElements}>
-                        <Label for="Features">Features: {this.setState.features}</Label>
+                    <Form id="featureList" style={hiddenElements} onChange={this.getAllFeatures}>
+                        <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
                                 <Input type="checkbox" id="checkBox" value="projector"
-                                /*                                     type="text"
-                                                                    placeholder="Features"
-                                                                    name="features"
-                                                                    value={this.state.features}
-                                                                    onChange={this.handleInputForm} */
                                 />{' '} projector
                             </Label>
                         </FormGroup>
@@ -187,26 +204,6 @@ class RoomSearch extends Component {
                             </Label>
                         </FormGroup>
                     </Form>
-
-                    {/*                     <FormGroup>
-                        <Label for="meeting-time">Enter a date and time for your party booking: </Label>
-                        <Input id="meetingTime" type="datetime-local" name="dateTime" min="2019-10-01T00:00" max="2024-01-01T24:00">
-                        </Input>
-                    </FormGroup>
-
-                    <Form>
-                        <FormGroup>
-                            <Label for="room">Meeting Duration(hours)</Label>
-                            <Input type="select" name="select" id="roomSize">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </Input>
-                        </FormGroup>
-                    </Form> */}
-
-
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
 
