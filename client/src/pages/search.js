@@ -10,11 +10,7 @@ import {
     Input,
     Container,
     Row,
-    Col,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown
+    Col
 } from 'reactstrap';
 import API from "../utils/api";
 
@@ -81,7 +77,7 @@ class RoomSearch extends Component {
        } */
     chooseFilter = event => {
         console.log(event.target.value)
-        let searchOne = document.getElementById("roomName");
+        let searchOne = document.getElementById("roomNameList");
         let searchTwo = document.getElementById("featureList");
         if (event.target.value === "roomName") {
             this.searchChoice.location = true;
@@ -93,6 +89,10 @@ class RoomSearch extends Component {
             this.searchChoice.location = false;
             console.log("Features is set to: " + this.searchChoice.features)
         }
+        else {
+            this.searchChoice.features = false;
+            this.searchChoice.location = false;
+        }
         if (this.searchChoice.location) {
             searchOne.style.display = "block";
             searchTwo.style.display = "none";
@@ -103,6 +103,9 @@ class RoomSearch extends Component {
         }
     }
     render() {
+        let hiddenElements = {
+            display: "none"
+        }
         return (
             <div className="search">
                 <Navbar />
@@ -118,21 +121,8 @@ class RoomSearch extends Component {
 
                         </FormGroup>
                     </Form>
-                    <UncontrolledDropdown >
-                        <DropdownToggle Button caret onChange={this.chooseFilter}>
-                            Search By
-                    </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem value="roomName">
-                                By Room Name
-                        </DropdownItem>
-                            <DropdownItem>
-                                By Room Features
-                        </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
 
-                    <Form id="roomNameList">
+                    <Form id="roomNameList" style={hiddenElements}>
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
@@ -164,7 +154,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form id="featureList">
+                    <Form id="featureList" style={hiddenElements}>
                         <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
