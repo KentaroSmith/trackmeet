@@ -10,7 +10,10 @@ import Navbar from '../../components/navbar/index';
 import API from "../../utils/api";
 
 const Reservations = () => {
+    const user = useSelector(state => state.user);
     const [events, setEvents] = useState([]);
+
+    console.log("the user is " + user.firstName)
 
     useEffect(
         () => {
@@ -19,12 +22,19 @@ const Reservations = () => {
         []);
 
     const loadReservations = () => {
-        API.getEvents()
+        API.getEventsByUser(user._id)
+        .then(res => {
+            console.log(res.data);
+            setEvents(res.data);
+        })
+        .catch(err => console.log(err));
+
+        /*API.getEvents()
             .then(res => {
                 console.log(res.data);
                 setEvents(res.data);
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err));*/
     };
 
     const deleteReservation = (id) => {

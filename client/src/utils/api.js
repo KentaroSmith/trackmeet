@@ -32,6 +32,9 @@ export default {
   getEvents: function () {
     return axios.get("/api/events");
   },
+  getEventsByUser: function (userId) {
+    return axios.get("/api/events/?user=" + userId);
+  },
   deleteEvent: function (id) {
     return axios.delete("/api/events/" + id);
   }

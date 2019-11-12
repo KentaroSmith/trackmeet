@@ -33,9 +33,9 @@ const Reservation = ({ event, onDelete }) => {
                         <Row>
                             <Col>
                                 Wednesday, Nov. 13, 6:00 - 8:00pm
-                    </Col>
+                            </Col>
                             <Col className="col-md-auto">
-                                <Button className="modify-btn" v><FontAwesomeIcon icon={faPencilAlt} /></Button>
+                                {/*<Button className="modify-btn" ><FontAwesomeIcon icon={faPencilAlt} /></Button>*/}
                                 <Button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} /></Button>
                             </Col>
                         </Row>
