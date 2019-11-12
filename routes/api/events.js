@@ -8,6 +8,10 @@ router.route("/")
 
 // "/api/events/:id"
 router.route("/:id")
-    .delete(eventsController.remove);
+    .delete (eventsController.remove);
+
+// "/api/events/:user"
+router.route("/:user")
+    .get(eventsController.findByUserId);
 
 module.exports = router;
