@@ -205,6 +205,7 @@ class RoomSearch extends Component {
                             </Label>
                         </FormGroup>
                     </Form>
+                {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
                     <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
                     feature={this.featuresArray}
                     />

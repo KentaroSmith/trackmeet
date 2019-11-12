@@ -5,9 +5,9 @@ import {
     Label,
     Input
 } from 'reactstrap';
-const Checkboxes = ({feature}) =>{
+const Checkboxes = ({feature, key}) =>{
     return(
-        <Form>
+        <Form key={key}>
                         <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
