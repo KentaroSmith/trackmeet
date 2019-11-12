@@ -93,10 +93,16 @@ class RoomSearch extends Component {
             this.searchChoice.location = false;
             console.log("Features is set to: " + this.searchChoice.features)
         }
+        if (this.searchChoice.location) {
+            searchOne.style.display = "block";
+            searchTwo.style.display = "none";
+        }
+        else if (this.searchChoice.features) {
+            searchOne.style.display = "none";
+            searchTwo.style.display = "block";
+        }
     }
     render() {
-        const featureStyle = !this.searchChoice.features ? { display: "none" } : {};
-        const locationStyle = !this.searchChoice.location ? { display: "block" } : {};
         return (
             <div className="search">
                 <Navbar />
@@ -105,7 +111,7 @@ class RoomSearch extends Component {
                         <FormGroup>
                             <Label>Search Method: </Label>
                             <Input type="select" name="select" id="filterChoice" onChange={this.chooseFilter}>
-                                <option > </option>
+                                <option value="none"> </option>
                                 <option value="roomName">Sort by Room Name</option>
                                 <option value="featureList">Sort by Room Feature</option>
                             </Input>
@@ -126,7 +132,7 @@ class RoomSearch extends Component {
                         </DropdownMenu>
                     </UncontrolledDropdown>
 
-                    <Form id="roomNameList" style={locationStyle}>
+                    <Form id="roomNameList">
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
@@ -158,7 +164,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form id="featureList" style={featureStyle}>
+                    <Form id="featureList">
                         <Label for="Features">Features: {this.setState.features}</Label>
                         <FormGroup check>
                             <Label check>
