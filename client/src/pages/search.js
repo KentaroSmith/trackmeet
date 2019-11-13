@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Results from "../components/results/index";
+import Checkboxes from "../components/feature";
 import {
     Jumbotron,
     Button,
@@ -119,7 +120,7 @@ class RoomSearch extends Component {
                 allFeatures.sort();
                 console.log(allFeatures);
                 //This is currently not working. this.featuresArray.push() is not recognized.
-                this.featuresArray.push(this.featuresArray, allFeatures)
+                this.featuresArray = allFeatures;
                 console.log(this.featuresArray)
             })
 
@@ -130,7 +131,8 @@ class RoomSearch extends Component {
         }
         return (
             <div className="search">
-                <Jumbotron>
+                <Navbar />
+                <Jumbotron >
                     <Form>
                         <FormGroup>
                             <Label>Search Method: </Label>
@@ -175,7 +177,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form id="featureList" style={hiddenElements} onChange={this.getAllFeatures}>
+                    <Form id="featureList" style={hiddenElements} /* onChange={this.getAllFeatures} */>
                         <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
@@ -203,6 +205,11 @@ class RoomSearch extends Component {
                             </Label>
                         </FormGroup>
                     </Form>
+                    {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
+                    {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
+                    feature={this.featuresArray}
+                    /> */}
+                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
