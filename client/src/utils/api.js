@@ -30,5 +30,8 @@ export default {
   },
   searchRoomsByFeature: function (features) {
     return axios.get("/api/rooms/?features=" + features)
+  },
+  getEvents: function () {
+    return axios.get("/api/events")
   }
 };
