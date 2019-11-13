@@ -8,6 +8,7 @@ import Calendar from "./pages/calendar";
 import Confirm from "./pages/confirm";
 import HomePage from "./pages/home";
 import RoomSearch from "./pages/search";
+import TextInvite from './pages/notification';
 import { AuthProvider } from "./components/Firebase/auth";
 import PrivateRoute from "./components/Firebase/PrivateRoute";
 
@@ -23,6 +24,7 @@ class App extends Component {
             <PrivateRoute exact path="/confirm" component={Confirm} />
             <Route exact path="/" component={HomePage} />
             <Route exact path="/search" component={RoomSearch} />
+            <Route exact path="/notification" component={TextInvite} />
           </div>
         </Router>
       </AuthProvider>
