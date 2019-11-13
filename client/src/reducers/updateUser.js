@@ -1,4 +1,4 @@
-const userReducer = (state = { firstName: "Mike", lastName: "Smith" }, action) => {
+const userReducer = (state = { firstName: "Todd", lastName: "Smith", email: "toddnan@gmail.com" }, action) => {
     switch (action.type) {
         case 'UPDATE_USER':
             return action.payload;

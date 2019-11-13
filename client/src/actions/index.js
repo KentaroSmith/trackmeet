@@ -16,3 +16,10 @@ export const updateUser = (user) => {
         payload: user
     }
 };
+
+export const updateRoom = (room) => {
+    return {
+        type: 'UPDATE_ROOM',
+        payload: room
+    }
+};

@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default {
 
+  // *** USERS ***
   // Gets all Users in local database
   getUsers: function () {
     return axios.get("/api/users");
@@ -21,7 +22,7 @@ export default {
     return axios.post("/api/users", UserData);
   },
 
-  //going to use the params from the search page to narrow down the room results
+  // *** ROOMS ***
   searchRooms: function (query) {
     return axios.get("/api/rooms", query);
   },
@@ -30,5 +31,19 @@ export default {
   },
   searchRoomsByFeature: function (features) {
     return axios.get("/api/rooms/?features=" + features)
+  },
+
+  // *** EVENTS ***
+  saveEvent: function (eventData) {
+    return axios.post("/api/events", eventData);
+  },
+  getEvents: function () {
+    return axios.get("/api/events");
+  },
+  getEventsByUser: function (userId) {
+    return axios.get("/api/events/?user=" + userId);
+  },
+  deleteEvent: function (id) {
+    return axios.delete("/api/events/" + id);
   }
 };

@@ -1,0 +1,12 @@
+.card {
+    width: auto;
+    margin-top: 1rem;
+}
+
+.col {
+    padding: 0;
+}
+
+.delete-btn {
+    margin-left: 0.5rem;
+}

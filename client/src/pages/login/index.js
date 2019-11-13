@@ -10,11 +10,10 @@ import {
 import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
 import { updateUser } from "../../actions";
-import Navbar from '../../components/navbar/index';
 import "./style.css";
 import logo from '../../assets/trackmeet-logo.png';
 
-// save new User data (except for password) to the database
+// retrieve User data from the database
 const getUserData = (email, callback) => {
     API.getUser(email)
         .then(res => {
@@ -38,7 +37,7 @@ const Login = ({ history }) => {
                     .auth()
                     .signInWithEmailAndPassword(email.value, password.value);
                 getUserData(email.value, (user) => dispatch(updateUser(user)));
-                history.push("/confirm"); // this page loads on successful user login
+                history.push("/"); // this page loads on successful user login
             } catch (error) {
                 alert(error);
             }
@@ -48,16 +47,13 @@ const Login = ({ history }) => {
     const { currentUser } = useContext(AuthContext);
 
     if (currentUser) {
-        return <Redirect to="/confirm" />
+        return <Redirect to="/" />
     }
-
-
 
     return (
         <div>
-            <Navbar />
             <div>
-                <Card className="mx-auto shadow-lg">
+                <Card id="login-card" className="mx-auto shadow-lg">
                     <CardImg top width="100%" src={logo} alt="TrackMeet logo" />
                     <CardBody>
                         <CardTitle>Log in</CardTitle>
