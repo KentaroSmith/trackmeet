@@ -9,7 +9,6 @@ import {
 import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
 import { updateUser } from "../../actions";
-import Navbar from '../../components/navbar/index';
 import "./style.css";
 import logo from '../../assets/trackmeet-logo.png';
 
@@ -54,7 +53,7 @@ const SignUp = ({ history }) => {
                 .createUserWithEmailAndPassword(emailAddress.value, password.value);
             //getUserData(email.value, (user) => dispatch(updateUser(user)));
             saveUserData(firstName, lastName, phone, email, (user) => dispatch(updateUser(user)));
-            history.push("/confirm"); // this page loads upon successful user creation in Firebase
+            history.push("/"); // this page loads upon successful user creation in Firebase
         } catch (error) {
             alert(error);
         }
@@ -65,8 +64,7 @@ const SignUp = ({ history }) => {
 
     return (
         <div>
-            <Navbar />
-            <Card className="mx-auto shadow-lg">
+            <Card id="signup-card" className="mx-auto shadow-lg">
                 <CardImg top width="100%" src={logo} alt="TrackMeet logo" />
                 <CardBody>
                     <CardTitle>Sign up</CardTitle>
