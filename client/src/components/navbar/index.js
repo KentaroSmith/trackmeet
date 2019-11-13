@@ -25,7 +25,7 @@ const NavigationBar = ({ activePage }) => {
     return (
         <div>
             <Navbar color="light" light expand="md">
-                <NavbarBrand tag={RRNavLink} to="/">TrackMeet</NavbarBrand>
+                <NavbarBrand tag={RRNavLink} to="/" className="trackmeet-logo">TrackMeet</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>

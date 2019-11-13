@@ -1,3 +1,8 @@
 a.chosen {
     color: rgba(0,0,0,.7);
 }
+
+.trackmeet-logo {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 900;
+}

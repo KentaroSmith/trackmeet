@@ -11,7 +11,7 @@ import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
 import { updateUser } from "../../actions";
 import "./style.css";
-import logo from '../../assets/trackmeet-logo.png';
+import logo from '../../assets/trackmeet-logo-black.svg';
 
 // retrieve User data from the database
 const getUserData = (email, callback) => {
@@ -54,7 +54,7 @@ const Login = ({ history }) => {
         <div>
             <div>
                 <Card id="login-card" className="mx-auto shadow-lg">
-                    <CardImg top width="100%" src={logo} alt="TrackMeet logo" />
+                    <CardImg top width="100%" src={logo} className="logo-black" alt="TrackMeet logo" />
                     <CardBody>
                         <CardTitle>Log in</CardTitle>
                         <Form onSubmit={handleLogin}>
