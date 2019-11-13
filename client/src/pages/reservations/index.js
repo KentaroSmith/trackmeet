@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import app from "../../components/Firebase/firebase";
 import Reservation from "../../components/reservation/index";
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -16,7 +15,7 @@ const Reservations = () => {
     const [events, setEvents] = useState([]);
     const dispatch = useDispatch();
 
-    console.log("the user is " + currentUser.email)
+    //console.log("the user is " + currentUser.email)
 
     // loads once when the component mounts:
     useEffect(
@@ -35,7 +34,7 @@ const Reservations = () => {
         []);
 
     const getUserData = (email, callback) => {
-        console.log("getting user for email: " + email);
+        //console.log("getting user for email: " + email);
         API.getUser(email)
             .then(res => {
                 //console.log(res);
@@ -47,7 +46,7 @@ const Reservations = () => {
     }
 
     const loadReservations = () => {
-        console.log("loadReservations: " + user._id)
+        //console.log("loadReservations: " + user._id)
         API.getEventsByUser(user._id)
             .then(res => {
                 console.log(res.data);
@@ -55,12 +54,7 @@ const Reservations = () => {
             })
             .catch(err => console.log(err));
 
-        /*API.getEvents()
-            .then(res => {
-                console.log(res.data);
-                setEvents(res.data);
-            })
-            .catch(err => console.log(err));*/
+        // FUTURE: an option for administrators to see all Events
     };
 
     const deleteReservation = (id) => {
@@ -77,12 +71,14 @@ const Reservations = () => {
             <Container>
                 <Row>
                     <Col size="md-12">
-                        <h1>Active reservations ({events.length}):</h1>
+                        {events.length === 0
+                            ? <p className="text-center">You have no active reservations.</p>
+                            : <h1>Active reservations ({events.length}):</h1>
+                        }
                         {!events ||
                             events.map(event => (
-                                <div>
+                                <div key={event._id}>
                                     <Reservation
-                                        key={event._id}
                                         event={event}
                                         onDelete={() => deleteReservation(event._id)}
                                     />

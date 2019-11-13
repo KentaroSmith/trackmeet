@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import {
     Card, CardBody, CardHeader, CardTitle,
     Button, Container, Row, Col
 } from 'reactstrap';
-import ReactDOM from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
 
 let formatPhoneNumber = (str) => {

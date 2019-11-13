@@ -25,21 +25,19 @@ const NavigationBar = ({ activePage }) => {
     return (
         <div>
             <Navbar color="light" light expand="md">
-                <NavbarBrand href="/">TrackMeet</NavbarBrand>
+                <NavbarBrand tag={RRNavLink} to="/">TrackMeet</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
-                        
-                            <NavItem>
-                                <NavLink tag={RRNavLink} to="/" activeClassName="chosen">Home</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={RRNavLink} to="/calendar" activeClassName="chosen">Calendar</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={RRNavLink} to="/search" activeClassName="chosen">Search</NavLink>
-                            </NavItem>
-                        
+                        <NavItem>
+                            <NavLink tag={RRNavLink} to="/" activeClassName="chosen">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink tag={RRNavLink} to="/calendar" activeClassName="chosen">Calendar</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink tag={RRNavLink} to="/search" activeClassName="chosen">Search</NavLink>
+                        </NavItem>
                         {!currentUser
                             ?
                             <NavItem>
