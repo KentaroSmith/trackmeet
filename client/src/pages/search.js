@@ -9,33 +9,37 @@ import {
     Input,
     Container,
     Row,
-    Col,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown
+    Col
 } from 'reactstrap';
 import API from "../utils/api";
 
 class RoomSearch extends Component {
 
     state = {
+        locationSearch: "",
         rooms: [],
         roomName: "",
         features: "",
         building: "",
         occupancy: ""
     }
+    searchChoice = {
+        location: false,
+        features: false
+    }
+    featuresArray = {
+        features: []
+    }
 
-    /*     handleInputForm = event => {
-            // Pull the name and value properties off of the event.target (the element which triggered the event)
-            const { name } = event.target;
-    
-            // Set the state for the appropriate input field
-            this.setState({
-                [name]: name
-            });
-        }; */
+    handleInputForm = event => {
+        // Pull the name and value properties off of the event.target (the element which triggered the event)
+        const { searchTerm } = event.target;
+        console.log(searchTerm)
+        // Set the state for the appropriate input field
+        /*         this.setState({
+                    locationSearch: searchTerm
+                }); */
+    };
     handleSearch = event => {
 
         //testing the roomname search first
@@ -51,39 +55,102 @@ class RoomSearch extends Component {
                 })
             })
     };
+    locationSelect = event => {
+        console.log(event.target.value)
+        API.searchRoomsByLocation(event.target.value)
+            .then(res => {
+                this.setState({
+                    rooms: res.data,
+                    roomName: res.data.roomName,
+                    occupancy: res.data.occupancy,
+                    features: res.data.features,
+                    building: res.data.building
+                })
+            })
+        /*         this.setState({
+                    locationSearch: this.value
+        
+                }) */
+    }
     //See if redux can handle global state in a way that can carry over to the calendar page
     /*    seeSchedule=event=>{
            event.preventDefault();
            API.showSchedule(this.state.roomName)
            .then()
        } */
+    chooseFilter = event => {
+        console.log(event.target.value)
+        let searchOne = document.getElementById("roomNameList");
+        let searchTwo = document.getElementById("featureList");
+        if (event.target.value === "roomName") {
+            this.searchChoice.location = true;
+            this.searchChoice.features = false;
+            console.log("Location is set to: " + this.searchChoice.location)
+        }
+        else if (event.target.value === "featureList") {
+            this.searchChoice.features = true;
+            this.searchChoice.location = false;
+            console.log("Features is set to: " + this.searchChoice.features)
+        }
+        else {
+            this.searchChoice.features = false;
+            this.searchChoice.location = false;
+        }
+        if (this.searchChoice.location) {
+            searchOne.style.display = "block";
+            searchTwo.style.display = "none";
+        }
+        else if (this.searchChoice.features) {
+            searchOne.style.display = "none";
+            searchTwo.style.display = "block";
+        }
+    }
+    getAllFeatures = () => {
+        let allFeatures = [];
+        API.searchRooms()
+            .then(res => {
+                console.log(res.data);
+                for (let i = 0; i < res.data.length; i++) {
+                    console.log(res.data[i].features)
+                    allFeatures.push.apply(allFeatures, res.data[i].features);
+                    console.log(allFeatures)
 
+                }
+                allFeatures.sort();
+                console.log(allFeatures);
+                //This is currently not working. this.featuresArray.push() is not recognized.
+                this.featuresArray.push(this.featuresArray, allFeatures)
+                console.log(this.featuresArray)
+            })
+
+    }
     render() {
+        let hiddenElements = {
+            display: "none"
+        }
         return (
             <div className="search">
                 <Jumbotron>
-                    <UncontrolledDropdown>
-                        <DropdownToggle Button caret>
-                            Search By
-                    </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem>
-                                By Room Name
-                        </DropdownItem>
-                            <DropdownItem>
-                                By Room Features
-                        </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-
                     <Form>
                         <FormGroup>
+                            <Label>Search Method: </Label>
+                            <Input type="select" name="select" id="filterChoice" onChange={this.chooseFilter}>
+                                <option value="none"> </option>
+                                <option value="roomName">Sort by Room Name</option>
+                                <option value="featureList">Sort by Room Feature</option>
+                            </Input>
+
+                        </FormGroup>
+                    </Form>
+
+                    <Form id="roomNameList" style={hiddenElements}>
+                        <FormGroup>
                             <Label>Rooms:</Label>
-                            <Input type="select" name="select" id="roomName">
-                                <option>All Rooms</option>
-                                <option>Study Room A</option>
-                                <option>Study Room B</option>
-                                <option>Study Room C</option>
+                            <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
+                                <option value="all">All Rooms</option>
+                                <option value="Study Room A">Study Room A</option>
+                                <option value="Study Room B">Study Room B</option>
+                                <option value="Study Room C">Study Room C</option>
                             </Input>
                             {/*                             <Label for="location">Location: {this.setState.roomName}</Label>
                             <Input type="select" name="select" id="selectLocation"
@@ -108,61 +175,36 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form>
-                        <Label for="Features">Features: {this.setState.features}</Label>
+                    <Form id="featureList" style={hiddenElements} onChange={this.getAllFeatures}>
+                        <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
-                                /*                                     type="text"
-                                                                    placeholder="Features"
-                                                                    name="features"
-                                                                    value={this.state.features}
-                                                                    onChange={this.handleInputForm} */
+                                <Input type="checkbox" id="checkBox" value="projector"
                                 />{' '} projector
                             </Label>
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="whiteboard"
                                 />{' '} whiteboard
                             </Label>
                         </FormGroup>
 
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="conference table"
                                 />{' '} conference table
                             </Label>
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox"
+                                <Input type="checkbox" id="checkBox" value="computer"
                                 />{' '} computer
                             </Label>
                         </FormGroup>
                     </Form>
 
-                    {/*                     <FormGroup>
-                        <Label for="meeting-time">Enter a date and time for your party booking: </Label>
-                        <Input id="meetingTime" type="datetime-local" name="dateTime" min="2019-10-01T00:00" max="2024-01-01T24:00">
-                        </Input>
-                    </FormGroup>
-
-                    <Form>
-                        <FormGroup>
-                            <Label for="room">Meeting Duration(hours)</Label>
-                            <Input type="select" name="select" id="roomSize">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </Input>
-                        </FormGroup>
-                    </Form> */}
-
-
-                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Search</Button>
-
+                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
                 </Jumbotron>
 
