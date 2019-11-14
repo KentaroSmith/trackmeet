@@ -238,6 +238,7 @@ class RoomSearch extends Component {
                             <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleEnd}></Input></Label>
                         </FormGroup>
                         <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
+                        <h3>Selected Time Slot: {this.state.startTime} to {this.state.endTime}</h3>
                     </Form>
                     {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
                     {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
@@ -260,6 +261,8 @@ class RoomSearch extends Component {
                                         features={room.features}
                                         occupancy={room.occupancy}
                                         building={room.building}
+                                        startTime={this.state.startTime}
+                                        endTime={this.state.endTime}
                                     /* seeSchedule={event => this.seeSchedule()} */
                                     />
                                 ))}

@@ -7,7 +7,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { updateRoom } from "../../actions";
 
-const Results = ({ roomName, features, building, occupancy, id }) => {
+const Results = ({ roomName, features, building, occupancy, id, startTime, endTime }) => {
     const dispatch = useDispatch();
     let featureList = [];
     for (let i = 0; i < features.length; i++) {
@@ -31,6 +31,9 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                 <p className="features"> <strong>Room Features: </strong> {featureList} </p>
                 <p className="building"> <strong>Location: </strong> {building} </p>
                 <p className="occupancy"> <strong>Max Occupancy: </strong> {occupancy} </p>
+                {/*This was a test to make sure that start/end times carried over to results*/}
+                {/*                 <p> {startTime} </p>
+                <p> {endTime} </p> */}
 
                 <Button
                     onClick={() => dispatch(updateRoom({
@@ -38,7 +41,9 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                         building: building,
                         roomName: roomName,
                         features: features,
-                        occupancy: occupancy
+                        occupancy: occupancy,
+                        startTime: startTime,
+                        endTime: endTime
                     }))}
                     key={id}>Reserve this room</Button>
                 <Link to="/confirm">Continue</Link>
