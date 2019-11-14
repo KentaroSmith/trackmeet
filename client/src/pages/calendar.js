@@ -11,9 +11,9 @@ class CalendarPage extends Component {
     state = {
         events: [
             {
-                startTime: "",
-                endTime: "",
-                roomName: ""
+                startTime: Date,
+                endTime: Date,
+                roomName: String
             }
         ]
     };
