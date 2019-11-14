@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Results from "../components/results/index";
-import Checkboxes from "../components/feature";
+import moment from "moment";
 import {
     Jumbotron,
     Button,
@@ -141,9 +141,14 @@ class RoomSearch extends Component {
     }
     saveTimeBlock = event => {
         /* this.setState({startTime:event.target.value}) */
-        console.log(this.state.day)
-        console.log(this.state.start)
-        console.log(this.state.end)
+        let day = this.state.day;
+        let startTime = this.state.start;
+        let endTime = this.state.end;
+
+        this.setState({
+            startTime: day + " " + startTime,
+            endTime: day + " " + endTime
+        })
     }
     render() {
         let hiddenElements = {
@@ -227,8 +232,10 @@ class RoomSearch extends Component {
                     <Form>
                         <FormGroup>
                             <Label>Reservation Date <Input type="date" id="day" value={this.state.day} onChange={this.handleDay}></Input> </Label>
-                            <Label>Start Time <Input type="time" id="start" value={this.state.start} onChange={this.handleDay}></Input></Label>
-                            <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleDay}></Input></Label>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Start Time <Input type="time" id="start" value={this.state.start} onChange={this.handleStart}></Input></Label>
+                            <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleEnd}></Input></Label>
                         </FormGroup>
                         <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
                     </Form>
