@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import app from "../../components/Firebase/firebase";
 import {
     Button, Form, FormGroup, Input,
-    Card, CardImg, CardBody, CardTitle, CardText
+    Card, CardImg, CardBody, CardText, CardHeader
 } from 'reactstrap';
 import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
 import { updateUser } from "../../actions";
 import "./style.css";
-import logo from '../../assets/trackmeet-logo.png';
+import logo from '../../assets/trackmeet-logo-green.svg';
 
 // save new User data (except for password) to the database
 const saveUserData = (firstName, lastName, phone, email, callback) => {
@@ -65,10 +65,9 @@ const SignUp = ({ history }) => {
     return (
         <div>
             <Card id="signup-card" className="mx-auto shadow-lg">
-                <CardImg top width="100%" src={logo} alt="TrackMeet logo" />
+                <CardHeader className="signup-header">Create an account</CardHeader>
+                <CardImg top width="100%" src={logo} className="trackmeet-icon" alt="TrackMeet logo" />
                 <CardBody>
-                    <CardTitle>Sign up</CardTitle>
-
                     <Form onSubmit={handleSignUp}>
                         <FormGroup>
                             <Input
