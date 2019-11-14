@@ -9,6 +9,10 @@ import { updateRoom } from "../../actions";
 
 const Results = ({ roomName, features, building, occupancy, id }) => {
     const dispatch = useDispatch();
+    let featureList = [];
+    for (let i = 0; i < features.length; i++) {
+        featureList.push(features[i] + " ")
+    };
 
     return (
         <div className="search-result">
@@ -24,11 +28,9 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
             </Jumbotron> */}
             <Jumbotron>
                 <h3 className="roomName">{roomName}</h3>
-                <p className="features"> {features} </p>
-                <p className="building"> {building} </p>
-                <p className="occupancy"> {occupancy} </p>
-                <label>Start Time <input type="datetime-local"></input></label>
-                <label>End Time <input type="time"></input></label>
+                <p className="features"> <strong>Room Features: </strong> {featureList} </p>
+                <p className="building"> <strong>Location: </strong> {building} </p>
+                <p className="occupancy"> <strong>Max Occupancy: </strong> {occupancy} </p>
 
                 <Button
                     onClick={() => dispatch(updateRoom({

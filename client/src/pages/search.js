@@ -22,7 +22,12 @@ class RoomSearch extends Component {
         roomName: "",
         features: "",
         building: "",
-        occupancy: ""
+        occupancy: "",
+        startTime: "",
+        endTime: "",
+        start: "",
+        end: "",
+        day: ""
     }
     searchChoice = {
         location: false,
@@ -125,6 +130,21 @@ class RoomSearch extends Component {
             })
 
     }
+    handleDay = (event) => {
+        this.setState({ day: event.target.value });
+    }
+    handleStart = (event) => {
+        this.setState({ start: event.target.value });
+    }
+    handleEnd = (event) => {
+        this.setState({ end: event.target.value });
+    }
+    saveTimeBlock = event => {
+        /* this.setState({startTime:event.target.value}) */
+        console.log(this.state.day)
+        console.log(this.state.start)
+        console.log(this.state.end)
+    }
     render() {
         let hiddenElements = {
             display: "none"
@@ -203,6 +223,14 @@ class RoomSearch extends Component {
                                 />{' '} computer
                             </Label>
                         </FormGroup>
+                    </Form>
+                    <Form>
+                        <FormGroup>
+                            <Label>Reservation Date <Input type="date" id="day" value={this.state.day} onChange={this.handleDay}></Input> </Label>
+                            <Label>Start Time <Input type="time" id="start" value={this.state.start} onChange={this.handleDay}></Input></Label>
+                            <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleDay}></Input></Label>
+                        </FormGroup>
+                        <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
                     </Form>
                     {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
                     {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
