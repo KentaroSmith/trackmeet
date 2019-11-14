@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import {
     Jumbotron,
     Button
-} from 'reactstrap'; 
+} from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { updateRoom } from "../../actions";
 
 const Results = ({ roomName, features, building, occupancy, id }) => {
     const dispatch = useDispatch();
+    let featureList = [];
+    for (let i = 0; i < features.length; i++) {
+        featureList.push(features[i] + " ")
+    };
 
     return (
         <div className="search-result">
@@ -24,9 +28,10 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
             </Jumbotron> */}
             <Jumbotron>
                 <h3 className="roomName">{roomName}</h3>
-                <p className="features"> {features} </p>
-                <p className="building"> {building} </p>
-                <p className="occupancy"> {occupancy} </p>
+                <p className="features"> <strong>Room Features: </strong> {featureList} </p>
+                <p className="building"> <strong>Location: </strong> {building} </p>
+                <p className="occupancy"> <strong>Max Occupancy: </strong> {occupancy} </p>
+
                 <Button
                     onClick={() => dispatch(updateRoom({
                         id: id,
@@ -36,7 +41,7 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                         occupancy: occupancy
                     }))}
                     key={id}>Reserve this room</Button>
-                <Link to="/confirm">Continue</Link>    
+                <Link to="/confirm">Continue</Link>
             </Jumbotron>
 
         </div>
