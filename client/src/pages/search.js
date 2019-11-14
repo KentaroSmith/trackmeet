@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Results from "../components/results/index";
+import moment from "moment";
 import {
     Jumbotron,
     Button,
@@ -21,7 +22,12 @@ class RoomSearch extends Component {
         roomName: "",
         features: "",
         building: "",
-        occupancy: ""
+        occupancy: "",
+        startTime: "",
+        endTime: "",
+        start: "",
+        end: "",
+        day: ""
     }
     searchChoice = {
         location: false,
@@ -119,10 +125,30 @@ class RoomSearch extends Component {
                 allFeatures.sort();
                 console.log(allFeatures);
                 //This is currently not working. this.featuresArray.push() is not recognized.
-                this.featuresArray.push(this.featuresArray, allFeatures)
+                this.featuresArray = allFeatures;
                 console.log(this.featuresArray)
             })
 
+    }
+    handleDay = (event) => {
+        this.setState({ day: event.target.value });
+    }
+    handleStart = (event) => {
+        this.setState({ start: event.target.value });
+    }
+    handleEnd = (event) => {
+        this.setState({ end: event.target.value });
+    }
+    saveTimeBlock = event => {
+        /* this.setState({startTime:event.target.value}) */
+        let day = this.state.day;
+        let startTime = this.state.start;
+        let endTime = this.state.end;
+
+        this.setState({
+            startTime: day + " " + startTime,
+            endTime: day + " " + endTime
+        })
     }
     render() {
         let hiddenElements = {
@@ -130,7 +156,7 @@ class RoomSearch extends Component {
         }
         return (
             <div className="search">
-                <Jumbotron>
+                <Jumbotron >
                     <Form>
                         <FormGroup>
                             <Label>Search Method: </Label>
@@ -175,7 +201,7 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form> */}
 
-                    <Form id="featureList" style={hiddenElements} onChange={this.getAllFeatures}>
+                    <Form id="featureList" style={hiddenElements} /* onChange={this.getAllFeatures} */>
                         <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
@@ -203,7 +229,20 @@ class RoomSearch extends Component {
                             </Label>
                         </FormGroup>
                     </Form>
-
+                    <Form>
+                        <FormGroup>
+                            <Label>Reservation Date <Input type="date" id="day" value={this.state.day} onChange={this.handleDay}></Input> </Label>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Start Time <Input type="time" id="start" value={this.state.start} onChange={this.handleStart}></Input></Label>
+                            <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleEnd}></Input></Label>
+                        </FormGroup>
+                        <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
+                    </Form>
+                    {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
+                    {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
+                    feature={this.featuresArray}
+                    /> */}
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
                 </Jumbotron>

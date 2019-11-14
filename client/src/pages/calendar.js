@@ -5,17 +5,32 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 /* import 'react-big-calendar/lib/addons/dragAndDrop/styles'; */
 import './calendar.css'
 import moment from 'moment';
+import API from "../utils/api"
 const localizer = momentLocalizer(moment)
 class CalendarPage extends Component {
     state = {
         events: [
             {
-                start: new Date(moment("2019-11-04 09:30")),
-                end: new Date(moment("2019-11-04 11:30")),
-                title: "Some title"
+                startTime: "",
+                endTime: "",
+                roomName: ""
             }
         ]
     };
+    componentDidMount() {
+        this.loadEvents()
+    }
+    loadEvents = () => {
+        API.getEvents()
+            .then(res => {
+                this.setState({
+                    events: res.data
+                })
+                /* this.state.events = res.data */
+                console.log(res.data)
+                console.log(this.state.events)
+            })
+    }
 
     render() {
         return (
@@ -24,8 +39,9 @@ class CalendarPage extends Component {
                 <Calendar
                     localizer={localizer}
                     events={this.state.events}
-                    startAccessor="start"
-                    endAccessor="end"
+                    startAccessor="startTime"
+                    endAccessor="endTime"
+                    titleAccessor="roomName"
                 />
 
             </div>
