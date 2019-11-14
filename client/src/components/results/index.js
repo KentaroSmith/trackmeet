@@ -5,7 +5,7 @@ import {
     Button
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
-import { updateRoom } from "../../actions";
+import { updateRoom, updateTimes } from "../../actions";
 
 const Results = ({ roomName, features, building, occupancy, id, startTime, endTime }) => {
     const dispatch = useDispatch();
@@ -13,6 +13,21 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
     for (let i = 0; i < features.length; i++) {
         featureList.push(features[i] + " ")
     };
+
+    const updateReservation = () => {
+        dispatch(updateRoom({
+            id: id,
+            building: building,
+            roomName: roomName,
+            features: features,
+            occupancy: occupancy
+        }));
+
+        dispatch(updateTimes({
+            startTime: startTime,
+            endTime: endTime    
+        }));
+    }
 
     return (
         <div className="search-result">
@@ -36,15 +51,7 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
                 <p> {endTime} </p> */}
 
                 <Button
-                    onClick={() => dispatch(updateRoom({
-                        id: id,
-                        building: building,
-                        roomName: roomName,
-                        features: features,
-                        occupancy: occupancy,
-                        startTime: startTime,
-                        endTime: endTime
-                    }))}
+                    onClick={updateReservation}
                     key={id}>Reserve this room</Button>
                 <Link to="/confirm">Continue</Link>
             </Jumbotron>

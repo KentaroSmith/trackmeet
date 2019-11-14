@@ -6,6 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
+import moment from "moment";
 
 let formatPhoneNumber = (str) => {
     //Filter only numbers from the input
@@ -30,8 +31,7 @@ const Reservation = ({ event, onDelete }) => {
                     <Container>
                         <Row>
                             <Col>
-                                <h3>Reservation for: Wednesday, Nov. 13, 6:00 - 8:00pm</h3>
-                                <h3>Reservation for: {event.room.startTime} </h3>
+                                <h3>Reservation: {moment(event.startTime).format("dddd, MMM. D, YYYY")}, {moment(event.startTime).format("h:mm a")} to {moment(event.endTime).format("h:mm a")}</h3>
                             </Col>
                             <Col className="col-md-auto">
                                 {/*<Button className="modify-btn" ><FontAwesomeIcon icon={faPencilAlt} /></Button>*/}

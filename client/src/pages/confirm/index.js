@@ -9,14 +9,17 @@ import API from "../../utils/api";
 import "./style.css";
 import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
+import SMS from "../../utils/sms";
+import moment from "moment";
 
 const mongojs = require("mongojs");
 
 
-const Confirm = ({history}) => {
+const Confirm = ({ history }) => {
     const { currentUser } = useContext(AuthContext);
     const userData = useSelector(state => state.user);
     const roomData = useSelector(state => state.room);
+    const timesData = useSelector(state => state.times);
     const dispatch = useDispatch();
     const [events, setEvents] = useState([]);
 
@@ -36,8 +39,8 @@ const Confirm = ({history}) => {
         },
         []);
 
-    const makeReservation = (user, room) => {
-        console.log("making reservation");
+    const makeReservation = (user, room, times) => {
+        //console.log("making reservation");
 
         // save reservation to database
         API.saveEvent({
@@ -45,11 +48,23 @@ const Confirm = ({history}) => {
             userName: `${user.firstName} ${user.lastName}`,
             room: mongojs.ObjectId(room.id),
             roomName: room.roomName,
-            startTime: "12:00",
-            endTime: "16:00"
+            startTime: times.startTime,
+            endTime: times.endTime
         })
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
+
+                //send SMS confirmation
+                SMS.sendSMS(
+                    userData.phone,
+                    `CONFIRMATION: You have reserved ${roomData.roomName} ` +
+                    `at ${roomData.building} for ` +
+                    `${moment(timesData.startTime).format("dddd, MMMM D, YYYY, h:mm a")} to ${moment(timesData.endTime).format("h:mm a")}. ` +
+                    `http://track-meet.herokuapp.com`
+                )
+                //{moment(timesData.startTime).format("dddd, MMMM D, YYYY")}
+                //<br />{moment(timesData.startTime).format("h:mm a")} to {moment(timesData.endTime).format("h:mm a")}</p>
+
                 // redirect to the /reservations page
                 history.push("/reservations");
             })
@@ -85,12 +100,15 @@ const Confirm = ({history}) => {
                         </ul>
                     </p>
                     <h4>Reservation period:</h4>
-                    <p>Wednesday, Nov. 13, 6:00 - 8:00pm</p>
+                    <p>{moment(timesData.startTime).format("dddd, MMMM D, YYYY")}
+                        <br />{moment(timesData.startTime).format("h:mm a")} to {moment(timesData.endTime).format("h:mm a")}</p>
+
+                    {/* <br/>{moment('2014-01-01T00:00:00.000')}</p> */}
                     <h4>Reserved by:</h4>
                     <p>{userData.firstName} {userData.lastName}
                         <br />{userData.email}
                         <br />{userData.phone}</p>
-                    <Button onClick={() => makeReservation(userData, roomData)} className="btn-block">Reserve room</Button>
+                    <Button onClick={() => makeReservation(userData, roomData, timesData)} className="btn-block">Reserve room</Button>
                 </CardBody>
             </Card>
         </>
