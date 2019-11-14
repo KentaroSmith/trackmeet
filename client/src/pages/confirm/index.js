@@ -9,6 +9,7 @@ import API from "../../utils/api";
 import "./style.css";
 import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
+import SMS from "../../utils/sms";
 
 const mongojs = require("mongojs");
 
@@ -37,7 +38,7 @@ const Confirm = ({history}) => {
         []);
 
     const makeReservation = (user, room) => {
-        console.log("making reservation");
+        //console.log("making reservation");
 
         // save reservation to database
         API.saveEvent({
@@ -49,7 +50,15 @@ const Confirm = ({history}) => {
             endTime: "16:00"
         })
             .then(res => {
-                console.log(res.data);
+                //console.log(res.data);
+                
+                //send SMS confirmation
+                SMS.sendSMS(
+                    userData.phone, 
+                    `CONFIRMATION: You have reserved ${roomData.roomName} ` +
+                    `at ${roomData.building} for Wednesday, Nov. 13, 6:00 - 8:00pm. ` +
+                    `http://track-meet.herokuapp.com`
+                    )
                 // redirect to the /reservations page
                 history.push("/reservations");
             })

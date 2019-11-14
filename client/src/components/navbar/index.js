@@ -20,8 +20,6 @@ const NavigationBar = ({ activePage }) => {
 
     const toggle = () => setIsOpen(!isOpen);
 
-    console.log(activePage);
-
     return (
         <div>
             <Navbar className="navbar" color="light" light expand="md">
