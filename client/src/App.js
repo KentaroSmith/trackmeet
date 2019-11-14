@@ -9,6 +9,7 @@ import Confirm from "./pages/confirm";
 import HomePage from "./pages/home";
 import RoomSearch from "./pages/search";
 import Reservations from "./pages/reservations";
+import AboutUs from "./pages/about";
 import { AuthProvider } from "./components/Firebase/auth";
 import PrivateRoute from "./components/Firebase/PrivateRoute";
 import Navbar from './components/navbar';
@@ -27,6 +28,7 @@ class App extends Component {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/search" component={RoomSearch} />
             <PrivateRoute exact path="/reservations" component={Reservations} />
+            <Route exact path="/about" component={AboutUs} />
           </div>
         </Router>
       </AuthProvider>
