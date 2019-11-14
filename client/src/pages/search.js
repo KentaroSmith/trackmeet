@@ -139,17 +139,21 @@ class RoomSearch extends Component {
     handleEnd = (event) => {
         this.setState({ end: event.target.value });
     }
+
     saveTimeBlock = event => {
+        
         /* this.setState({startTime:event.target.value}) */
         let day = this.state.day;
         let startTime = this.state.start;
         let endTime = this.state.end;
 
         this.setState({
-            startTime: day + " " + startTime,
-            endTime: day + " " + endTime
+            startTime: `${day}T${startTime}:00-06:00`, //day + " " + startTime,
+            endTime: `${day}T${endTime}:00-06:00` //day + " " + endTime
         })
+        //console.log(moment(`${day}T${endTime}:00-06:00`).format("dddd, MMMM D YYYY, h:mm a"));
     }
+
     render() {
         let hiddenElements = {
             display: "none"
@@ -238,7 +242,8 @@ class RoomSearch extends Component {
                             <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleEnd}></Input></Label>
                         </FormGroup>
                         <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
-                        <h3>Selected Time Slot: {this.state.startTime} to {this.state.endTime}</h3>
+                        <h3>Selected Time Slot: {moment(this.state.startTime).format("ddd, MMM D YYYY, h:mm a")} to {moment(this.state.endTime).format("h:mm a")}</h3>
+                        
                     </Form>
                     {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
                     {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}

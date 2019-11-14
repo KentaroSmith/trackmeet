@@ -23,3 +23,10 @@ export const updateRoom = (room) => {
         payload: room
     }
 };
+
+export const updateTimes = (times) => {
+    return {
+        type: 'UPDATE_TIMES',
+        payload: times
+    }
+};
