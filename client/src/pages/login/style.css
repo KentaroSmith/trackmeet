@@ -1,4 +1,28 @@
 #login-card {
     width: 18rem;
     margin-top: 1rem;
+    background-color: rgba(255,255,255,0.9)
+}
+
+#login-card .login-header {
+    font-family: 'Dosis', sans-serif;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #8C7075;
+}
+
+#login-card .trackmeet-icon {
+    height: 150px;
+    margin-top: 1.5rem;
+}
+
+#login-card button {
+    background-color: #594246;
+}
+
+#login-card button,
+#login-card p,
+#login-card input {
+    font-family: 'Lato', sans-serif;
 }
