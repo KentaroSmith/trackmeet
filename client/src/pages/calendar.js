@@ -11,9 +11,9 @@ class CalendarPage extends Component {
     state = {
         events: [
             {
-                start: "",
-                end: "",
-                title: ""
+                startTime: "",
+                endTime: "",
+                roomName: ""
             }
         ]
     };
@@ -24,14 +24,9 @@ class CalendarPage extends Component {
         API.getEvents()
             .then(res => {
                 this.setState({
-                    events: [
-                        {
-                            start: new Date(moment(res.data[i].startTime)),
-                            end: new Date(moment(res.data[i].endTime)),
-                            title: res.data.userName
-                        }
-                    ]
+                    events: res.data
                 })
+                /* this.state.events = res.data */
                 console.log(res.data)
                 console.log(this.state.events)
             })
@@ -44,8 +39,9 @@ class CalendarPage extends Component {
                 <Calendar
                     localizer={localizer}
                     events={this.state.events}
-                    startAccessor="start"
-                    endAccessor="end"
+                    startAccessor="startTime"
+                    endAccessor="endTime"
+                    titleAccessor="roomName"
                 />
 
             </div>

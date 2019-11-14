@@ -14,6 +14,7 @@ const eventSchema = new Schema({
     roomName: { type: String, required: true },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
+    title: { type: String, required: true }
 });
 
 const Event = mongoose.model("Event", eventSchema);

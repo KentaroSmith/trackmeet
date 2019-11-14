@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {
     Jumbotron,
     Button
-} from 'reactstrap'; 
+} from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { updateRoom } from "../../actions";
 
@@ -27,6 +27,9 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                 <p className="features"> {features} </p>
                 <p className="building"> {building} </p>
                 <p className="occupancy"> {occupancy} </p>
+                <label>Start Time <input type="datetime-local"></input></label>
+                <label>End Time <input type="time"></input></label>
+
                 <Button
                     onClick={() => dispatch(updateRoom({
                         id: id,
@@ -36,7 +39,7 @@ const Results = ({ roomName, features, building, occupancy, id }) => {
                         occupancy: occupancy
                     }))}
                     key={id}>Reserve this room</Button>
-                <Link to="/confirm">Continue</Link>    
+                <Link to="/confirm">Continue</Link>
             </Jumbotron>
 
         </div>

@@ -131,7 +131,6 @@ class RoomSearch extends Component {
         }
         return (
             <div className="search">
-                <Navbar />
                 <Jumbotron >
                     <Form>
                         <FormGroup>
@@ -209,8 +208,6 @@ class RoomSearch extends Component {
                     {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
                     feature={this.featuresArray}
                     /> */}
-                    <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
-
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
                 </Jumbotron>
