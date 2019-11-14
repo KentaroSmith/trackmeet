@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router";
-import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Button,
@@ -14,10 +13,7 @@ import { updateUser } from "../../actions";
 const mongojs = require("mongojs");
 
 
-
-
 const Confirm = ({history}) => {
-    //let history = useHistory();
     const { currentUser } = useContext(AuthContext);
     const userData = useSelector(state => state.user);
     const roomData = useSelector(state => state.room);
@@ -77,10 +73,6 @@ const Confirm = ({history}) => {
             <Card id="confirm-card" className="mx-auto shadow-lg">
                 <CardHeader><h3>Reservation summary:</h3></CardHeader>
                 <CardBody>
-                    <h4>Reserved by:</h4>
-                    <p>{userData.firstName} {userData.lastName}
-                        <br />{userData.email}
-                        <br />{userData.phone}</p>
                     <h4>Location:</h4>
                     <p>{roomData.building}, {roomData.roomName}
                         <br />Max capacity: {roomData.occupancy}
@@ -94,6 +86,10 @@ const Confirm = ({history}) => {
                     </p>
                     <h4>Reservation period:</h4>
                     <p>Wednesday, Nov. 13, 6:00 - 8:00pm</p>
+                    <h4>Reserved by:</h4>
+                    <p>{userData.firstName} {userData.lastName}
+                        <br />{userData.email}
+                        <br />{userData.phone}</p>
                     <Button onClick={() => makeReservation(userData, roomData)} className="btn-block">Reserve room</Button>
                 </CardBody>
             </Card>

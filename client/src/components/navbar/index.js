@@ -24,14 +24,11 @@ const NavigationBar = ({ activePage }) => {
 
     return (
         <div>
-            <Navbar color="light" light expand="md">
+            <Navbar className="navbar" color="light" light expand="md">
                 <NavbarBrand tag={RRNavLink} to="/" className="trackmeet-logo">TrackMeet</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <NavLink tag={RRNavLink} to="/" activeClassName="chosen">Home</NavLink>
-                        </NavItem>
                         <NavItem>
                             <NavLink tag={RRNavLink} to="/calendar" activeClassName="chosen">Calendar</NavLink>
                         </NavItem>
@@ -41,7 +38,7 @@ const NavigationBar = ({ activePage }) => {
                         {!currentUser
                             ?
                             <NavItem>
-                                <NavLink href="/login" activeClassName="chosen">Login</NavLink>
+                                <NavLink tag={RRNavLink} to="/login" activeClassName="chosen">Login</NavLink>
                             </NavItem>
                             :
                             <UncontrolledDropdown nav inNavbar>

@@ -4,34 +4,58 @@ body {
     background-size:  cover; /*auto 100vh; */
     background-position:  center top;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-#home-page {
+#home-page .jumbotron {
     /* background: url(../../assets/brown-and-white-track-field-163444.jpg); */
-}
-
-.jumbotron {
-    /* background: url(../../assets/brown-and-white-track-field-163444.jpg); */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5),  rgba(255, 255, 255, 0));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8),  rgba(255, 255, 255, 0));
     background-size:  cover;
     background-position: center;
 }
 
-h1 {
-    color: black;
+#home-page h1 {
+    color: #327508;
     font-family: 'Dosis', sans-serif;
     font-weight: 900!important;
-
+    text-align: center;
+    margin-bottom: -0.5rem;
 }
 
-.lead {
+#home-page .lead {
+    font-family: 'Dosis', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.75rem;
+    text-align: center;
+}
+
+#home-page #homepage-btns {
+    text-align: center;
+}
+
+#home-page a {
+    background-color: #97BF7E;
+    border-color: #97BF7E;
     font-family: 'Lato', sans-serif;
-    font-style: italic;
 }
 
-.trackmeet-icon {
-    width: 50%;
-    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.5));
-    float: right;
-
+#home-page a:hover {
+    background-color: #327508;
+    border-color: #327508;
+    font-family: 'Lato', sans-serif;
 }
+
+#home-page .trackmeet-icon {
+    width: 60%;
+    filter: drop-shadow(0px 3px 10px rgba(255, 255, 255, 1));
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 576px) {  
+    #home-page .trackmeet-icon {
+        width: 90%;
+        margin-top: 2rem;
+    }
+  }

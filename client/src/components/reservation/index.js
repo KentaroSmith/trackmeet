@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Card, CardBody, CardHeader, CardTitle,
+    Card, CardBody, CardHeader,
     Button, Container, Row, Col
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,13 +24,13 @@ let formatPhoneNumber = (str) => {
 const Reservation = ({ event, onDelete }) => {
 
     return (
-        <div className="reservation">
-            <Card className="mx-auto shadow-lg">
+        <div>
+            <Card className="mx-auto shadow-lg reservation-card">
                 <CardHeader>
                     <Container>
                         <Row>
                             <Col>
-                                Wednesday, Nov. 13, 6:00 - 8:00pm
+                                <h3>Reservation for: Wednesday, Nov. 13, 6:00 - 8:00pm</h3>
                             </Col>
                             <Col className="col-md-auto">
                                 {/*<Button className="modify-btn" ><FontAwesomeIcon icon={faPencilAlt} /></Button>*/}
@@ -38,23 +38,36 @@ const Reservation = ({ event, onDelete }) => {
                             </Col>
                         </Row>
                     </Container>
-
-
                 </CardHeader>
                 <CardBody>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <h4>Location:</h4>
+                                <p>
+                                    {!event.room || event.room.building}, {!event.room || event.room.roomName}
+                                    <br />Max capacity: {!event.room || event.room.occupancy}
+                                    <br />Room features:
+                                    <ul>
+                                        {!event.room || !event.room.features ||
+                                            event.room.features.map((feature, index) => (
+                                                <li key={feature} className="room-feature">{feature}</li>
+                                            ))}
+                                    </ul>
+                                </p>
+                            </Col>
+                            <Col>
 
-                    <CardTitle>Reservation:</CardTitle>
+                                <h4>Reserved by:</h4>
+                                <p>
+                                    {!event.user || event.user.firstName} {!event.user || event.user.lastName}
+                                    <br /><a href={!event.user || "mailto:" + event.user.email}>{!event.user || event.user.email}</a>
+                                    <br />{!event.user || formatPhoneNumber(event.user.phone)}
+                                </p>
+                            </Col>
+                        </Row>
+                    </Container>
 
-                    <p>Location: {!event.room || event.room.building}, {!event.room || event.room.roomName}</p>
-                    <p>Max capacity: {!event.room || event.room.occupancy}</p>
-                    <p>Room features:</p>
-                    <ul>
-                        {!event.room || !event.room.features ||
-                            event.room.features.map((feature, index) => (
-                                <li key={feature} className="room-feature">{feature}</li>
-                            ))}
-                    </ul>
-                    <p>Reserved by: {!event.user || event.user.firstName} {!event.user || event.user.lastName} | <a href={!event.user || "mailto:" + event.user.email}>{!event.user || event.user.email}</a> | {!event.user || formatPhoneNumber(event.user.phone)}</p>
                 </CardBody>
             </Card>
         </div>

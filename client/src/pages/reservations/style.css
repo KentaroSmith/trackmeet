@@ -1,0 +1,39 @@
+h1 {
+    font-family: 'Dosis', sans-serif;
+    margin-top: 1rem;
+}
+
+.reservation-card {
+    background-color: rgba(255,255,255,0.9)
+}
+
+.reservation-card .reservation-header {
+    font-family: 'Dosis', sans-serif;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #8C7075;
+}
+
+.reservation-card .trackmeet-icon {
+    height: 150px;
+    margin-top: 1.5rem;
+}
+
+.reservation-card button {
+    background-color: #594246;
+}
+
+.reservation-card button,
+.reservation-card p,
+.reservation-card li,
+.reservation-card input {
+    font-family: 'Lato', sans-serif;
+}
+
+.reservation-card h4,
+.reservation-card h3 {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 600;
+}
+
