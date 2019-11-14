@@ -1,3 +1,24 @@
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #327508!important;
+}
+
 a.chosen {
     color: rgba(0,0,0,.7);
+}
+
+.trackmeet-logo {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 900;
+}
+
+#trackmeet-icon {
+    height: 30px;
+    margin-right: 0.5rem;
+}
+
+.navbar .nav-link,
+.navbar .dropdown-item {
+    font-family: 'Dosis', sans-serif;
+    font-size: 1.25rem;
 }

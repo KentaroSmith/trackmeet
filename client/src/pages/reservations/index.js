@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import Reservation from "../../components/reservation/index";
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    Button,
     Container, Row, Col
 } from 'reactstrap';
 import API from "../../utils/api";
 import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
+import "./style.css";
 
 const Reservations = () => {
     const { currentUser } = useContext(AuthContext);
