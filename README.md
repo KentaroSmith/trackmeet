@@ -1,29 +1,26 @@
-# Create React Express App
+# [TrackMeet](https://track-meet.herokuapp.com/)
+![TrackMeet Logo](/client/src/logo.svg)
 
-## About This Boilerplate
+## A meeting room scheduling app
 
-This setup allows for a Node/Express/React app which can be easily deployed to Heroku.
+TrackMeet's initial goal was to come up with an alternative tool for scheduling studyrooms and meeting rooms at our local library. The system that the library had in place was rigid, and very limited in what it could do. We set out with the goal of coming up with a better system that would allow our users to have better search capabilities, be able to add and remove reservations, and recieve text reminders about their reservation.
 
-The front-end React app will auto-reload as it's updated via webpack dev server, and the backend Express app will auto-reload independently with nodemon.
+## The team:
 
-## Starting the app locally
+- [Todd Bartelt](https://github.com/bartelto)
+- [Dan Smith](https://github.com/KentaroSmith)
+- [Kyle Wuellner](https://github.com/kwuellner)
 
-Start by installing front and backend dependencies. While in this directory, run the following command:
+## Dependencies
+Our app uses several dependencies including:
+- [React](https://reactjs.org/)
+- [Mongojs](https://www.npmjs.com/package/mongojs)
+- [Express](https://expressjs.com/)
+- [ReactRouter](https://www.npmjs.com/package/react-router)
+- [ReactStrap](https://www.npmjs.com/package/reactstrap)
+- [FontAwesome](https://fontawesome.com/)
+- [React Big Calendar](http://intljusticemission.github.io/react-big-calendar/examples/index.html)
+- [Redux](https://redux.js.org/)
+- [Firebase Authentication](https://firebase.google.com/docs/auth/web/manage-users)
+- [Nexmo](https://www.npmjs.com/package/nexmo)
 
-```
-npm install
-```
-
-This should install node modules within the server and the client folder.
-
-After both installations complete, run the following command in your terminal:
-
-```
-npm start
-```
-
-Your app should now be running on <http://localhost:3000>. The Express server should intercept any AJAX requests from the client.
-
-## Deployment (Heroku)
-
-To deploy, simply add and commit your changes, and push to Heroku. As is, the NPM scripts should take care of the rest.
