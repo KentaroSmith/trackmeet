@@ -32,6 +32,9 @@ export default {
   searchRoomsByFeature: function (features) {
     return axios.get("/api/rooms/?features=" + features)
   },
+  saveRoom: function (roomData) {
+    return axios.post("/api/rooms", roomData);
+  },
 
   // *** EVENTS ***
   saveEvent: function (eventData) {
@@ -45,5 +48,13 @@ export default {
   },
   deleteEvent: function (id) {
     return axios.delete("/api/events/" + id);
+  },
+
+  // *** FEATURES ***
+  saveFeature: function (featureData) {
+    return axios.post("/api/features", featureData);
+  },
+  getFeatures: function () {
+    return axios.get("/api/features");
   }
 };

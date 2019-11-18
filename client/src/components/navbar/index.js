@@ -46,7 +46,10 @@ const NavigationBar = ({ activePage }) => {
                                 <DropdownMenu right>
                                     <DropdownItem tag={Link} to="/reservations">
                                         Reservations
-                                </DropdownItem>
+                                    </DropdownItem>
+                                    <DropdownItem tag={Link} to="/rooms">
+                                        Rooms
+                                    </DropdownItem>
                                     <DropdownItem divider />
                                     <DropdownItem href="/login" onClick={() => app.auth().signOut()}>
                                         Logout
