@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const roomSchema = new Schema({
     roomName: { type: String, required: true },
+    description: { type: String, required: false },
     features: { type: Array, required: true },
     building: { type: String, required: true },
     occupancy: Number,

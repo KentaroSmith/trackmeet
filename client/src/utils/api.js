@@ -50,6 +50,14 @@ export default {
     return axios.delete("/api/events/" + id);
   },
 
+  // *** LOCATIONS ***
+  saveLocation: function (locationData) {
+    return axios.post("/api/locations", locationData);
+  },
+  getLocations: function () {
+    return axios.get("/api/locations");
+  },
+
   // *** FEATURES ***
   saveFeature: function (featureData) {
     return axios.post("/api/features", featureData);
