@@ -5,13 +5,15 @@ import app from "../../components/Firebase/firebase";
 import { AuthContext } from "../../components/Firebase/auth";
 import {
     Button, Form, FormGroup, Input, Label,
-    Card, CardImg, CardBody, CardText, CardHeader
+    Card, CardImg, CardBody, CardText, CardHeader,
+    Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
 import { updateUser } from "../../actions";
 import "./style.css";
 import { set } from "mongoose";
+import LocationForm from "../../components/locationForm";
 
 const mongojs = require("mongojs");
 
@@ -23,11 +25,14 @@ const Rooms = () => {
     const [locations, setLocations] = useState([]);
     const [features, setFeatures] = useState([]);
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         getLocations();
         getFeatures();
     }, []);
+
+    const toggle = () => setModal(!modal);
 
     const getLocations = () => {
         API.getLocations()
@@ -82,11 +87,13 @@ const Rooms = () => {
                     <Form onSubmit={addRoom}>
                         <FormGroup>
                             <Label for="selectLocation">Select a location</Label>
+                            <Button color="danger" onClick={toggle}>Edit</Button>
+                            <Button color="secondary" onClick={toggle}>Add</Button>
                             <Input type="select" name="select" id="selectLocation"
                                 onChange={handleLocationChange}
                             >
                                 {!locations || locations.map((loc) => (
-                                    <option check key={loc._id} data-id={loc._id}>
+                                    <option check="true" key={loc._id} data-id={loc._id}>
                                         {loc.name}
                                     </option>
                                 ))
@@ -120,6 +127,16 @@ const Rooms = () => {
                     </Form>
                 </CardBody>
             </Card>
+            <Modal isOpen={modal} toggle={toggle} className="location-modal">
+                <ModalHeader toggle={toggle}>Edit Location</ModalHeader>
+                <ModalBody>
+                    <LocationForm locationId={location} />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={toggle}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 

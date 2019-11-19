@@ -8,6 +8,8 @@ router.route("/")
 
 // Matches with "/api/locations/:id"
 router.route("/:id")
+  .get(locationsController.findById)
+  .put(locationsController.update)
   .delete(locationsController.remove);
 
 module.exports = router;

@@ -57,6 +57,16 @@ export default {
   getLocations: function () {
     return axios.get("/api/locations");
   },
+  getLocation: function (id) {
+    return axios.get("/api/locations/" + id);
+  },
+  updateLocation: function (id, locationData) {
+    console.log("before");
+    console.log(id);
+    console.log(locationData);
+    console.log("after");
+    return axios.put("/api/locations/" + id, locationData);
+  },
 
   // *** FEATURES ***
   saveFeature: function (featureData) {
