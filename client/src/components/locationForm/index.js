@@ -7,11 +7,15 @@ import {
 import API from "../../utils/api.js";
 
 const LocationForm = ({ locationId }) => {
+    // if locationId is passed in, form is in UPDATE mode
+    // else, form is in CREATE mode
     const [location, setLocation] = useState({});
 
     useEffect(() => {
-        console.log ("useEffect, locationId = " + locationId);
-        getLocation(locationId);
+        console.log("useEffect, locationId = " + locationId);
+        if (!!locationId) {
+            getLocation(locationId);
+        }
     }, [locationId]);
 
     const getLocation = (id) => {
@@ -32,8 +36,17 @@ const LocationForm = ({ locationId }) => {
             });
     };
 
+    const createLocation = (event) => {
+        event.preventDefault();
+
+        API.saveLocation(location)
+            .then(res => {
+                console.log(res.data);
+            });
+    };
+
     return (
-        <Form onSubmit={updateLocation}>
+        <Form onSubmit={!!locationId ? updateLocation : createLocation}>
             location: {locationId}
             <FormGroup>
                 <Input name="name" type="text" placeholder="Location name"
@@ -68,7 +81,7 @@ const LocationForm = ({ locationId }) => {
             <Button type="submit" className="btn-block">Update</Button>
         </Form>
     );
-}
+};
 
 
 export default LocationForm;

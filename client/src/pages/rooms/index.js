@@ -25,14 +25,16 @@ const Rooms = () => {
     const [locations, setLocations] = useState([]);
     const [features, setFeatures] = useState([]);
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
-    const [modal, setModal] = useState(false);
+    const [modalCreate, setModalCreate] = useState(false);
+    const [modalUpdate, setModalUpdate] = useState(false);
 
     useEffect(() => {
         getLocations();
         getFeatures();
     }, []);
 
-    const toggle = () => setModal(!modal);
+    const toggleCreate = () => setModalCreate(!modalCreate);
+    const toggleUpdate = () => setModalUpdate(!modalUpdate);
 
     const getLocations = () => {
         API.getLocations()
@@ -87,11 +89,14 @@ const Rooms = () => {
                     <Form onSubmit={addRoom}>
                         <FormGroup>
                             <Label for="selectLocation">Select a location</Label>
-                            <Button color="danger" onClick={toggle}>Edit</Button>
-                            <Button color="secondary" onClick={toggle}>Add</Button>
+                            <Button color="danger" onClick={toggleUpdate}>Edit</Button>
+                            <Button color="secondary" onClick={toggleCreate}>Add</Button>
                             <Input type="select" name="select" id="selectLocation"
                                 onChange={handleLocationChange}
                             >
+                                <option check="true">
+                                    Select a location
+                                </option>
                                 {!locations || locations.map((loc) => (
                                     <option check="true" key={loc._id} data-id={loc._id}>
                                         {loc.name}
@@ -127,14 +132,26 @@ const Rooms = () => {
                     </Form>
                 </CardBody>
             </Card>
-            <Modal isOpen={modal} toggle={toggle} className="location-modal">
-                <ModalHeader toggle={toggle}>Edit Location</ModalHeader>
+
+            <Modal isOpen={modalCreate} toggle={toggleCreate} className="location-modal">
+                <ModalHeader toggle={toggleCreate}>Create New Location</ModalHeader>
+                <ModalBody>
+                    <LocationForm />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={toggleCreate}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleCreate}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={modalUpdate} toggle={toggleUpdate} className="location-modal">
+                <ModalHeader toggle={toggleUpdate}>Edit Location</ModalHeader>
                 <ModalBody>
                     <LocationForm locationId={location} />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggle}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                    <Button color="primary" onClick={toggleUpdate}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleUpdate}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>
