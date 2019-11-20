@@ -1,4 +1,4 @@
-.card {
+.reservation-card {
     width: auto;
     margin-top: 1rem;
 }
@@ -7,13 +7,38 @@
     padding: 0;
 }
 
+.reservation-card .card-header {
+    /* background-color: #97BF7E; */
+    color: #327508;
+}
+
+.reservation-card h3 {
+    margin-bottom: 0;
+}
+
 .delete-btn {
     margin-left: 0.5rem;
     border: 0;
     background-color: transparent;
-    color: #594246;
+    color:  #327508; /*#594246;*/
+    padding: 0;
 }
 
 .delete-btn:hover {
-    color: #8C7075;
+    color: #97BF7E; /*#8C7075;*/
+    background-color: transparent;
+}
+
+span {
+    display: inline-block;
+    white-space: pre;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.reservation-card a {
+    color:  #327508; /*#594246;*/
 }

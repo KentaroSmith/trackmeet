@@ -8,6 +8,8 @@ import API from "../../utils/api";
 import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
 import "./style.css";
+import SMS from "../../utils/sms";
+import moment from "moment";
 
 const Reservations = () => {
     const { currentUser } = useContext(AuthContext);
@@ -57,11 +59,18 @@ const Reservations = () => {
         // FUTURE: an option for administrators to see all Events
     };
 
-    const deleteReservation = (id) => {
-        API.deleteEvent(id)
+    const deleteReservation = (event) => {
+        API.deleteEvent(event._id)
             .then(res => {
                 console.log(res.data);
                 loadReservations();
+                SMS.sendSMS(event.user.phone,
+                    `Your reservation of ` +
+                    `${event.room.roomName} at ${event.room.building} for ` +
+                    `${moment(event.startTime).format("dddd, MMMM D, YYYY, h:mm a")} to ${moment(event.endTime).format("h:mm a")} ` +
+                    `has been CANCELLED. ` +
+                    `http://track-meet.herokuapp.com`
+                );
             })
             .catch(err => console.log(err));
     };
@@ -69,22 +78,22 @@ const Reservations = () => {
     return (
         <>
             <Container>
-                <Row noGutters="false">
+                <Row className="no-gutters">
                     <Col size="md-12">
                         {events.length === 0
-                            ? <p className="text-center">You have no active reservations.</p>
+                            ? <p className="text-center no-active-res">You have no active reservations.</p>
                             : <h1>Active reservations ({events.length}):</h1>
                         }
                     </Col>
                 </Row>
-                <Row noGutters="false">
+                <Row className="no-gutters">
                     <Col size="md-12">
                         {!events ||
                             events.map(event => (
                                 <div key={event._id}>
                                     <Reservation
                                         event={event}
-                                        onDelete={() => deleteReservation(event._id)}
+                                        onDelete={() => deleteReservation(event)}
                                     />
                                 </div>
                             ))}

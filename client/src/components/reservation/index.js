@@ -17,12 +17,15 @@ const Reservation = ({ event, onDelete }) => {
                 <CardHeader>
                     <Container>
                         <Row>
-                            <Col>
-                                <h3>Reservation: {moment(event.startTime).format("dddd, MMM. D, YYYY")}, {moment(event.startTime).format("h:mm a")} to {moment(event.endTime).format("h:mm a")}</h3>
+                            <Col className="vertical-align">
+                                <h3>
+                                    <span>{moment(event.startTime).format("dddd, MMM. D, YYYY")}, </span>
+                                    <span>{moment(event.startTime).format("h:mm a")} to {moment(event.endTime).format("h:mm a")}</span>
+                                </h3>
                             </Col>
                             <Col className="col-auto">
                                 {/*<Button className="modify-btn" ><FontAwesomeIcon icon={faPencilAlt} /></Button>*/}
-                                <Button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} size="2x" /></Button>
+                                <button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} size="3x" /></button>
                             </Col>
                         </Row>
                     </Container>
