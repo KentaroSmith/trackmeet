@@ -1,4 +1,41 @@
 #confirm-card {
     width: 18rem;
     margin-top: 1rem;
+    background-color: rgba(255,255,255,0.9)
 }
+
+h1 {
+    font-family: 'Dosis', sans-serif;
+    margin-top: 1rem;
+}
+
+#confirm-card .reservation-header {
+    font-family: 'Dosis', sans-serif;
+    text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #8C7075;
+}
+
+#confirm-card .trackmeet-icon {
+    height: 150px;
+    margin-top: 1.5rem;
+}
+
+#confirm-card button {
+    background-color: #594246;
+}
+
+#confirm-card button,
+#confirm-card p,
+#confirm-card li,
+#confirm-card input {
+    font-family: 'Lato', sans-serif;
+}
+
+#confirm-card h4,
+#confirm-card h3 {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 600;
+}
+

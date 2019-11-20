@@ -11,6 +11,7 @@ import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
 import SMS from "../../utils/sms";
 import moment from "moment";
+import format from "../../utils/format";
 
 const mongojs = require("mongojs");
 
@@ -107,7 +108,7 @@ const Confirm = ({ history }) => {
                     <h4>Reserved by:</h4>
                     <p>{userData.firstName} {userData.lastName}
                         <br />{userData.email}
-                        <br />{userData.phone}</p>
+                        <br />{format.formatPhoneNumber(userData.phone)}</p>
                     <Button onClick={() => makeReservation(userData, roomData, timesData)} className="btn-block">Reserve room</Button>
                 </CardBody>
             </Card>

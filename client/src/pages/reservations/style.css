@@ -37,3 +37,12 @@ h1 {
     font-weight: 600;
 }
 
+@media (max-width: 576px) {  
+    h1 {
+        font-size: 2rem;
+    }
+
+    .reservation-card h3 {
+        font-size: 1.5rem;
+    }
+  }

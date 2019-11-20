@@ -7,20 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
 import moment from "moment";
-
-let formatPhoneNumber = (str) => {
-    //Filter only numbers from the input
-    let cleaned = ('' + str).replace(/\D/g, '');
-
-    //Check if the input is of correct length
-    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-
-    if (match) {
-        return '(' + match[1] + ') ' + match[2] + '-' + match[3]
-    };
-
-    return null
-};
+import format from "../../utils/format";
 
 const Reservation = ({ event, onDelete }) => {
 
@@ -33,9 +20,9 @@ const Reservation = ({ event, onDelete }) => {
                             <Col>
                                 <h3>Reservation: {moment(event.startTime).format("dddd, MMM. D, YYYY")}, {moment(event.startTime).format("h:mm a")} to {moment(event.endTime).format("h:mm a")}</h3>
                             </Col>
-                            <Col className="col-md-auto">
+                            <Col className="col-auto">
                                 {/*<Button className="modify-btn" ><FontAwesomeIcon icon={faPencilAlt} /></Button>*/}
-                                <Button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} /></Button>
+                                <Button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} size="2x" /></Button>
                             </Col>
                         </Row>
                     </Container>
@@ -63,7 +50,7 @@ const Reservation = ({ event, onDelete }) => {
                                 <p>
                                     {!event.user || event.user.firstName} {!event.user || event.user.lastName}
                                     <br /><a href={!event.user || "mailto:" + event.user.email}>{!event.user || event.user.email}</a>
-                                    <br />{!event.user || formatPhoneNumber(event.user.phone)}
+                                    <br />{!event.user || format.formatPhoneNumber(event.user.phone)}
                                 </p>
                             </Col>
                         </Row>

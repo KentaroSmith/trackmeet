@@ -9,4 +9,11 @@
 
 .delete-btn {
     margin-left: 0.5rem;
+    border: 0;
+    background-color: transparent;
+    color: #594246;
+}
+
+.delete-btn:hover {
+    color: #8C7075;
 }

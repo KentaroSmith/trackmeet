@@ -69,12 +69,16 @@ const Reservations = () => {
     return (
         <>
             <Container>
-                <Row>
+                <Row noGutters="false">
                     <Col size="md-12">
                         {events.length === 0
                             ? <p className="text-center">You have no active reservations.</p>
                             : <h1>Active reservations ({events.length}):</h1>
                         }
+                    </Col>
+                </Row>
+                <Row noGutters="false">
+                    <Col size="md-12">
                         {!events ||
                             events.map(event => (
                                 <div key={event._id}>
