@@ -35,17 +35,17 @@ const Reservation = ({ event, onDelete }) => {
                         <Row>
                             <Col>
                                 <h4>Location:</h4>
-                                <p>
+                                <p style={{marginBottom: "0"}}>
                                     {!event.room || event.room.building}, {!event.room || event.room.roomName}
                                     <br />Max capacity: {!event.room || event.room.occupancy}
                                     <br />Room features:
-                                    <ul>
-                                        {!event.room || !event.room.features ||
-                                            event.room.features.map((feature, index) => (
-                                                <li key={feature} className="room-feature">{feature}</li>
-                                            ))}
-                                    </ul>
                                 </p>
+                                <ul>
+                                    {!event.room || !event.room.features ||
+                                        event.room.features.map((feature, index) => (
+                                            <li key={feature} className="room-feature">{feature}</li>
+                                        ))}
+                                </ul>
                             </Col>
                             <Col>
 
