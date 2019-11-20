@@ -104,7 +104,6 @@ const Confirm = ({ history }) => {
                     <p>{moment(timesData.startTime).format("dddd, MMMM D, YYYY")}
                         <br />{moment(timesData.startTime).format("h:mm a")} to {moment(timesData.endTime).format("h:mm a")}</p>
 
-                    {/* <br/>{moment('2014-01-01T00:00:00.000')}</p> */}
                     <h4>Reserved by:</h4>
                     <p>{userData.firstName} {userData.lastName}
                         <br />{userData.email}

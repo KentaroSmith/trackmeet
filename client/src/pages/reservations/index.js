@@ -2,8 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import Reservation from "../../components/reservation/index";
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    Container, Row, Col
+    Container, Row, Col, Button,
+    Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import API from "../../utils/api";
 import { AuthContext } from "../../components/Firebase/auth";
 import { updateUser } from "../../actions";
@@ -15,7 +18,16 @@ const Reservations = () => {
     const { currentUser } = useContext(AuthContext);
     const user = useSelector(state => state.user);
     const [events, setEvents] = useState([]);
+    const [modalDelete, setModalDelete] = useState(false);
+    const [eventToDelete, setEventToDelete] = useState({});
     const dispatch = useDispatch();
+
+    const toggle = () => setModalDelete(!modalDelete);
+
+    const showDeleteModal = (event) => {
+        setEventToDelete(event);
+        setModalDelete(!modalDelete);
+    }
 
     //console.log("the user is " + currentUser.email)
 
@@ -71,6 +83,7 @@ const Reservations = () => {
                     `has been CANCELLED. ` +
                     `http://track-meet.herokuapp.com`
                 );
+                toggle();
             })
             .catch(err => console.log(err));
     };
@@ -93,13 +106,35 @@ const Reservations = () => {
                                 <div key={event._id}>
                                     <Reservation
                                         event={event}
-                                        onDelete={() => deleteReservation(event)}
+                                        onDelete={() => showDeleteModal(event)}
                                     />
                                 </div>
                             ))}
                     </Col>
                 </Row>
             </Container>
+
+            <Modal isOpen={modalDelete} toggle={toggle} className="modal-delete">
+                <ModalHeader toggle={toggle}><FontAwesomeIcon icon={faCalendarTimes} size="1x" style={{marginRight: "0.5rem"}}/>Delete reservation?</ModalHeader>
+                <ModalBody>
+                    Are you sure you want to delete this reservation?
+                </ModalBody>
+                <ModalFooter>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <Button color="danger" className="btn-block" onClick={() => deleteReservation(eventToDelete)}>Delete</Button>{' '}
+                            </Col>
+                            <Col className="col-auto">
+                                <div style={{width: "1rem"}}></div>
+                            </Col>
+                            <Col>
+                                <Button color="secondary" className="btn-block" onClick={toggle}>Cancel</Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                </ModalFooter>
+            </Modal>
         </>
     );
 

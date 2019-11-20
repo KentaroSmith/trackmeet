@@ -39,6 +39,15 @@ h1 {
     font-size: 2rem;
 }
 
+.modal-header {
+    font-family: 'Dosis', sans-serif;
+}
+
+.modal-body,
+.modal-dialog button {
+    font-family: 'Lato', sans-serif;
+}
+
 @media (max-width: 576px) {  
     h1 {
         font-size: 2rem;
