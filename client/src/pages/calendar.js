@@ -26,9 +26,6 @@ class CalendarPage extends Component {
                 this.setState({
                     events: res.data
                 })
-                /* this.state.events = res.data */
-                console.log(res.data)
-                console.log(this.state.events)
             })
     }
 
@@ -37,6 +34,7 @@ class CalendarPage extends Component {
             <div className="Calendardiv">
                 {/* <Filter /> */}
                 <Calendar
+                    views={["month", "agenda"]}
                     localizer={localizer}
                     events={this.state.events}
                     startAccessor="startTime"
