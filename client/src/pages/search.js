@@ -120,6 +120,10 @@ class RoomSearch extends Component {
             endTime: `${day}T${endTime}:00-06:00` //day + " " + endTime
         })
     }
+    addFeature = event => {
+        this.featuresArray.push(event.target.value)
+        console.log(this.featuresArray)
+    }
 
     render() {
         let hiddenElements = {
@@ -155,26 +159,26 @@ class RoomSearch extends Component {
                         <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox" value="projector"
+                                <Input type="checkbox" id="checkBox" value="projector" onChange={this.addFeature}
                                 />{' '} projector
                             </Label>
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox" value="whiteboard"
+                                <Input type="checkbox" id="checkBox" value="whiteboard" onChange={this.addFeature}
                                 />{' '} whiteboard
                             </Label>
                         </FormGroup>
 
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox" value="conference table"
+                                <Input type="checkbox" id="checkBox" value="conference table" onChange={this.addFeature}
                                 />{' '} conference table
                             </Label>
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                                <Input type="checkbox" id="checkBox" value="computer"
+                                <Input type="checkbox" id="checkBox" value="computer" onChange={this.addFeature}
                                 />{' '} computer
                             </Label>
                         </FormGroup>
