@@ -34,6 +34,7 @@ class CalendarPage extends Component {
             <div className="Calendardiv">
                 {/* <Filter /> */}
                 <Calendar
+                    views={["month", "agenda"]}
                     localizer={localizer}
                     events={this.state.events}
                     startAccessor="startTime"
