@@ -36,22 +36,10 @@ class RoomSearch extends Component {
     featuresArray = {
         features: []
     }
-
-    handleInputForm = event => {
-        // Pull the name and value properties off of the event.target (the element which triggered the event)
-        const { searchTerm } = event.target;
-        console.log(searchTerm)
-        // Set the state for the appropriate input field
-        /*         this.setState({
-                    locationSearch: searchTerm
-                }); */
-    };
     handleSearch = event => {
 
-        //testing the roomname search first
         API.searchRooms(this.state.roomName)
             .then(res => {
-                console.log(res); //temp
                 this.setState({
                     rooms: res.data,
                     roomName: res.data.roomName,
@@ -62,7 +50,6 @@ class RoomSearch extends Component {
             })
     };
     locationSelect = event => {
-        console.log(event.target.value)
         API.searchRoomsByLocation(event.target.value)
             .then(res => {
                 this.setState({
@@ -73,30 +60,17 @@ class RoomSearch extends Component {
                     building: res.data.building
                 })
             })
-        /*         this.setState({
-                    locationSearch: this.value
-        
-                }) */
     }
-    //See if redux can handle global state in a way that can carry over to the calendar page
-    /*    seeSchedule=event=>{
-           event.preventDefault();
-           API.showSchedule(this.state.roomName)
-           .then()
-       } */
     chooseFilter = event => {
-        console.log(event.target.value)
         let searchOne = document.getElementById("roomNameList");
         let searchTwo = document.getElementById("featureList");
         if (event.target.value === "roomName") {
             this.searchChoice.location = true;
             this.searchChoice.features = false;
-            console.log("Location is set to: " + this.searchChoice.location)
         }
         else if (event.target.value === "featureList") {
             this.searchChoice.features = true;
             this.searchChoice.location = false;
-            console.log("Features is set to: " + this.searchChoice.features)
         }
         else {
             this.searchChoice.features = false;
@@ -115,12 +89,8 @@ class RoomSearch extends Component {
         let allFeatures = [];
         API.searchRooms()
             .then(res => {
-                console.log(res.data);
                 for (let i = 0; i < res.data.length; i++) {
-                    console.log(res.data[i].features)
                     allFeatures.push.apply(allFeatures, res.data[i].features);
-                    console.log(allFeatures)
-
                 }
                 allFeatures.sort();
                 console.log(allFeatures);
@@ -141,8 +111,6 @@ class RoomSearch extends Component {
     }
 
     saveTimeBlock = event => {
-        
-        /* this.setState({startTime:event.target.value}) */
         let day = this.state.day;
         let startTime = this.state.start;
         let endTime = this.state.end;
@@ -151,7 +119,6 @@ class RoomSearch extends Component {
             startTime: `${day}T${startTime}:00-06:00`, //day + " " + startTime,
             endTime: `${day}T${endTime}:00-06:00` //day + " " + endTime
         })
-        //console.log(moment(`${day}T${endTime}:00-06:00`).format("dddd, MMMM D YYYY, h:mm a"));
     }
 
     render() {
@@ -182,30 +149,9 @@ class RoomSearch extends Component {
                                 <option value="Study Room B">Study Room B</option>
                                 <option value="Study Room C">Study Room C</option>
                             </Input>
-                            {/*                             <Label for="location">Location: {this.setState.roomName}</Label>
-                            <Input type="select" name="select" id="selectLocation"
-                                type="text"
-                                placeholder="Location"
-                                name="location"
-                                value={this.state.roomName}
-                                onChange={this.handleInputForm}
-                            /> */}
                         </FormGroup>
                     </Form>
-
-                    {/*                     <Form>
-                        <FormGroup>
-                            <Label for="room">Meeting Size</Label>
-                            <Input type="select" name="select" id="roomSize">
-                                <option>0-5</option>
-                                <option>6-10</option>
-                                <option>11-15</option>
-                                <option>16-20</option>
-                            </Input>
-                        </FormGroup>
-                    </Form> */}
-
-                    <Form id="featureList" style={hiddenElements} /* onChange={this.getAllFeatures} */>
+                    <Form id="featureList" style={hiddenElements}>
                         <Label for="Features">Features: </Label>
                         <FormGroup check>
                             <Label check>
@@ -243,12 +189,8 @@ class RoomSearch extends Component {
                         </FormGroup>
                         <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
                         <h3>Selected Time Slot: {moment(this.state.startTime).format("ddd, MMM D YYYY, h:mm a")} to {moment(this.state.endTime).format("h:mm a")}</h3>
-                        
+
                     </Form>
-                    {/* this component is experimental, still actively working on coming up with a key to use for each checkbox*/}
-                    {/* <Checkboxes id="featureList" style={hiddenElements} onChange={this.getAllFeatures}
-                    feature={this.featuresArray}
-                    /> */}
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
 
                 </Jumbotron>
@@ -268,17 +210,12 @@ class RoomSearch extends Component {
                                         building={room.building}
                                         startTime={this.state.startTime}
                                         endTime={this.state.endTime}
-                                    /* seeSchedule={event => this.seeSchedule()} */
                                     />
                                 ))}
                         </Col>
                     </Row>
                 </Container>
             </div>
-
-            // <p className="lead">
-            //     <Button color="primary" href="/results">Search</Button>
-            // </p>
         );
     }
 }
