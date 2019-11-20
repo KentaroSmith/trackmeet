@@ -20,10 +20,6 @@ h1 {
     margin-top: 1.5rem;
 }
 
-.reservation-card button {
-    background-color: #594246;
-}
-
 .reservation-card button,
 .reservation-card p,
 .reservation-card li,
@@ -37,3 +33,27 @@ h1 {
     font-weight: 600;
 }
 
+.no-active-res {
+    font-family: 'Lato', sans-serif;
+    margin-top: 2rem;
+    font-size: 2rem;
+}
+
+.modal-header {
+    font-family: 'Dosis', sans-serif;
+}
+
+.modal-body,
+.modal-dialog button {
+    font-family: 'Lato', sans-serif;
+}
+
+@media (max-width: 576px) {  
+    h1 {
+        font-size: 2rem;
+    }
+
+    .reservation-card h3 {
+        font-size: 1.5rem;
+    }
+  }
