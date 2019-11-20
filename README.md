@@ -1,5 +1,5 @@
 # [TrackMeet](https://track-meet.herokuapp.com/)
-![TrackMeet Logo](/client/src/logo.svg)
+![TrackMeet Logo](/client/src/assets/trackmeet-logo-green.svg)
 
 ## A meeting room scheduling app
 
