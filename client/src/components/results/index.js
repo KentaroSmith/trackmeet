@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
     Jumbotron,
     Button
@@ -7,7 +7,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { updateRoom, updateTimes } from "../../actions";
 
-const Results = ({ roomName, features, building, occupancy, id, startTime, endTime }) => {
+const Results = ({ roomName, features, building, occupancy, id, startTime, endTime, history }) => {
     const dispatch = useDispatch();
     let featureList = [];
     for (let i = 0; i < features.length; i++) {
@@ -25,8 +25,10 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
 
         dispatch(updateTimes({
             startTime: startTime,
-            endTime: endTime    
+            endTime: endTime
         }));
+
+        history.push('/confirm')
     }
 
     return (
@@ -52,8 +54,8 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
 
                 <Button
                     onClick={updateReservation}
-                    key={id}>Reserve this room</Button>
-                <Link to="/confirm">Continue</Link>
+                    key={id}>Reserve this room 
+                </Button>
             </Jumbotron>
 
         </div>
@@ -61,4 +63,4 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
 }
 
 
-export default Results;
+export default withRouter(Results);
