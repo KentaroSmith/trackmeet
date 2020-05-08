@@ -14,6 +14,7 @@ import { updateUser } from "../../actions";
 import "./style.css";
 import { set } from "mongoose";
 import LocationForm from "../../components/locationForm";
+import LocationsList from "../../components/LocationsList"
 
 const mongojs = require("mongojs");
 
@@ -36,20 +37,16 @@ const Rooms = () => {
     const toggleCreate = () => setModalCreate(!modalCreate);
     const toggleUpdate = () => setModalUpdate(!modalUpdate);
 
-    const getLocations = () => {
-        API.getLocations()
-            .then(res => {
-                console.log(res.data);
-                setLocations(res.data);
-            });
+    const getLocations = async () => {
+        const res = await API.getLocations();
+        console.log(res.data);
+        setLocations(res.data);
     };
 
-    const getFeatures = () => {
-        API.getFeatures()
-            .then(res => {
-                console.log(res.data);
-                setFeatures(res.data);
-            });
+    const getFeatures = async () => {
+        const res = await API.getFeatures()
+        console.log(res.data);
+        setFeatures(res.data);
     };
 
     const handleLocationChange = event => {
@@ -132,6 +129,8 @@ const Rooms = () => {
                     </Form>
                 </CardBody>
             </Card>
+
+            <LocationsList/>
 
             <Modal isOpen={modalCreate} toggle={toggleCreate} className="location-modal">
                 <ModalHeader toggle={toggleCreate}>Create New Location</ModalHeader>
