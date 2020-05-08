@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
     Jumbotron,
     Button
@@ -54,7 +54,7 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
 
                 <Button
                     onClick={updateReservation}
-                    key={id}>Reserve this room
+                    key={id}>Reserve this room 
                 </Button>
             </Jumbotron>
 
