@@ -116,8 +116,8 @@ class RoomSearch extends Component {
         let endTime = this.state.end;
 
         this.setState({
-            startTime: `${day}T${startTime}:00-06:00`, //day + " " + startTime,
-            endTime: `${day}T${endTime}:00-06:00` //day + " " + endTime
+            startTime: moment(`${day} ${startTime}`),
+            endTime: moment(`${day} ${endTime}`) 
         })
     }
 
