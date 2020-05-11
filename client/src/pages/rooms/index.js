@@ -6,7 +6,8 @@ import { AuthContext } from "../../components/Firebase/auth";
 import {
     Button, Form, FormGroup, Input, Label,
     Card, CardImg, CardBody, CardText, CardHeader,
-    Modal, ModalHeader, ModalBody, ModalFooter
+    Modal, ModalHeader, ModalBody, ModalFooter,
+    Container, Row, Col
 } from 'reactstrap';
 import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
@@ -69,6 +70,7 @@ const Rooms = () => {
         console.log("Add room location: " + location); // not working. = null
         API.saveRoom({
             building: mongojs.ObjectId(location),
+            location: mongojs.ObjectId(location),
             roomName: name,
             description: description,
             features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
@@ -130,7 +132,15 @@ const Rooms = () => {
                 </CardBody>
             </Card>
 
-            <LocationsList/>
+            <Container>
+                <Row>
+                    <Col xs="6">
+                        <LocationsList locations={locations} />
+                    </Col>
+                </Row>
+            </Container>
+      
+            
 
             <Modal isOpen={modalCreate} toggle={toggleCreate} className="location-modal">
                 <ModalHeader toggle={toggleCreate}>Create New Location</ModalHeader>

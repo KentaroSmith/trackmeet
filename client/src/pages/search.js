@@ -50,7 +50,7 @@ class RoomSearch extends Component {
             })
     };
     locationSelect = event => {
-        API.searchRoomsByLocation(event.target.value)
+        API.searchRoomsByName(event.target.value)
             .then(res => {
                 this.setState({
                     rooms: res.data,

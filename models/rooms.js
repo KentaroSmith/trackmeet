@@ -6,6 +6,10 @@ const roomSchema = new Schema({
     description: { type: String, required: false },
     features: { type: Array, required: true },
     building: { type: String, required: true },
+    location: {
+        type: Schema.Types.ObjectId,
+        ref: "Location"
+    },
     occupancy: Number,
     timeOpen: String,
     timeClosed: String
