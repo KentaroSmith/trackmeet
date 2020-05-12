@@ -14,8 +14,9 @@ import { useDispatch } from 'react-redux';
 import { updateUser } from "../../actions";
 import "./style.css";
 import { set } from "mongoose";
-import LocationForm from "../../components/locationForm";
+import LocationForm from "../../components/LocationForm";
 import LocationsList from "../../components/LocationsList"
+import RoomForm from "../../components/RoomForm";
 
 const mongojs = require("mongojs");
 
@@ -29,6 +30,9 @@ const Rooms = () => {
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
+    const [activeLocationId, setActiveLocationId] = useState();
+    const [roomsByLocation, setRoomsByLocation] = useState([]); // the rooms for all locations that have been expanded
+
 
     useEffect(() => {
         getLocations();
@@ -50,6 +54,14 @@ const Rooms = () => {
         setFeatures(res.data);
     };
 
+    const getRooms = async (locationId) => {
+        const res = await API.getRoomsByLocation(locationId);
+        let newRooms = [...roomsByLocation].filter((loc) => loc.locationId !== locationId); // removes the location if it's in roomsByLocation
+        newRooms.push({ locationId, rooms: res.data }); // adds it back
+        setRoomsByLocation(newRooms);
+        setActiveLocationId(locationId);
+    };
+
     const handleLocationChange = event => {
         const index = event.target.selectedIndex;
         const optionElement = event.target.childNodes[index];
@@ -69,7 +81,23 @@ const Rooms = () => {
         event.preventDefault();
         console.log("Add room location: " + location); // not working. = null
         API.saveRoom({
-            building: mongojs.ObjectId(location),
+            building: mongojs.ObjectId(location), // delete this line later
+            location: mongojs.ObjectId(location),
+            roomName: name,
+            description: description,
+            features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
+        }
+        ).then(res => console.log(res.data))
+            .catch(err => console.log(err));
+
+    };
+
+    const addRoom2 = (event, name, description, selectedFeatureIds) => {
+        console.log("addRoom2!!!!");
+        event.preventDefault();
+        console.log("Add room location: " + location); // not working. = null
+        API.saveRoom({
+            building: mongojs.ObjectId(location), // delete this line later
             location: mongojs.ObjectId(location),
             roomName: name,
             description: description,
@@ -135,7 +163,21 @@ const Rooms = () => {
             <Container>
                 <Row>
                     <Col xs="6">
-                        <LocationsList locations={locations} />
+                        <LocationsList
+                            name={name}
+                            locations={locations}
+                            activeLocationId={activeLocationId}
+                            roomsByLocation={roomsByLocation}
+                            onNameChange={(event) => console.log(event.target.value)}
+                            onClickLocation={getRooms}
+                            onClickRoom={() => console.log("Room clicked")}
+                        />
+                    </Col>
+                    <Col>
+                        <RoomForm
+                            features={features}
+                            onSubmit={addRoom2}
+                        />
                     </Col>
                 </Row>
             </Container>
