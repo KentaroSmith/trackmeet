@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ListGroup, ListGroupItem, Collapse, Button } from 'reactstrap';
 
-const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLocation, onClickRoom }) => {
+const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLocation, onClickAdd, onClickRoom }) => {
 
     return (
         <ListGroup>
@@ -10,22 +10,22 @@ const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLo
                     key={location._id}
                     tag="a"
                     action
-                    onClick={() => onClickLocation(location._id) }
+                    onClick={() => onClickLocation(location._id)}
                 >
                     {location.name}
                     <Collapse isOpen={activeLocationId === location._id}>
-                        <Button>Add Room</Button>
+                        <Button onClick={onClickAdd}>Add Room</Button>
                         <ListGroup>
                             {roomsByLocation.map((loc) => {
                                 return loc.locationId === location._id
                                     ? loc.rooms.map((room) => (
-                                        <ListGroupItem 
+                                        <ListGroupItem
                                             key={room._id}
-                                            onClick={() => onClickRoom() }
+                                            onClick={() => onClickRoom()}
                                         >
                                             {room.roomName}
                                         </ListGroupItem>
-                                        ))
+                                    ))
                                     : null
                             })}
                         </ListGroup>

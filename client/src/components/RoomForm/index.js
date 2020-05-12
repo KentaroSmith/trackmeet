@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup } from 'reactstrap';
 
-const RoomForm = ({ features, onSubmit }) => {
+const RoomForm = ({ location, features, onSubmit }) => {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
@@ -17,7 +17,7 @@ const RoomForm = ({ features, onSubmit }) => {
 
     return (
         <Card id="room-card" className="mx-auto shadow-lg">
-            <CardHeader className="login-header">Create a room</CardHeader>
+            <CardHeader className="login-header">Create a room at {location}</CardHeader>
             <CardBody>
                 <Form onSubmit={event => onSubmit(event, name, description, selectedFeatureIds)}>
                     <FormGroup>

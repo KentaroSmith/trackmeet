@@ -31,8 +31,9 @@ const Rooms = () => {
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [activeLocationId, setActiveLocationId] = useState();
+    const [activeLocationName, setActiveLocationName] = useState();
     const [roomsByLocation, setRoomsByLocation] = useState([]); // the rooms for all locations that have been expanded
-
+    const [showAddForm, setShowAddForm] = useState(false);
 
     useEffect(() => {
         getLocations();
@@ -56,16 +57,20 @@ const Rooms = () => {
 
     const getRooms = async (locationId) => {
         const res = await API.getRoomsByLocation(locationId);
+        console.log(res.data);
         let newRooms = [...roomsByLocation].filter((loc) => loc.locationId !== locationId); // removes the location if it's in roomsByLocation
         newRooms.push({ locationId, rooms: res.data }); // adds it back
         setRoomsByLocation(newRooms);
         setActiveLocationId(locationId);
+        let currentLoc = locations.find((location) => location._id === locationId);
+        setActiveLocationName(currentLoc.name);
     };
 
     const handleLocationChange = event => {
         const index = event.target.selectedIndex;
         const optionElement = event.target.childNodes[index];
         setLocation(optionElement.getAttribute('data-id'));
+        setActiveLocationId(optionElement.getAttribute('data-id'));
     };
 
     const handleFeatureChange = event => {
@@ -87,7 +92,11 @@ const Rooms = () => {
             description: description,
             features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
         }
-        ).then(res => console.log(res.data))
+        ).then(res => {
+            console.log(res.data);
+            getRooms(location);
+            setShowAddForm(false);
+        })
             .catch(err => console.log(err));
 
     };
@@ -95,15 +104,19 @@ const Rooms = () => {
     const addRoom2 = (event, name, description, selectedFeatureIds) => {
         console.log("addRoom2!!!!");
         event.preventDefault();
-        console.log("Add room location: " + location); // not working. = null
+        console.log("Add room location: " + activeLocationId); // not working. = null
         API.saveRoom({
-            building: mongojs.ObjectId(location), // delete this line later
-            location: mongojs.ObjectId(location),
+            building: mongojs.ObjectId(activeLocationId), // delete this line later
+            location: mongojs.ObjectId(activeLocationId),
             roomName: name,
             description: description,
             features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
         }
-        ).then(res => console.log(res.data))
+        ).then(res => {
+            console.log(res.data);
+            getRooms(activeLocationId);
+            setShowAddForm(false);
+        })
             .catch(err => console.log(err));
 
     };
@@ -170,19 +183,19 @@ const Rooms = () => {
                             roomsByLocation={roomsByLocation}
                             onNameChange={(event) => console.log(event.target.value)}
                             onClickLocation={getRooms}
+                            onClickAdd={() => setShowAddForm(true)}
                             onClickRoom={() => console.log("Room clicked")}
                         />
                     </Col>
-                    <Col>
+                    {!showAddForm || <Col>
                         <RoomForm
+                            location={activeLocationName}
                             features={features}
                             onSubmit={addRoom2}
                         />
-                    </Col>
+                    </Col>}
                 </Row>
             </Container>
-      
-            
 
             <Modal isOpen={modalCreate} toggle={toggleCreate} className="location-modal">
                 <ModalHeader toggle={toggleCreate}>Create New Location</ModalHeader>
