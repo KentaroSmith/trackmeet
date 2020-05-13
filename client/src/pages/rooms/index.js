@@ -121,6 +121,11 @@ const Rooms = () => {
 
     };
 
+    const deleteRoom = async (id) => {
+        const res = await API.deleteRoom(id);
+        getRooms(activeLocationId);
+    };
+
     return (
         <div>
             <Card id="room-card" className="mx-auto shadow-lg">
@@ -185,6 +190,7 @@ const Rooms = () => {
                             onClickLocation={getRooms}
                             onClickAdd={() => setShowAddForm(true)}
                             onClickRoom={() => console.log("Room clicked")}
+                            onClickDelete={deleteRoom}
                         />
                     </Col>
                     {!showAddForm || <Col>
