@@ -67,6 +67,7 @@ const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLo
                                         <Room
                                             key={room._id}
                                             room={room}
+                                            onClick={() => onClickRoom(room._id)}
                                             onClickDelete={() => onClickDelete(room._id)}
                                         />
                                     ))

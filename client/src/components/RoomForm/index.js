@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup } from 'reactstrap';
 
-const RoomForm = ({ location, features, onSubmit }) => {
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
+const RoomForm = ({ location, room, features, onSubmit }) => {
+    const [name, setName] = useState(!!room ? room.roomName : "");
+    const [description, setDescription] = useState(!!room ? room.description : "");
+    const [selectedFeatureIds, setSelectedFeatureIds] = useState(!!room ? room.features : []);
+
+    useEffect(() => {
+        setName(room.roomName);
+        setDescription(room.description);
+        setSelectedFeatureIds(room.features);
+    }, [room]);
 
     const handleFeatureChange = event => {
         const featureId = event.target.getAttribute('data-id');
@@ -36,6 +42,8 @@ const RoomForm = ({ location, features, onSubmit }) => {
                         <FormGroup check key={feature.name}>
                             <Label check>
                                 <Input type="checkbox" data-id={feature._id}
+                                    checked={selectedFeatureIds.includes(feature._id)}
+                                    // checked={true}
                                     onClick={handleFeatureChange}
                                 />{' '}
                                 {feature.name}

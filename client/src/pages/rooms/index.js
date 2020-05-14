@@ -32,8 +32,11 @@ const Rooms = () => {
     const [modalUpdate, setModalUpdate] = useState(false);
     const [activeLocationId, setActiveLocationId] = useState();
     const [activeLocationName, setActiveLocationName] = useState();
+    const [activeRoomId, setActiveRoomId] = useState();
+    const [activeRoom, setActiveRoom] = useState();
     const [roomsByLocation, setRoomsByLocation] = useState([]); // the rooms for all locations that have been expanded
     const [showAddForm, setShowAddForm] = useState(false);
+    const [showEditForm, setShowEditForm] = useState(false);
 
     useEffect(() => {
         getLocations();
@@ -55,6 +58,7 @@ const Rooms = () => {
         setFeatures(res.data);
     };
 
+    // handles a click on a location
     const getRooms = async (locationId) => {
         const res = await API.getRoomsByLocation(locationId);
         console.log(res.data);
@@ -64,6 +68,15 @@ const Rooms = () => {
         setActiveLocationId(locationId);
         let currentLoc = locations.find((location) => location._id === locationId);
         setActiveLocationName(currentLoc.name);
+    };
+
+    // handles a click on a room
+    const handleRoomChange = async (roomId) => {
+        setActiveRoomId(roomId);
+        const activeLoc = roomsByLocation.find((loc) => loc.locationId === activeLocationId);
+        const activeRooms = activeLoc.rooms;
+        setActiveRoom(activeRooms.find((room) => room._id === roomId));
+        setShowEditForm(true);
     };
 
     const handleLocationChange = event => {
@@ -81,6 +94,8 @@ const Rooms = () => {
             setSelectedFeatureIds(selectedFeatureIds.filter((id) => (id !== featureId)));
         }
     };
+
+ 
 
     const addRoom = event => {
         event.preventDefault();
@@ -189,13 +204,22 @@ const Rooms = () => {
                             onNameChange={(event) => console.log(event.target.value)}
                             onClickLocation={getRooms}
                             onClickAdd={() => setShowAddForm(true)}
-                            onClickRoom={() => console.log("Room clicked")}
+                            onClickRoom={handleRoomChange}
                             onClickDelete={deleteRoom}
                         />
                     </Col>
-                    {!showAddForm || <Col>
+                    {!showAddForm || <Col xs="6">
                         <RoomForm
                             location={activeLocationName}
+                            features={features}
+                            onSubmit={addRoom2}
+                        />
+                    </Col>}
+                    {!showEditForm || <Col xs="6">
+                        <RoomForm
+                            location={activeLocationName}
+                            // room={{roomName: "Test Room", description: "Smaller than most."}}
+                            room={activeRoom}
                             features={features}
                             onSubmit={addRoom2}
                         />
