@@ -9,6 +9,7 @@ module.exports = {
     findAll: function (req, res) {
         db.Event
             .find(req.query)
+            .sort({ startTime: 1 })
             .populate("user")
             .populate("room")
             .then(dbModel => res.json(dbModel))
