@@ -198,8 +198,11 @@ class RoomSearch extends Component {
                 <Container>
                     <Row>
                         <Col size="md-12">
-                            <h1>Results:</h1>
-                            {this.state.rooms.length === 0 ? "" :
+                            {this.state.rooms.length === 0
+                                ? <h1>No results.</h1>
+                                : <h1>Results ({this.state.rooms.length}):</h1>
+                            }
+                            {this.state.rooms.length === 0 ||
                                 this.state.rooms.map(room => (
                                     <Results
                                         key={room._id}
