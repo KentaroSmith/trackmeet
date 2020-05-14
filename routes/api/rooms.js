@@ -4,11 +4,12 @@ const roomsController = require("../../controllers/roomController");
 //"/api/rooms"
 router.route("/")
     .get(roomsController.findAll)
-    .post(roomsController.create);
-
+	.post(roomsController.create);
+	
 // "/api/rooms/:id"
 router.route("/:id")
-    .delete(roomsController.remove);
+    .delete(roomsController.remove)
+	.put(roomsController.update);
 
 module.exports = router;
 //seed example

@@ -41,6 +41,9 @@ export default {
   deleteRoom: function (id) {
     return axios.delete("/api/rooms/" + id);
   },
+  updateRoom: function (id, roomData) {
+    return axios.put("/api/rooms/" + id, roomData);
+  },
 
   // *** EVENTS ***
   saveEvent: function (eventData) {

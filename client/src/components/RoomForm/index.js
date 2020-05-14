@@ -43,7 +43,6 @@ const RoomForm = ({ location, room, features, onSubmit }) => {
                             <Label check>
                                 <Input type="checkbox" data-id={feature._id}
                                     checked={selectedFeatureIds.includes(feature._id)}
-                                    // checked={true}
                                     onClick={handleFeatureChange}
                                 />{' '}
                                 {feature.name}

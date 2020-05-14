@@ -136,6 +136,27 @@ const Rooms = () => {
 
     };
 
+    const updateRoom = (event, name, description, selectedFeatureIds) => {
+        console.log("updateRoom");
+        event.preventDefault();
+        console.log("Update room at location: " + activeLocationId); // not working. = null
+        API.updateRoom(activeRoomId,
+            {
+                building: mongojs.ObjectId(activeLocationId), // delete this line later
+                location: mongojs.ObjectId(activeLocationId),
+                roomName: name,
+                description: description,
+                features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
+            }
+        ).then(res => {
+            console.log(res.data);
+            getRooms(activeLocationId);
+            setShowEditForm(false);
+        })
+            .catch(err => console.log(err));
+
+    };
+
     const deleteRoom = async (id) => {
         const res = await API.deleteRoom(id);
         getRooms(activeLocationId);
@@ -218,10 +239,9 @@ const Rooms = () => {
                     {!showEditForm || <Col xs="6">
                         <RoomForm
                             location={activeLocationName}
-                            // room={{roomName: "Test Room", description: "Smaller than most."}}
                             room={activeRoom}
                             features={features}
-                            onSubmit={addRoom2}
+                            onSubmit={updateRoom}
                         />
                     </Col>}
                 </Row>
