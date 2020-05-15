@@ -76,6 +76,7 @@ const Rooms = () => {
         const activeLoc = roomsByLocation.find((loc) => loc.locationId === activeLocationId);
         const activeRooms = activeLoc.rooms;
         setActiveRoom(activeRooms.find((room) => room._id === roomId));
+        setShowAddForm(false);
         setShowEditForm(true);
     };
 
@@ -164,57 +165,36 @@ const Rooms = () => {
 
     return (
         <div>
-            <Card id="room-card" className="mx-auto shadow-lg">
-                <CardHeader className="login-header">Create a room</CardHeader>
-                <CardBody>
-                    <Form onSubmit={addRoom}>
-                        <FormGroup>
-                            <Label for="selectLocation">Select a location</Label>
-                            <Button color="danger" onClick={toggleUpdate}>Edit</Button>
-                            <Button color="secondary" onClick={toggleCreate}>Add</Button>
-                            <Input type="select" name="select" id="selectLocation"
-                                onChange={handleLocationChange}
-                            >
-                                <option check="true">
-                                    Select a location
-                                </option>
-                                {!locations || locations.map((loc) => (
-                                    <option check="true" key={loc._id} data-id={loc._id}>
-                                        {loc.name}
-                                    </option>
-                                ))
-                                }
-                            </Input>
-                        </FormGroup>
-                        <FormGroup>
-                            <Input name="name" type="text" placeholder="Room name"
-                                value={name}
-                                onChange={event => setName(event.target.value)}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Input name="description" type="text" placeholder="Description"
-                                value={description}
-                                onChange={event => setDescription(event.target.value)}
-                            />
-                        </FormGroup>
-                        {!features || features.map((feature) => (
-                            <FormGroup check key={feature.name}>
-                                <Label check>
-                                    <Input type="checkbox" data-id={feature._id}
-                                        onClick={handleFeatureChange}
-                                    />{' '}
-                                    {feature.name}
-                                </Label>
-                            </FormGroup>
-                        ))
-                        }
-                        <Button type="submit" className="btn-block">Create room</Button>
-                    </Form>
-                </CardBody>
-            </Card>
+            
 
             <Container>
+                <Row>
+                    <Col xs="6">
+                        <Card id="room-card" className="mx-auto shadow-lg">
+                            <CardHeader className="login-header">Create a room</CardHeader>
+                            <CardBody>
+                                <Form onSubmit={addRoom}>
+                                    <FormGroup>
+                                        <Label for="selectLocation">Select a location</Label>
+                                        <Button color="danger" onClick={toggleUpdate}>Edit</Button>
+                                        <Button color="secondary" onClick={toggleCreate}>Add</Button>
+                                        <Input type="select" name="select" id="selectLocation"
+                                            onChange={handleLocationChange}
+                                        >
+                                            <option check="true">Select a location</option>
+                                            {!locations || locations.map((loc) => (
+                                                <option check="true" key={loc._id} data-id={loc._id}>
+                                                    {loc.name}
+                                                </option>
+                                            ))
+                                            }
+                                        </Input>
+                                    </FormGroup>
+                                </Form>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
                 <Row>
                     <Col xs="6">
                         <LocationsList
@@ -224,7 +204,10 @@ const Rooms = () => {
                             roomsByLocation={roomsByLocation}
                             onNameChange={(event) => console.log(event.target.value)}
                             onClickLocation={getRooms}
-                            onClickAdd={() => setShowAddForm(true)}
+                            onClickAdd={() => {
+                                setShowEditForm(false);
+                                setShowAddForm(true);
+                                }}
                             onClickRoom={handleRoomChange}
                             onClickDelete={deleteRoom}
                         />

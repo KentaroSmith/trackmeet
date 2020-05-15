@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup } from 'reactstrap';
+import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup,
+    UncontrolledPopover, PopoverBody, PopoverHeader } from 'reactstrap';
 
 const RoomForm = ({ location, room, features, onSubmit }) => {
     const [name, setName] = useState(!!room ? room.roomName : "");
     const [description, setDescription] = useState(!!room ? room.description : "");
     const [selectedFeatureIds, setSelectedFeatureIds] = useState(!!room ? room.features : []);
+    const [displayedPopover, setDisplayedPopover] = useState("");
 
     useEffect(() => {
-        setName(room.roomName);
-        setDescription(room.description);
-        setSelectedFeatureIds(room.features);
+        if (!!room) {
+            setName(room.roomName);
+            setDescription(room.description);
+            setSelectedFeatureIds(room.features);
+        }
     }, [room]);
 
     const handleFeatureChange = event => {
@@ -45,8 +49,25 @@ const RoomForm = ({ location, room, features, onSubmit }) => {
                                     checked={selectedFeatureIds.includes(feature._id)}
                                     onClick={handleFeatureChange}
                                 />{' '}
-                                {feature.name}
+                                <Button 
+                                    id={"feature-"+ feature._id}
+                                    type="button"
+                                >
+                                    {feature.name}
+                                </Button>
                             </Label>
+                            <UncontrolledPopover
+                                trigger="focus"
+                                placement="right"
+                                // isOpen={feature._id === displayedPopover}
+                                target={"feature-" + feature._id}
+                                // toggle={() => setDisplayedPopover(feature._id)}
+                            >
+                                <PopoverHeader>{feature.name}</PopoverHeader>
+                                <PopoverBody>
+                                    {feature.description}
+                                </PopoverBody>
+                            </UncontrolledPopover>
                         </FormGroup>
                     ))
                     }

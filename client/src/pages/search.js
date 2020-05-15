@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Results from "../components/results/index";
+import Result from "../components/results/index";
 import moment from "moment";
 import {
     Jumbotron,
@@ -27,15 +27,23 @@ class RoomSearch extends Component {
         endTime: "",
         start: "",
         end: "",
-        day: ""
-    }
+        day: "", 
+        allFeatures: [], 
+        allLocations: []
+    };
     searchChoice = {
         location: false,
         features: false
-    }
+    };
     featuresArray = {
         features: []
-    }
+    };
+
+    componentDidMount() {
+        this.getLocations();
+        this.getFeatures();
+    };
+
     handleSearch = event => {
 
         API.searchRooms(this.state.roomName)
@@ -121,6 +129,18 @@ class RoomSearch extends Component {
         })
     }
 
+    getLocations = async () => {
+        const res = await API.getLocations()
+        console.log(res.data);
+        this.setState({...this.state, allLocations: res.data});
+    };
+
+    getFeatures = async () => {
+        const res = await API.getFeatures()
+        console.log(res.data);
+        this.setState({...this.state, allFeatures: res.data});
+    };
+
     render() {
         let hiddenElements = {
             display: "none"
@@ -204,13 +224,11 @@ class RoomSearch extends Component {
                             }
                             {this.state.rooms.length === 0 ||
                                 this.state.rooms.map(room => (
-                                    <Results
+                                    <Result
                                         key={room._id}
-                                        id={room._id}
-                                        roomName={room.roomName}
-                                        features={room.features}
-                                        occupancy={room.occupancy}
-                                        building={room.building}
+                                        room={room}
+                                        locations={this.state.allLocations}
+                                        features={this.state.allFeatures}
                                         startTime={this.state.startTime}
                                         endTime={this.state.endTime}
                                     />

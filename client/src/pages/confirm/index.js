@@ -23,6 +23,8 @@ const Confirm = ({ history }) => {
     const timesData = useSelector(state => state.times);
     const dispatch = useDispatch();
     const [events, setEvents] = useState([]);
+    const [features, setFeatures] = useState([]);
+    const [locationName, setLocationName] = useState("");
 
     // loads once when the component mounts:
     useEffect(
@@ -37,6 +39,8 @@ const Confirm = ({ history }) => {
                     })
                     .catch(err => console.log(err));
             });
+            getLocationName();
+            getFeatures();
         },
         []);
 
@@ -84,21 +88,33 @@ const Confirm = ({ history }) => {
             .catch(err => console.log(err));
     }
 
+    const getLocationName = async () => {
+        const res = await API.getLocation(roomData.location)
+        setLocationName(res.data.name);
+    };
+
+    const getFeatures = async () => {
+        const res = await API.getFeatures()
+        setFeatures(res.data);
+    };
+
     return (
         <>
             <Card id="confirm-card" className="mx-auto shadow-lg">
                 <CardHeader><h3>Reservation summary:</h3></CardHeader>
                 <CardBody>
                     <h4>Location:</h4>
-                    <p>{roomData.building}, {roomData.roomName}
+                    <p>{locationName}, {roomData.roomName}
                         <br />Max capacity: {roomData.occupancy}
                         <br />Features:
                     <ul>
-                            {!roomData.features ||
-                                roomData.features.map((feature, index) => (
-                                    <li key={feature}>{feature}</li>
-                                ))}
-                        </ul>
+                        {(roomData.features.length > 0) &&
+                            features.map((feature) => (
+                                roomData.features.includes(feature._id)
+                                    ? <li key={feature._id}>{feature.name}</li>
+                                    : null
+                            ))}
+                    </ul>
                     </p>
                     <h4>Reservation period:</h4>
                     <p>{moment(timesData.startTime).format("dddd, MMMM D, YYYY")}
