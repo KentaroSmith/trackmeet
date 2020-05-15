@@ -34,6 +34,6 @@
     "react-dnd": "^9.4.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
-    "reactstrap": "^8.1.1"
+    "reactstrap": "^8.4.1"
   }
 }

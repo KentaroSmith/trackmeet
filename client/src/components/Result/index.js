@@ -7,21 +7,23 @@ import {
 import { useDispatch } from 'react-redux';
 import { updateRoom, updateTimes } from "../../actions";
 
-const Results = ({ roomName, features, building, occupancy, id, startTime, endTime, history }) => {
+const Result = ({ room, locations, features, startTime, endTime, history }) => {
     const dispatch = useDispatch();
     let featureList = [];
+    let locationName = "";
     for (let i = 0; i < features.length; i++) {
-        featureList.push(features[i] + " ")
+        if (room.features.includes(features[i]._id)) {
+            featureList.push(features[i].name + " ");
+        }
+    };
+    for (let i = 0; i < locations.length; i++) {
+        if (locations[i]._id === room.location) {
+            locationName = locations[i].name;
+        }
     };
 
     const updateReservation = () => {
-        dispatch(updateRoom({
-            id: id,
-            building: building,
-            roomName: roomName,
-            features: features,
-            occupancy: occupancy
-        }));
+        dispatch(updateRoom(room));
 
         dispatch(updateTimes({
             startTime: startTime,
@@ -44,17 +46,18 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
                 </p>
             </Jumbotron> */}
             <Jumbotron>
-                <h3 className="roomName">{roomName}</h3>
+                <h3 className="roomName">{room.roomName}</h3>
                 <p className="features"> <strong>Room Features: </strong> {featureList} </p>
-                <p className="building"> <strong>Location: </strong> {building} </p>
-                <p className="occupancy"> <strong>Max Occupancy: </strong> {occupancy} </p>
+                <p className="building"> <strong>Location: </strong> {locationName} </p>
+                <p className="capacity"> <strong>Capacity: </strong> {room.capacity} </p>
                 {/*This was a test to make sure that start/end times carried over to results*/}
                 {/*                 <p> {startTime} </p>
                 <p> {endTime} </p> */}
 
                 <Button
                     onClick={updateReservation}
-                    key={id}>Reserve this room 
+                    key={room._id}>
+                    Reserve this room
                 </Button>
             </Jumbotron>
 
@@ -63,4 +66,4 @@ const Results = ({ roomName, features, building, occupancy, id, startTime, endTi
 }
 
 
-export default withRouter(Results);
+export default withRouter(Result);

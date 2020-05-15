@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import Reservation from "../../components/reservation/index";
+import Reservation from "../../components/Reservation/index";
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Container, Row, Col, Button,
@@ -29,8 +29,6 @@ const Reservations = () => {
         setModalDelete(!modalDelete);
     }
 
-    //console.log("the user is " + currentUser.email)
-
     // loads once when the component mounts:
     useEffect(
         () => {
@@ -39,10 +37,11 @@ const Reservations = () => {
                 dispatch(updateUser(user));
                 // load user data from database
                 API.getEventsByUser(user._id)
-                    .then(res => {
-                        setEvents(res.data);
-                    })
-                    .catch(err => console.log(err));
+                .then(res => {
+                    console.log(res.data);
+                    setEvents(res.data);
+                })
+                .catch(err => console.log(err));
             });
         },
         []);
@@ -59,8 +58,8 @@ const Reservations = () => {
             .catch(err => console.log(err));
     }
 
-    const loadReservations = () => {
-        //console.log("loadReservations: " + user._id)
+    const getReservations = () => {
+        console.log("getReservations: " + user._id);
         API.getEventsByUser(user._id)
             .then(res => {
                 console.log(res.data);
@@ -75,10 +74,10 @@ const Reservations = () => {
         API.deleteEvent(event._id)
             .then(res => {
                 console.log(res.data);
-                loadReservations();
+                getReservations();
                 SMS.sendSMS(event.user.phone,
                     `Your reservation of ` +
-                    `${event.room.roomName} at ${event.room.building} for ` +
+                    `${event.room.roomName} at ${event.room.location.name} for ` +
                     `${moment(event.startTime).format("dddd, MMMM D, YYYY, h:mm a")} to ${moment(event.endTime).format("h:mm a")} ` +
                     `has been CANCELLED. ` +
                     `http://track-meet.herokuapp.com`

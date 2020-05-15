@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Results from "../components/results/index";
+import Result from "../components/Result/index";
 import moment from "moment";
 import {
     Jumbotron,
@@ -22,20 +22,28 @@ class RoomSearch extends Component {
         roomName: "",
         features: "",
         building: "",
-        occupancy: "",
+        capacity: "",
         startTime: "",
         endTime: "",
         start: "",
         end: "",
-        day: ""
-    }
+        day: "", 
+        allFeatures: [], 
+        allLocations: []
+    };
     searchChoice = {
         location: false,
         features: false
-    }
+    };
     featuresArray = {
         features: []
-    }
+    };
+
+    componentDidMount() {
+        this.getLocations();
+        this.getFeatures();
+    };
+
     handleSearch = event => {
 
         API.searchRooms(this.state.roomName)
@@ -43,19 +51,19 @@ class RoomSearch extends Component {
                 this.setState({
                     rooms: res.data,
                     roomName: res.data.roomName,
-                    occupancy: res.data.occupancy,
+                    capacity: res.data.capacity,
                     features: res.data.features,
                     building: res.data.building
                 })
             })
     };
     locationSelect = event => {
-        API.searchRoomsByLocation(event.target.value)
+        API.searchRoomsByName(event.target.value)
             .then(res => {
                 this.setState({
                     rooms: res.data,
                     roomName: res.data.roomName,
-                    occupancy: res.data.occupancy,
+                    capacity: res.data.capacity,
                     features: res.data.features,
                     building: res.data.building
                 })
@@ -120,6 +128,18 @@ class RoomSearch extends Component {
             endTime: moment(`${day} ${endTime}`) 
         })
     }
+
+    getLocations = async () => {
+        const res = await API.getLocations()
+        console.log(res.data);
+        this.setState({...this.state, allLocations: res.data});
+    };
+
+    getFeatures = async () => {
+        const res = await API.getFeatures()
+        console.log(res.data);
+        this.setState({...this.state, allFeatures: res.data});
+    };
 
     render() {
         let hiddenElements = {
@@ -198,16 +218,17 @@ class RoomSearch extends Component {
                 <Container>
                     <Row>
                         <Col size="md-12">
-                            <h1>Results:</h1>
-                            {this.state.rooms.length === 0 ? "" :
+                            {this.state.rooms.length === 0
+                                ? <h1>No results.</h1>
+                                : <h1>Results ({this.state.rooms.length}):</h1>
+                            }
+                            {this.state.rooms.length === 0 ||
                                 this.state.rooms.map(room => (
-                                    <Results
+                                    <Result
                                         key={room._id}
-                                        id={room._id}
-                                        roomName={room.roomName}
-                                        features={room.features}
-                                        occupancy={room.occupancy}
-                                        building={room.building}
+                                        room={room}
+                                        locations={this.state.allLocations}
+                                        features={this.state.allFeatures}
                                         startTime={this.state.startTime}
                                         endTime={this.state.endTime}
                                     />

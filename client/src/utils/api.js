@@ -26,11 +26,23 @@ export default {
   searchRooms: function (query) {
     return axios.get("/api/rooms", query);
   },
-  searchRoomsByLocation: function (location) {
-    return axios.get("/api/rooms/?roomName=" + location)
+  searchRoomsByName: function (name) {
+    return axios.get("/api/rooms/?roomName=" + name);
   },
   searchRoomsByFeature: function (features) {
-    return axios.get("/api/rooms/?features=" + features)
+    return axios.get("/api/rooms/?features=" + features);
+  },
+  getRoomsByLocation: function (location) {
+    return axios.get("/api/rooms/?location=" + location);
+  },
+  saveRoom: function (roomData) {
+    return axios.post("/api/rooms", roomData);
+  },
+  deleteRoom: function (id) {
+    return axios.delete("/api/rooms/" + id);
+  },
+  updateRoom: function (id, roomData) {
+    return axios.put("/api/rooms/" + id, roomData);
   },
 
   // *** EVENTS ***
@@ -45,5 +57,31 @@ export default {
   },
   deleteEvent: function (id) {
     return axios.delete("/api/events/" + id);
+  },
+
+  // *** LOCATIONS ***
+  saveLocation: function (locationData) {
+    return axios.post("/api/locations", locationData);
+  },
+  getLocations: function () {
+    return axios.get("/api/locations");
+  },
+  getLocation: function (id) {
+    return axios.get("/api/locations/" + id);
+  },
+  updateLocation: function (id, locationData) {
+    console.log("before");
+    console.log(id);
+    console.log(locationData);
+    console.log("after");
+    return axios.put("/api/locations/" + id, locationData);
+  },
+
+  // *** FEATURES ***
+  saveFeature: function (featureData) {
+    return axios.post("/api/features", featureData);
+  },
+  getFeatures: function () {
+    return axios.get("/api/features");
   }
 };
