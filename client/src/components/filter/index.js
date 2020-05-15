@@ -9,7 +9,7 @@ const Filter = () => (
         <UncontrolledCollapse toggler="#toggler">
             <InputGroup>
                 <InputGroupAddon addonType="prepend">
-                    <InputGroupText>Occupancy Range</InputGroupText>
+                    <InputGroupText>Capacity Range</InputGroupText>
                     <Input type="number"></Input>
                 </InputGroupAddon>
             </InputGroup>

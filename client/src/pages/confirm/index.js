@@ -22,7 +22,6 @@ const Confirm = ({ history }) => {
     const roomData = useSelector(state => state.room);
     const timesData = useSelector(state => state.times);
     const dispatch = useDispatch();
-    const [events, setEvents] = useState([]);
     const [features, setFeatures] = useState([]);
     const [locationName, setLocationName] = useState("");
 
@@ -32,12 +31,6 @@ const Confirm = ({ history }) => {
             // load user info into global state (Redux) if we haven't already
             getUserData(currentUser.email, (user) => {
                 dispatch(updateUser(user));
-                // load user data from database
-                API.getEventsByUser(user._id)
-                    .then(res => {
-                        setEvents(res.data);
-                    })
-                    .catch(err => console.log(err));
             });
             getLocationName();
             getFeatures();
@@ -51,7 +44,7 @@ const Confirm = ({ history }) => {
         API.saveEvent({
             user: mongojs.ObjectId(user._id),
             userName: `${user.firstName} ${user.lastName}`,
-            room: mongojs.ObjectId(room.id),
+            room: mongojs.ObjectId(room._id),
             roomName: room.roomName,
             startTime: times.startTime,
             endTime: times.endTime
@@ -63,12 +56,10 @@ const Confirm = ({ history }) => {
                 SMS.sendSMS(
                     userData.phone,
                     `CONFIRMATION: You have reserved ${roomData.roomName} ` +
-                    `at ${roomData.building} for ` +
+                    `at ${locationName} for ` +
                     `${moment(timesData.startTime).format("dddd, MMMM D, YYYY, h:mm a")} to ${moment(timesData.endTime).format("h:mm a")}. ` +
                     `http://track-meet.herokuapp.com`
                 )
-                //{moment(timesData.startTime).format("dddd, MMMM D, YYYY")}
-                //<br />{moment(timesData.startTime).format("h:mm a")} to {moment(timesData.endTime).format("h:mm a")}</p>
 
                 // redirect to the /reservations page
                 history.push("/reservations");
@@ -105,7 +96,7 @@ const Confirm = ({ history }) => {
                 <CardBody>
                     <h4>Location:</h4>
                     <p>{locationName}, {roomData.roomName}
-                        <br />Max capacity: {roomData.occupancy}
+                        <br />Max capacity: {roomData.capacity}
                         <br />Features:
                     <ul>
                         {(roomData.features.length > 0) &&

@@ -11,7 +11,15 @@ module.exports = {
             .find(req.query)
             .sort({ startTime: 1 })
             .populate("user")
-            .populate("room")
+            .populate({
+                path: 'room', 
+                populate: {
+                    path: 'features location'
+                }
+                // populate: {
+                //     path: 'location'
+                // }
+            })
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

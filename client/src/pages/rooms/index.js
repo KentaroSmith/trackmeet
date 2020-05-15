@@ -43,8 +43,8 @@ const Rooms = () => {
         getFeatures();
     }, []);
 
-    const toggleCreate = () => setModalCreate(!modalCreate);
-    const toggleUpdate = () => setModalUpdate(!modalUpdate);
+    const toggleCreateLocation = () => setModalCreate(!modalCreate);
+    const toggleUpdateLocation = () => setModalUpdate(!modalUpdate);
 
     const getLocations = async () => {
         const res = await API.getLocations();
@@ -102,7 +102,6 @@ const Rooms = () => {
         event.preventDefault();
         console.log("Add room location: " + location); // not working. = null
         API.saveRoom({
-            building: mongojs.ObjectId(location), // delete this line later
             location: mongojs.ObjectId(location),
             roomName: name,
             description: description,
@@ -117,15 +116,15 @@ const Rooms = () => {
 
     };
 
-    const addRoom2 = (event, name, description, selectedFeatureIds) => {
+    const addRoom2 = (event, name, description, capacity, selectedFeatureIds) => {
         console.log("addRoom2!!!!");
         event.preventDefault();
         console.log("Add room location: " + activeLocationId); // not working. = null
         API.saveRoom({
-            building: mongojs.ObjectId(activeLocationId), // delete this line later
             location: mongojs.ObjectId(activeLocationId),
             roomName: name,
-            description: description,
+            description,
+            capacity,
             features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
         }
         ).then(res => {
@@ -137,7 +136,7 @@ const Rooms = () => {
 
     };
 
-    const updateRoom = (event, name, description, selectedFeatureIds) => {
+    const updateRoom = (event, name, description, capacity, selectedFeatureIds) => {
         console.log("updateRoom");
         event.preventDefault();
         console.log("Update room at location: " + activeLocationId); // not working. = null
@@ -146,7 +145,8 @@ const Rooms = () => {
                 building: mongojs.ObjectId(activeLocationId), // delete this line later
                 location: mongojs.ObjectId(activeLocationId),
                 roomName: name,
-                description: description,
+                description,
+                capacity,
                 features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
             }
         ).then(res => {
@@ -171,13 +171,13 @@ const Rooms = () => {
                 <Row>
                     <Col xs="6">
                         <Card id="room-card" className="mx-auto shadow-lg">
-                            <CardHeader className="login-header">Create a room</CardHeader>
+                            <CardHeader className="login-header">Locations</CardHeader>
                             <CardBody>
                                 <Form onSubmit={addRoom}>
                                     <FormGroup>
                                         <Label for="selectLocation">Select a location</Label>
-                                        <Button color="danger" onClick={toggleUpdate}>Edit</Button>
-                                        <Button color="secondary" onClick={toggleCreate}>Add</Button>
+                                        <Button color="danger" onClick={toggleUpdateLocation}>Edit</Button>
+                                        <Button color="secondary" onClick={toggleCreateLocation}>Add</Button>
                                         <Input type="select" name="select" id="selectLocation"
                                             onChange={handleLocationChange}
                                         >
@@ -230,25 +230,25 @@ const Rooms = () => {
                 </Row>
             </Container>
 
-            <Modal isOpen={modalCreate} toggle={toggleCreate} className="location-modal">
-                <ModalHeader toggle={toggleCreate}>Create New Location</ModalHeader>
+            <Modal isOpen={modalCreate} toggle={toggleCreateLocation} className="location-modal">
+                <ModalHeader toggle={toggleCreateLocation}>Create New Location</ModalHeader>
                 <ModalBody>
                     <LocationForm />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggleCreate}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleCreate}>Cancel</Button>
+                    <Button color="primary" onClick={toggleCreateLocation}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleCreateLocation}>Cancel</Button>
                 </ModalFooter>
             </Modal>
 
-            <Modal isOpen={modalUpdate} toggle={toggleUpdate} className="location-modal">
-                <ModalHeader toggle={toggleUpdate}>Edit Location</ModalHeader>
+            <Modal isOpen={modalUpdate} toggle={toggleUpdateLocation} className="location-modal">
+                <ModalHeader toggle={toggleUpdateLocation}>Edit Location</ModalHeader>
                 <ModalBody>
                     <LocationForm locationId={location} />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggleUpdate}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleUpdate}>Cancel</Button>
+                    <Button color="primary" onClick={toggleUpdateLocation}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleUpdateLocation}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>

@@ -25,7 +25,7 @@ const Reservation = ({ event, onDelete }) => {
                             </Col>
                             <Col className="col-auto">
                                 {/*<Button className="modify-btn" ><FontAwesomeIcon icon={faPencilAlt} /></Button>*/}
-                                <button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} size="3x" /></button>
+                                <Button className="delete-btn" onClick={onDelete}><FontAwesomeIcon icon={faCalendarTimes} size="3x" /></Button>
                             </Col>
                         </Row>
                     </Container>
@@ -36,19 +36,18 @@ const Reservation = ({ event, onDelete }) => {
                             <Col>
                                 <h4>Location:</h4>
                                 <p style={{marginBottom: "0"}}>
-                                    {!event.room || event.room.building}, {!event.room || event.room.roomName}
-                                    <br />Max capacity: {!event.room || event.room.occupancy}
+                                    {!event.room.location || event.room.location.name}, {!event.room || event.room.roomName}
+                                    <br />Max capacity: {!event.room || event.room.capacity}
                                     <br />Room features:
                                 </p>
                                 <ul>
                                     {!event.room || !event.room.features ||
-                                        event.room.features.map((feature, index) => (
-                                            <li key={feature} className="room-feature">{feature}</li>
+                                        event.room.features.map((feature) => (
+                                            <li key={feature._id} className="room-feature">{feature.name}</li>
                                         ))}
                                 </ul>
                             </Col>
                             <Col>
-
                                 <h4>Reserved by:</h4>
                                 <p>
                                     {!event.user || event.user.firstName} {!event.user || event.user.lastName}

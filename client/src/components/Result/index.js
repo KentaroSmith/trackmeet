@@ -49,7 +49,7 @@ const Result = ({ room, locations, features, startTime, endTime, history }) => {
                 <h3 className="roomName">{room.roomName}</h3>
                 <p className="features"> <strong>Room Features: </strong> {featureList} </p>
                 <p className="building"> <strong>Location: </strong> {locationName} </p>
-                <p className="occupancy"> <strong>Max Occupancy: </strong> {room.occupancy} </p>
+                <p className="capacity"> <strong>Capacity: </strong> {room.capacity} </p>
                 {/*This was a test to make sure that start/end times carried over to results*/}
                 {/*                 <p> {startTime} </p>
                 <p> {endTime} </p> */}

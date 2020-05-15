@@ -4,13 +4,15 @@ const Schema = mongoose.Schema;
 const roomSchema = new Schema({
     roomName: { type: String, required: true },
     description: { type: String, required: false },
-    features: { type: Array, required: true },
-    building: { type: String, required: true },
+    features: [{ 
+        type : Schema.Types.ObjectId, 
+        ref: 'Feature' 
+    }],
     location: {
         type: Schema.Types.ObjectId,
         ref: "Location"
     },
-    occupancy: Number,
+    capacity: { type: Number, required: true },
     timeOpen: String,
     timeClosed: String
 });

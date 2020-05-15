@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Result from "../components/results/index";
+import Result from "../components/Result/index";
 import moment from "moment";
 import {
     Jumbotron,
@@ -22,7 +22,7 @@ class RoomSearch extends Component {
         roomName: "",
         features: "",
         building: "",
-        occupancy: "",
+        capacity: "",
         startTime: "",
         endTime: "",
         start: "",
@@ -51,7 +51,7 @@ class RoomSearch extends Component {
                 this.setState({
                     rooms: res.data,
                     roomName: res.data.roomName,
-                    occupancy: res.data.occupancy,
+                    capacity: res.data.capacity,
                     features: res.data.features,
                     building: res.data.building
                 })
@@ -63,7 +63,7 @@ class RoomSearch extends Component {
                 this.setState({
                     rooms: res.data,
                     roomName: res.data.roomName,
-                    occupancy: res.data.occupancy,
+                    capacity: res.data.capacity,
                     features: res.data.features,
                     building: res.data.building
                 })

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup,
-    UncontrolledPopover, PopoverBody, PopoverHeader } from 'reactstrap';
+    UncontrolledPopover, PopoverBody, PopoverHeader,
+    InputGroup, InputGroupAddon } from 'reactstrap';
 
 const RoomForm = ({ location, room, features, onSubmit }) => {
-    const [name, setName] = useState(!!room ? room.roomName : "");
-    const [description, setDescription] = useState(!!room ? room.description : "");
+    const [name, setName] = useState(!!room.roomName ? room.roomName : "");
+    const [description, setDescription] = useState(!!room.description ? room.description : "");
+    const [capacity, setCapacity] = useState(!!room.capacity ? room.capacity : 1);
     const [selectedFeatureIds, setSelectedFeatureIds] = useState(!!room ? room.features : []);
-    const [displayedPopover, setDisplayedPopover] = useState("");
 
     useEffect(() => {
         if (!!room) {
             setName(room.roomName);
             setDescription(room.description);
+            setCapacity(room.capacity);
             setSelectedFeatureIds(room.features);
         }
     }, [room]);
@@ -29,7 +31,7 @@ const RoomForm = ({ location, room, features, onSubmit }) => {
         <Card id="room-card" className="mx-auto shadow-lg">
             <CardHeader className="login-header">Create a room at {location}</CardHeader>
             <CardBody>
-                <Form onSubmit={event => onSubmit(event, name, description, selectedFeatureIds)}>
+                <Form onSubmit={event => onSubmit(event, name, description, capacity, selectedFeatureIds)}>
                     <FormGroup>
                         <Input name="name" type="text" placeholder="Room name"
                             value={name}
@@ -42,6 +44,17 @@ const RoomForm = ({ location, room, features, onSubmit }) => {
                             onChange={event => setDescription(event.target.value)}
                         />
                     </FormGroup>
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">Room capacity:</InputGroupAddon>
+                        <Input 
+                            min={1} max={100} 
+                            type="number" 
+                            step="1" 
+                            value={capacity}
+                            onChange={event => setCapacity(event.target.value)}
+                        />
+                        <InputGroupAddon addonType="append">people</InputGroupAddon>
+                    </InputGroup>
                     {!features || features.map((feature) => (
                         <FormGroup check key={feature.name}>
                             <Label check>
