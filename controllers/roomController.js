@@ -33,5 +33,13 @@ module.exports = {
             .then(dbModel => dbModel.remove())
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
+    },
+    getCountPerLocation: function (req, res) {
+        db.Room
+            .aggregate([{
+                $group: { _id: '$location', count: { $sum: 1 } }
+            }])
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
     }
 };

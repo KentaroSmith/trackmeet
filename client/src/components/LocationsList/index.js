@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ListGroup, ListGroupItem, Collapse, Button, Container, Row, Col } from 'reactstrap';
+import { ListGroup, ListGroupItem, Collapse, Button, Container, Row, Col, Badge} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
@@ -50,7 +50,7 @@ const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLo
                 >
                     <Container>
                         <Row>
-                            <Col>{location.name}</Col>
+                            <Col>{location.name} <Badge pill>0</Badge></Col>
                             {activeLocationId === location._id
                                 ? <Col className="col-auto">
                                     <Button className="add-btn" onClick={onClickAdd}><FontAwesomeIcon icon={faPlus} size="1x" /> </Button>

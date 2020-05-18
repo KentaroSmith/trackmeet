@@ -6,6 +6,7 @@ import {
     Button,
     Form,
     FormGroup,
+    FormFeedback,
     Label,
     Input,
     Container,
@@ -25,11 +26,12 @@ class RoomSearch extends Component {
         capacity: "",
         startTime: "",
         endTime: "",
-        start: "",
-        end: "",
-        day: "", 
-        allFeatures: [], 
-        allLocations: []
+        day: "",
+        allFeatures: [],
+        allLocations: [],
+        validate: {
+            emailState: ''
+        },
     };
     searchChoice = {
         location: false,
@@ -45,7 +47,6 @@ class RoomSearch extends Component {
     };
 
     handleSearch = event => {
-
         API.searchRooms(this.state.roomName)
             .then(res => {
                 this.setState({
@@ -57,6 +58,7 @@ class RoomSearch extends Component {
                 })
             })
     };
+
     locationSelect = event => {
         API.searchRoomsByName(event.target.value)
             .then(res => {
@@ -112,11 +114,28 @@ class RoomSearch extends Component {
         this.setState({ day: event.target.value });
     }
     handleStart = (event) => {
-        this.setState({ start: event.target.value });
+        this.setState({ startTime: event.target.value });
     }
-    handleEnd = (event) => {
-        this.setState({ end: event.target.value });
+    validateTimes = (event) => {
+        const { validate } = this.state;
+        if ((event.target.name === "startTime" && this.state.endTime > event.target.value) ||
+            (event.target.name === "endTime" && event.target.value > this.state.startTime)) {
+            validate.timeState = 'has-success'
+        } else {
+            validate.timeState = 'has-danger'
+        }
+        this.setState({ validate });
+        //this.setState({ end: event.target.value });
     }
+
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const { name } = target;
+        await this.setState({
+          [ name ]: value,
+        });
+      }
 
     saveTimeBlock = event => {
         let day = this.state.day;
@@ -125,20 +144,20 @@ class RoomSearch extends Component {
 
         this.setState({
             startTime: moment(`${day} ${startTime}`),
-            endTime: moment(`${day} ${endTime}`) 
+            endTime: moment(`${day} ${endTime}`)
         })
     }
 
     getLocations = async () => {
         const res = await API.getLocations()
         console.log(res.data);
-        this.setState({...this.state, allLocations: res.data});
+        this.setState({ ...this.state, allLocations: res.data });
     };
 
     getFeatures = async () => {
         const res = await API.getFeatures()
         console.log(res.data);
-        this.setState({...this.state, allFeatures: res.data});
+        this.setState({ ...this.state, allFeatures: res.data });
     };
 
     render() {
@@ -201,14 +220,45 @@ class RoomSearch extends Component {
                     </Form>
                     <Form>
                         <FormGroup>
-                            <Label>Reservation Date <Input type="date" id="day" value={this.state.day} onChange={this.handleDay}></Input> </Label>
+                            <Row form>
+                                <Col>
+                                    <Label>Reservation Date</Label><Input type="date" id="day" value={this.state.day} onChange={this.handleDay}></Input>
+                                </Col>
+                                <Col>
+                                    <Label>Start Time {this.state.startTime}</Label>
+                                    <Input 
+                                        type="time" 
+                                        id="start" 
+                                        name="startTime"  
+                                        step="900" 
+                                        value={this.state.startTime} 
+                                        onChange={(event) => {
+                                            this.validateTimes(event);
+                                            this.handleChange(event);
+                                        }}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Label>End Time {this.state.endTime}</Label>
+                                    <Input 
+                                        type="time" 
+                                        id="end" 
+                                        name="endTime"  
+                                        step="900" 
+                                        value={this.state.endTime} 
+                                        valid={this.state.validate.timeState === 'has-success'}
+                                        invalid={this.state.validate.timeState === 'has-danger'}
+                                        onChange={(event) => {
+                                            this.validateTimes(event);
+                                            this.handleChange(event);
+                                        }}
+                                    />
+                                    <FormFeedback invalid>End Time must be later than Start Time.</FormFeedback>
+                                </Col>
+                            </Row>
                         </FormGroup>
-                        <FormGroup>
-                            <Label>Start Time <Input type="time" id="start" value={this.state.start} onChange={this.handleStart}></Input></Label>
-                            <Label>End Time <Input type="time" id="end" value={this.state.end} onChange={this.handleEnd}></Input></Label>
-                        </FormGroup>
-                        <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
-                        <h3>Selected Time Slot: {moment(this.state.startTime).format("ddd, MMM D YYYY, h:mm a")} to {moment(this.state.endTime).format("h:mm a")}</h3>
+                        {/* <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
+                        <h3>Selected Time Slot: {moment(this.state.startTime).format("ddd, MMM D YYYY, h:mm a")} to {moment(this.state.endTime).format("h:mm a")}</h3> */}
 
                     </Form>
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
@@ -222,18 +272,23 @@ class RoomSearch extends Component {
                                 ? <h1>No results.</h1>
                                 : <h1>Results ({this.state.rooms.length}):</h1>
                             }
-                            {this.state.rooms.length === 0 ||
-                                this.state.rooms.map(room => (
+                        </Col>
+                    </Row>
+                    <Row style={{overflowX: "auto", whiteSpace: "nowrap"}} >
+                        {this.state.rooms.length === 0 ||
+                            this.state.rooms.map(room => (
+                                <Col xs="4" style={{display: "inline-block", float: "none" }}>
                                     <Result
                                         key={room._id}
                                         room={room}
                                         locations={this.state.allLocations}
                                         features={this.state.allFeatures}
-                                        startTime={this.state.startTime}
-                                        endTime={this.state.endTime}
+                                        startTime={moment(`${this.state.day} ${this.state.startTime}`)}
+                                        endTime={moment(`${this.state.day} ${this.state.endTime}`)}
                                     />
-                                ))}
-                        </Col>
+                                </Col>
+                            ))
+                        }
                     </Row>
                 </Container>
             </div>

@@ -11,8 +11,8 @@ const locationSchema = new Schema({
     city: { type: String },
     state: { type: String },
     zip: Number,
-    timeOpen: Date,
-    timeClose: Date
+    timeOpen: String,
+    timeClose: String
 });
 
 const Location = mongoose.model("Location", locationSchema);

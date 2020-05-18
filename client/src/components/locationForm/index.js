@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
     Card, CardBody, CardHeader,
     Button, Container, Row, Col,
-    Form, FormGroup, Input
+    Form, FormGroup, Input, Label
 } from 'reactstrap';
 import API from "../../utils/api.js";
 
 const LocationForm = ({ locationId }) => {
     // if locationId is passed in, form is in UPDATE mode
     // else, form is in CREATE mode
-    const [location, setLocation] = useState({});
+    const [location, setLocation] = useState({timeOpen: "09:00", timeClose: "17:00"});
 
     useEffect(() => {
         console.log("useEffect, locationId = " + locationId);
@@ -28,6 +28,7 @@ const LocationForm = ({ locationId }) => {
     };
 
     const updateLocation = (event) => {
+        console.log("updating location");
         event.preventDefault();
 
         API.updateLocation(locationId, location)
@@ -37,6 +38,8 @@ const LocationForm = ({ locationId }) => {
     };
 
     const createLocation = (event) => {
+        console.log("creating location");
+
         event.preventDefault();
 
         API.saveLocation(location)
@@ -77,6 +80,26 @@ const LocationForm = ({ locationId }) => {
                     value={location.zip}
                     onChange={(event) => setLocation({ ...location, zip: event.target.value })}
                 />
+            </FormGroup>
+            <FormGroup>
+                <Container>
+                    <Row>
+                        <Col>
+                            <Label>Opens at:
+                                <Input name="timeOpen" type="time"
+                                    value={location.timeOpen}
+                                    onChange={(event) => setLocation({ ...location, timeOpen: event.target.value })} />
+                            </Label>
+                        </Col>
+                        <Col>
+                            <Label>Closes at:
+                                <Input name="timeClose" type="time"
+                                    value={location.timeClose}
+                                    onChange={(event) => setLocation({ ...location, timeClose: event.target.value })} />
+                            </Label>
+                        </Col>
+                    </Row>
+                </Container>
             </FormGroup>
             <Button type="submit" className="btn-block">Update</Button>
         </Form>

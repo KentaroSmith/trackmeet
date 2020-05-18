@@ -7,7 +7,7 @@ import {
     Button, Form, FormGroup, Input, Label,
     Card, CardImg, CardBody, CardText, CardHeader,
     Modal, ModalHeader, ModalBody, ModalFooter,
-    Container, Row, Col
+    Container, Row, Col, Badge
 } from 'reactstrap';
 import API from "../../utils/api";
 import { useDispatch } from 'react-redux';
@@ -184,7 +184,7 @@ const Rooms = () => {
                                             <option check="true">Select a location</option>
                                             {!locations || locations.map((loc) => (
                                                 <option check="true" key={loc._id} data-id={loc._id}>
-                                                    {loc.name}
+                                                    {loc.name}<Badge pill>0</Badge>
                                                 </option>
                                             ))
                                             }

@@ -1,8 +1,7 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 import {
-    Jumbotron,
-    Button
+    Button, Card, CardBody
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { updateRoom, updateTimes } from "../../actions";
@@ -34,9 +33,9 @@ const Result = ({ room, locations, features, startTime, endTime, history }) => {
     }
 
     return (
-        <div className="search-result">
-
-            {/* <Jumbotron>
+        <Card className="search-result">
+            <CardBody>
+                {/* <Jumbotron>
                 <h1 className="display-3">Results:</h1>
                 <p className="lead"></p>
                 <hr className="my-2"></hr>
@@ -45,7 +44,7 @@ const Result = ({ room, locations, features, startTime, endTime, history }) => {
                     <Button color="primary">Learn More</Button>
                 </p>
             </Jumbotron> */}
-            <Jumbotron>
+
                 <h3 className="roomName">{room.roomName}</h3>
                 <p className="features"> <strong>Room Features: </strong> {featureList} </p>
                 <p className="building"> <strong>Location: </strong> {locationName} </p>
@@ -59,9 +58,9 @@ const Result = ({ room, locations, features, startTime, endTime, history }) => {
                     key={room._id}>
                     Reserve this room
                 </Button>
-            </Jumbotron>
 
-        </div>
+            </CardBody>
+        </Card>
     );
 }
 
