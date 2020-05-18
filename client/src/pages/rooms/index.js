@@ -37,10 +37,12 @@ const Rooms = () => {
     const [roomsByLocation, setRoomsByLocation] = useState([]); // the rooms for all locations that have been expanded
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
+    const [roomCounts, setRoomCounts] = useState([]);
 
     useEffect(() => {
         getLocations();
         getFeatures();
+        getRoomCounts();
     }, []);
 
     const toggleCreateLocation = () => setModalCreate(!modalCreate);
@@ -48,14 +50,20 @@ const Rooms = () => {
 
     const getLocations = async () => {
         const res = await API.getLocations();
-        console.log(res.data);
+        // console.log(res.data);
         setLocations(res.data);
     };
 
     const getFeatures = async () => {
-        const res = await API.getFeatures()
-        console.log(res.data);
+        const res = await API.getFeatures();
+        // console.log(res.data);
         setFeatures(res.data);
+    };
+
+    const getRoomCounts = async () => {
+        const res = await API.getRoomCountPerLocation();
+        console.log(res.data);
+        setRoomCounts(res.data);
     };
 
     // handles a click on a location
@@ -130,6 +138,7 @@ const Rooms = () => {
         ).then(res => {
             console.log(res.data);
             getRooms(activeLocationId);
+            getRoomCounts();
             setShowAddForm(false);
         })
             .catch(err => console.log(err));
@@ -161,6 +170,7 @@ const Rooms = () => {
     const deleteRoom = async (id) => {
         const res = await API.deleteRoom(id);
         getRooms(activeLocationId);
+        getRoomCounts();
     };
 
     return (
@@ -184,7 +194,7 @@ const Rooms = () => {
                                             <option check="true">Select a location</option>
                                             {!locations || locations.map((loc) => (
                                                 <option check="true" key={loc._id} data-id={loc._id}>
-                                                    {loc.name}<Badge pill>0</Badge>
+                                                    {loc.name}
                                                 </option>
                                             ))
                                             }
@@ -200,6 +210,7 @@ const Rooms = () => {
                         <LocationsList
                             name={name}
                             locations={locations}
+                            roomCounts={roomCounts}
                             activeLocationId={activeLocationId}
                             roomsByLocation={roomsByLocation}
                             onNameChange={(event) => console.log(event.target.value)}

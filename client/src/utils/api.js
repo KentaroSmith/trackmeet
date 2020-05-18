@@ -44,6 +44,9 @@ export default {
   updateRoom: function (id, roomData) {
     return axios.put("/api/rooms/" + id, roomData);
   },
+  getRoomCountPerLocation: function () {
+    return axios.get("/api/rooms/count");
+  },
 
   // *** EVENTS ***
   saveEvent: function (eventData) {
