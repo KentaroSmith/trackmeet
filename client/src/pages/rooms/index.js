@@ -1,19 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { withRouter, Redirect } from "react-router";
-import { Link } from "react-router-dom";
-import app from "../../components/Firebase/firebase";
 import { AuthContext } from "../../components/Firebase/auth";
 import {
     Button, Form, FormGroup, Input, Label,
-    Card, CardImg, CardBody, CardText, CardHeader,
+    Card, CardBody, CardHeader,
     Modal, ModalHeader, ModalBody, ModalFooter,
-    Container, Row, Col, Badge
+    Container, Row, Col
 } from 'reactstrap';
 import API from "../../utils/api";
-import { useDispatch } from 'react-redux';
-import { updateUser } from "../../actions";
 import "./style.css";
-import { set } from "mongoose";
 import LocationForm from "../../components/LocationForm";
 import LocationsList from "../../components/LocationsList"
 import RoomForm from "../../components/RoomForm";

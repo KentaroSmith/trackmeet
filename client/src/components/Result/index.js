@@ -1,10 +1,11 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 import {
-    Button, Card, CardBody
+    Button, Card, CardHeader, CardFooter, CardBody, Badge, Container, Row, Col,
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { updateRoom, updateTimes } from "../../actions";
+import "./style.css";
 
 const Result = ({ room, locations, features, startTime, endTime, history }) => {
     const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const Result = ({ room, locations, features, startTime, endTime, history }) => {
     let locationName = "";
     for (let i = 0; i < features.length; i++) {
         if (room.features.includes(features[i]._id)) {
-            featureList.push(features[i].name + " ");
+            featureList.push(features[i].name);
         }
     };
     for (let i = 0; i < locations.length; i++) {
@@ -33,33 +34,52 @@ const Result = ({ room, locations, features, startTime, endTime, history }) => {
     }
 
     return (
-        <Card className="search-result">
+        <Card className="search-result h-100" >
+            <CardHeader>
+                <div className="location">{locationName}</div>
+                <h4 className="roomName">{room.roomName}</h4>
+            </CardHeader>
             <CardBody>
-                {/* <Jumbotron>
-                <h1 className="display-3">Results:</h1>
-                <p className="lead"></p>
-                <hr className="my-2"></hr>
-                <p></p>
-                <p className="lead">
-                    <Button color="primary">Learn More</Button>
-                </p>
-            </Jumbotron> */}
+                {/* <p className="description">{room.description} </p> */}
 
-                <h3 className="roomName">{room.roomName}</h3>
-                <p className="features"> <strong>Room Features: </strong> {featureList} </p>
-                <p className="building"> <strong>Location: </strong> {locationName} </p>
-                <p className="capacity"> <strong>Capacity: </strong> {room.capacity} </p>
-                {/*This was a test to make sure that start/end times carried over to results*/}
-                {/*                 <p> {startTime} </p>
-                <p> {endTime} </p> */}
+                <Container>
+                    <Row>
+                        <Col>
+                            <p className="description card-text">{room.description} </p>
+                        </Col>
+                    </Row>
+                    <Row className="align-items-center" style={{ marginBottom: 10 }}>
+                        <Col xs='12' style={{padding: 0}} >
+                            {!featureList || featureList.map((feature) => {
+                                return (
+                                    <span key={feature}>
+                                        <Badge pill style={{marginRight: 10}}>{feature}</Badge>
+                                    </span>
+                                )
+                            })}
+                        </Col>
+                    </Row>
+                </Container>
+               
 
-                <Button
-                    onClick={updateReservation}
-                    key={room._id}>
-                    Reserve this room
-                </Button>
-
-            </CardBody>
+            </CardBody> 
+            <CardFooter>
+                <Container>
+                    <Row className="align-items-center">
+                        <Col xs="6">
+                            <span className="capacity text-muted">Capacity: {room.capacity}</span>
+                        </Col>
+                        <Col xs="6" className="text-right">
+                            <Button
+                                outline
+                                onClick={updateReservation}
+                                key={room._id}>
+                                Reserve
+                            </Button>
+                        </Col>
+                    </Row>
+                </Container>
+            </CardFooter>
         </Card>
     );
 }

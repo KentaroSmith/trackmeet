@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Result from "../components/Result/index";
+import Result from "../../components/Result/index";
 import moment from "moment";
 import {
     Jumbotron,
@@ -11,9 +11,12 @@ import {
     Input,
     Container,
     Row,
-    Col
+    Col,
+    Card,
+    CardBody
 } from 'reactstrap';
-import API from "../utils/api";
+import API from "../../utils/api";
+import "./style.css";
 
 class RoomSearch extends Component {
 
@@ -133,9 +136,9 @@ class RoomSearch extends Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const { name } = target;
         await this.setState({
-          [ name ]: value,
+            [name]: value,
         });
-      }
+    }
 
     saveTimeBlock = event => {
         let day = this.state.day;
@@ -221,31 +224,31 @@ class RoomSearch extends Component {
                     <Form>
                         <FormGroup>
                             <Row form>
-                                <Col>
+                                <Col xs='12' sm='6'>
                                     <Label>Reservation Date</Label><Input type="date" id="day" value={this.state.day} onChange={this.handleDay}></Input>
                                 </Col>
-                                <Col>
-                                    <Label>Start Time {this.state.startTime}</Label>
-                                    <Input 
-                                        type="time" 
-                                        id="start" 
-                                        name="startTime"  
-                                        step="900" 
-                                        value={this.state.startTime} 
+                                <Col xs='6' sm='3'>
+                                    <Label for="start">Start Time {this.state.startTime}</Label>
+                                    <Input
+                                        type="time"
+                                        id="start"
+                                        name="startTime"
+                                        step="900"
+                                        value={this.state.startTime}
                                         onChange={(event) => {
                                             this.validateTimes(event);
                                             this.handleChange(event);
                                         }}
                                     />
                                 </Col>
-                                <Col>
-                                    <Label>End Time {this.state.endTime}</Label>
-                                    <Input 
-                                        type="time" 
-                                        id="end" 
-                                        name="endTime"  
-                                        step="900" 
-                                        value={this.state.endTime} 
+                                <Col xs='6' sm='3'>
+                                    <Label for="end">End Time {this.state.endTime}</Label>
+                                    <Input
+                                        type="time"
+                                        id="end"
+                                        name="endTime"
+                                        step="900"
+                                        value={this.state.endTime}
                                         valid={this.state.validate.timeState === 'has-success'}
                                         invalid={this.state.validate.timeState === 'has-danger'}
                                         onChange={(event) => {
@@ -257,29 +260,28 @@ class RoomSearch extends Component {
                                 </Col>
                             </Row>
                         </FormGroup>
-                        {/* <Button onClick={() => this.saveTimeBlock()}>Select Time Slot</Button>
-                        <h3>Selected Time Slot: {moment(this.state.startTime).format("ddd, MMM D YYYY, h:mm a")} to {moment(this.state.endTime).format("h:mm a")}</h3> */}
-
                     </Form>
                     <Button size="lg" color="primary" onClick={() => this.handleSearch()}>Show all rooms</Button>
-
                 </Jumbotron>
 
                 <Container>
-                    <Row>
-                        <Col size="md-12">
-                            {this.state.rooms.length === 0
-                                ? <h1>No results.</h1>
-                                : <h1>Results ({this.state.rooms.length}):</h1>
-                            }
+                    <Row >
+                        <Col xs='12' className='pb-3'>
+                            <Card>
+                                <CardBody>
+                                    {this.state.rooms.length === 0
+                                        ? <h1 className='m-0'>No available rooms.</h1>
+                                        : <h1 className='m-0'>Showing {this.state.rooms.length} available rooms:</h1>
+                                    }
+                                </CardBody>
+                            </Card>
                         </Col>
                     </Row>
-                    <Row style={{overflowX: "auto", whiteSpace: "nowrap"}} >
+                    <Row >
                         {this.state.rooms.length === 0 ||
                             this.state.rooms.map(room => (
-                                <Col xs="4" style={{display: "inline-block", float: "none" }}>
+                                <Col md="6" lg='4' key={room._id} className='pb-3'>
                                     <Result
-                                        key={room._id}
                                         room={room}
                                         locations={this.state.allLocations}
                                         features={this.state.allFeatures}
@@ -290,6 +292,7 @@ class RoomSearch extends Component {
                             ))
                         }
                     </Row>
+
                 </Container>
             </div>
         );
@@ -297,4 +300,3 @@ class RoomSearch extends Component {
 }
 
 export default RoomSearch;
-
