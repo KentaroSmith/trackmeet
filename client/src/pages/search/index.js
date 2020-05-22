@@ -26,7 +26,7 @@ class RoomSearch extends Component {
         roomName: "",
         features: "",
         building: "",
-        capacity: "",
+        capacity: 1,
         startTime: "",
         endTime: "",
         day: "",
@@ -40,9 +40,6 @@ class RoomSearch extends Component {
         location: false,
         features: false
     };
-    featuresArray = {
-        features: []
-    };
 
     componentDidMount() {
         this.getLocations();
@@ -50,14 +47,14 @@ class RoomSearch extends Component {
     };
 
     handleSearch = event => {
-        API.searchRooms(this.state.roomName)
+        API.searchRooms({params: {capacity: this.state.capacity}})
             .then(res => {
                 this.setState({
                     rooms: res.data,
-                    roomName: res.data.roomName,
-                    capacity: res.data.capacity,
-                    features: res.data.features,
-                    building: res.data.building
+                    // roomName: res.data.roomName,
+                    // capacity: res.data.capacity,
+                    // features: res.data.features,
+                    // building: res.data.building
                 })
             })
     };
@@ -67,10 +64,10 @@ class RoomSearch extends Component {
             .then(res => {
                 this.setState({
                     rooms: res.data,
-                    roomName: res.data.roomName,
-                    capacity: res.data.capacity,
-                    features: res.data.features,
-                    building: res.data.building
+                    // roomName: res.data.roomName,
+                    // capacity: res.data.capacity,
+                    // features: res.data.features,
+                    // building: res.data.building
                 })
             })
     }
@@ -98,21 +95,7 @@ class RoomSearch extends Component {
             searchTwo.style.display = "block";
         }
     }
-    getAllFeatures = () => {
-        let allFeatures = [];
-        API.searchRooms()
-            .then(res => {
-                for (let i = 0; i < res.data.length; i++) {
-                    allFeatures.push.apply(allFeatures, res.data[i].features);
-                }
-                allFeatures.sort();
-                console.log(allFeatures);
-                //This is currently not working. this.featuresArray.push() is not recognized.
-                this.featuresArray = allFeatures;
-                console.log(this.featuresArray)
-            })
 
-    }
     handleDay = (event) => {
         this.setState({ day: event.target.value });
     }
@@ -195,32 +178,30 @@ class RoomSearch extends Component {
                     </Form>
                     <Form id="featureList" style={hiddenElements}>
                         <Label for="Features">Features: </Label>
-                        <FormGroup check>
-                            <Label check>
-                                <Input type="checkbox" id="checkBox" value="projector"
-                                />{' '} projector
-                            </Label>
-                        </FormGroup>
-                        <FormGroup check>
-                            <Label check>
-                                <Input type="checkbox" id="checkBox" value="whiteboard"
-                                />{' '} whiteboard
-                            </Label>
-                        </FormGroup>
-
-                        <FormGroup check>
-                            <Label check>
-                                <Input type="checkbox" id="checkBox" value="conference table"
-                                />{' '} conference table
-                            </Label>
-                        </FormGroup>
-                        <FormGroup check>
-                            <Label check>
-                                <Input type="checkbox" id="checkBox" value="computer"
-                                />{' '} computer
-                            </Label>
+                        {this.state.allFeatures.map((feature) => {
+                            return (
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input 
+                                            type="checkbox" 
+                                            value={feature._id}/>{feature.name}
+                                    </Label>
+                                </FormGroup>
+                            );
+                        })}
+                    </Form>
+                    <Form>
+                        <FormGroup>
+                            <Label>Person capacity needed:</Label>
+                            <Input 
+                                value={this.state.capacity} 
+                                type='number' 
+                                min='1'
+                                onChange={(event) => this.setState({ capacity: event.target.value })}
+                                />
                         </FormGroup>
                     </Form>
+
                     <Form>
                         <FormGroup>
                             <Row form>
@@ -271,7 +252,7 @@ class RoomSearch extends Component {
                                 <CardBody>
                                     {this.state.rooms.length === 0
                                         ? <h1 className='m-0'>No available rooms.</h1>
-                                        : <h1 className='m-0'>Showing {this.state.rooms.length} available rooms:</h1>
+                                        : <h1 className='m-0'>Showing {this.state.rooms.length} available room{(this.state.rooms.length>1) && 's'}:</h1>
                                     }
                                 </CardBody>
                             </Card>

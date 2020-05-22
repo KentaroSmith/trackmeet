@@ -4,7 +4,7 @@ const db = require("../models");
 module.exports = {
     findAll: function (req, res) {
         db.Room
-            .find(req.query)
+            .find({ capacity: { $gte: req.query.capacity } })
             .sort({ roomName: 1 })
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
