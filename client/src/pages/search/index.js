@@ -24,7 +24,7 @@ class RoomSearch extends Component {
         locationSearch: "",
         rooms: [],
         roomName: "",
-        features: "",
+        features: [], // array of object IDs for selected (checked) features
         building: "",
         capacity: 1,
         startTime: "",
@@ -47,7 +47,12 @@ class RoomSearch extends Component {
     };
 
     handleSearch = event => {
-        API.searchRooms({params: {capacity: this.state.capacity}})
+        console.log(this.state.features);
+        API.searchRooms({ 
+            params: { 
+                capacity: this.state.capacity,
+                features: this.state.features
+            }})
             .then(res => {
                 this.setState({
                     rooms: res.data,
@@ -180,11 +185,18 @@ class RoomSearch extends Component {
                         <Label for="Features">Features: </Label>
                         {this.state.allFeatures.map((feature) => {
                             return (
-                                <FormGroup check>
+                                <FormGroup check key={feature._id}>
                                     <Label check>
-                                        <Input 
-                                            type="checkbox" 
-                                            value={feature._id}/>{feature.name}
+                                        <Input
+                                            type="checkbox"
+                                            data-id={feature._id}
+                                            onChange={(event) => {
+                                                !!event.target.checked
+                                                    ? this.setState({features: this.state.features.concat(feature._id)})
+                                                    : this.setState({features: this.state.features.filter(featureId => featureId !== feature._id)})
+                                            }}
+                                        />
+                                        {feature.name}
                                     </Label>
                                 </FormGroup>
                             );
@@ -193,12 +205,13 @@ class RoomSearch extends Component {
                     <Form>
                         <FormGroup>
                             <Label>Person capacity needed:</Label>
-                            <Input 
-                                value={this.state.capacity} 
-                                type='number' 
+                            <Input
+                                value={this.state.capacity}
+                                type='number'
                                 min='1'
+                                max='100'
                                 onChange={(event) => this.setState({ capacity: event.target.value })}
-                                />
+                            />
                         </FormGroup>
                     </Form>
 
@@ -252,7 +265,7 @@ class RoomSearch extends Component {
                                 <CardBody>
                                     {this.state.rooms.length === 0
                                         ? <h1 className='m-0'>No available rooms.</h1>
-                                        : <h1 className='m-0'>Showing {this.state.rooms.length} available room{(this.state.rooms.length>1) && 's'}:</h1>
+                                        : <h1 className='m-0'>Showing {this.state.rooms.length} available room{(this.state.rooms.length > 1) && 's'}:</h1>
                                     }
                                 </CardBody>
                             </Card>
