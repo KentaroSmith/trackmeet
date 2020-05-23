@@ -3,8 +3,10 @@ const db = require("../models");
 
 module.exports = {
     findAll: function (req, res) {
+        console.log(req.query);
         db.Room
             .find({ 
+                location: { $in: req.query.locations },
                 capacity: { $gte: req.query.capacity },
                 features: { $all: req.query.features }
              })

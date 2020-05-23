@@ -24,6 +24,7 @@ class RoomSearch extends Component {
         locationSearch: "",
         rooms: [],
         roomName: "",
+        locations: [], // array of object IDs for selected (checked) locations
         features: [], // array of object IDs for selected (checked) features
         building: "",
         capacity: 1,
@@ -47,20 +48,14 @@ class RoomSearch extends Component {
     };
 
     handleSearch = event => {
-        console.log(this.state.features);
         API.searchRooms({ 
             params: { 
+                locations: this.state.locations,
                 capacity: this.state.capacity,
                 features: this.state.features
             }})
             .then(res => {
-                this.setState({
-                    rooms: res.data,
-                    // roomName: res.data.roomName,
-                    // capacity: res.data.capacity,
-                    // features: res.data.features,
-                    // building: res.data.building
-                })
+                this.setState({ rooms: res.data })
             })
     };
 
@@ -142,13 +137,13 @@ class RoomSearch extends Component {
     getLocations = async () => {
         const res = await API.getLocations()
         console.log(res.data);
-        this.setState({ ...this.state, allLocations: res.data });
+        this.setState({ allLocations: res.data });
     };
 
     getFeatures = async () => {
         const res = await API.getFeatures()
         console.log(res.data);
-        this.setState({ ...this.state, allFeatures: res.data });
+        this.setState({ allFeatures: res.data });
     };
 
     render() {
@@ -182,25 +177,54 @@ class RoomSearch extends Component {
                         </FormGroup>
                     </Form>
                     <Form id="featureList" style={hiddenElements}>
-                        <Label for="Features">Features: </Label>
-                        {this.state.allFeatures.map((feature) => {
-                            return (
-                                <FormGroup check key={feature._id}>
-                                    <Label check>
-                                        <Input
-                                            type="checkbox"
-                                            data-id={feature._id}
-                                            onChange={(event) => {
-                                                !!event.target.checked
-                                                    ? this.setState({features: this.state.features.concat(feature._id)})
-                                                    : this.setState({features: this.state.features.filter(featureId => featureId !== feature._id)})
-                                            }}
-                                        />
-                                        {feature.name}
-                                    </Label>
-                                </FormGroup>
-                            );
-                        })}
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <Label>Locations:</Label>
+                                    {this.state.allLocations.map((location) => {
+                                        return (
+                                            <FormGroup check key={location._id}>
+                                                <Label check>
+                                                    <Input
+                                                        type="checkbox"
+                                                        data-id={location._id}
+                                                        onChange={(event) => {
+                                                            !!event.target.checked
+                                                                ? this.setState({ locations: this.state.locations.concat(location._id) })
+                                                                : this.setState({ locations: this.state.locations.filter(locId => locId !== location._id) })
+                                                        }}
+                                                    />
+                                                    {location.name}
+                                                </Label>
+                                            </FormGroup>
+                                        );
+                                    })}
+                                </Col>
+                                <Col>
+                                    <Label for="Features">Features: </Label>
+                                    {this.state.allFeatures.map((feature) => {
+                                        return (
+                                            <FormGroup check key={feature._id}>
+                                                <Label check>
+                                                    <Input
+                                                        type="checkbox"
+                                                        data-id={feature._id}
+                                                        onChange={(event) => {
+                                                            !!event.target.checked
+                                                                ? this.setState({ features: this.state.features.concat(feature._id) })
+                                                                : this.setState({ features: this.state.features.filter(featureId => featureId !== feature._id) })
+                                                        }}
+                                                    />
+                                                    {feature.name}
+                                                </Label>
+                                            </FormGroup>
+                                        );
+                                    })}
+                                </Col>
+                            </Row>
+                        </Container>
+                        
+                       
                     </Form>
                     <Form>
                         <FormGroup>
