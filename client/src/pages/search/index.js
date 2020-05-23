@@ -13,7 +13,9 @@ import {
     Row,
     Col,
     Card,
-    CardBody
+    CardBody,
+    ButtonGroup,
+    Collapse
 } from 'reactstrap';
 import API from "../../utils/api";
 import "./style.css";
@@ -23,10 +25,8 @@ class RoomSearch extends Component {
     state = {
         locationSearch: "",
         rooms: [],
-        roomName: "",
         locations: [], // array of object IDs for selected (checked) locations
         features: [], // array of object IDs for selected (checked) features
-        building: "",
         capacity: 1,
         startTime: "",
         endTime: "",
@@ -36,6 +36,7 @@ class RoomSearch extends Component {
         validate: {
             emailState: ''
         },
+        cSelected: [],
     };
     searchChoice = {
         location: false,
@@ -48,12 +49,17 @@ class RoomSearch extends Component {
     };
 
     handleSearch = event => {
-        API.searchRooms({ 
-            params: { 
-                locations: this.state.locations,
+        API.searchRooms({
+            params: {
+                locations: this.state.cSelected.includes('location') 
+                    ? this.state.locations
+                    : this.state.allLocations.map((loc) => loc._id),
                 capacity: this.state.capacity,
-                features: this.state.features
-            }})
+                features: this.state.cSelected.includes('feature') 
+                    ? this.state.features
+                    : []
+            }
+        })
             .then(res => {
                 this.setState({ rooms: res.data })
             })
@@ -70,30 +76,6 @@ class RoomSearch extends Component {
                     // building: res.data.building
                 })
             })
-    }
-    chooseFilter = event => {
-        let searchOne = document.getElementById("roomNameList");
-        let searchTwo = document.getElementById("featureList");
-        if (event.target.value === "roomName") {
-            this.searchChoice.location = true;
-            this.searchChoice.features = false;
-        }
-        else if (event.target.value === "featureList") {
-            this.searchChoice.features = true;
-            this.searchChoice.location = false;
-        }
-        else {
-            this.searchChoice.features = false;
-            this.searchChoice.location = false;
-        }
-        if (this.searchChoice.location) {
-            searchOne.style.display = "block";
-            searchTwo.style.display = "none";
-        }
-        else if (this.searchChoice.features) {
-            searchOne.style.display = "none";
-            searchTwo.style.display = "block";
-        }
     }
 
     handleDay = (event) => {
@@ -146,6 +128,14 @@ class RoomSearch extends Component {
         this.setState({ allFeatures: res.data });
     };
 
+    onCheckboxBtnClick = (selected) => {
+        if (!this.state.cSelected.includes(selected)) {
+            this.setState({ cSelected: this.state.cSelected.concat(selected) });
+        } else {
+            this.setState({ cSelected: this.state.cSelected.filter((item) => item !== selected) });
+        }
+    }
+
     render() {
         let hiddenElements = {
             display: "none"
@@ -153,7 +143,7 @@ class RoomSearch extends Component {
         return (
             <div className="search">
                 <Jumbotron >
-                    <Form>
+                    {/* <Form>
                         <FormGroup>
                             <Label>Search Method: </Label>
                             <Input type="select" name="select" id="filterChoice" onChange={this.chooseFilter}>
@@ -163,9 +153,15 @@ class RoomSearch extends Component {
                             </Input>
 
                         </FormGroup>
-                    </Form>
+                    </Form> */}
 
-                    <Form id="roomNameList" style={hiddenElements}>
+                    <ButtonGroup>
+                        <Button color="primary" onClick={() => this.onCheckboxBtnClick('location')} active={this.state.cSelected.includes('location')}>Location</Button>
+                        <Button color="primary" onClick={() => this.onCheckboxBtnClick('feature')} active={this.state.cSelected.includes('feature')}>Feature</Button>
+                        <Button color="primary" onClick={() => this.onCheckboxBtnClick('capacity')} active={this.state.cSelected.includes('capacity')}>Capacity</Button>
+                    </ButtonGroup>
+
+                    {/* <Form id="roomNameList" style={hiddenElements}>
                         <FormGroup>
                             <Label>Rooms:</Label>
                             <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
@@ -175,69 +171,78 @@ class RoomSearch extends Component {
                                 <option value="Study Room C">Study Room C</option>
                             </Input>
                         </FormGroup>
-                    </Form>
-                    <Form id="featureList" style={hiddenElements}>
-                        <Container>
-                            <Row>
-                                <Col>
-                                    <Label>Locations:</Label>
+                    </Form> */}
+                    <Form>
+                        <Collapse isOpen={this.state.cSelected.includes('location')} >
+                            <Label>Locations:</Label>
+                            <Container fluid>
+                                <Row>
                                     {this.state.allLocations.map((location) => {
                                         return (
-                                            <FormGroup check key={location._id}>
-                                                <Label check>
-                                                    <Input
-                                                        type="checkbox"
-                                                        data-id={location._id}
-                                                        onChange={(event) => {
-                                                            !!event.target.checked
-                                                                ? this.setState({ locations: this.state.locations.concat(location._id) })
-                                                                : this.setState({ locations: this.state.locations.filter(locId => locId !== location._id) })
-                                                        }}
-                                                    />
-                                                    {location.name}
-                                                </Label>
-                                            </FormGroup>
+                                            <Col xs='12' sm='6' md='4' xl='3'>
+                                                <FormGroup check key={location._id}>
+                                                    <Label check>
+                                                        <Input
+                                                            type="checkbox"
+                                                            data-id={location._id}
+                                                            onChange={(event) => {
+                                                                !!event.target.checked
+                                                                    ? this.setState({ locations: this.state.locations.concat(location._id) })
+                                                                    : this.setState({ locations: this.state.locations.filter(locId => locId !== location._id) })
+                                                            }}
+                                                        />
+                                                        {location.name}
+                                                    </Label>
+                                                </FormGroup>
+                                            </Col>
                                         );
                                     })}
-                                </Col>
-                                <Col>
-                                    <Label for="Features">Features: </Label>
-                                    {this.state.allFeatures.map((feature) => {
-                                        return (
-                                            <FormGroup check key={feature._id}>
-                                                <Label check>
-                                                    <Input
-                                                        type="checkbox"
-                                                        data-id={feature._id}
-                                                        onChange={(event) => {
-                                                            !!event.target.checked
-                                                                ? this.setState({ features: this.state.features.concat(feature._id) })
-                                                                : this.setState({ features: this.state.features.filter(featureId => featureId !== feature._id) })
-                                                        }}
-                                                    />
-                                                    {feature.name}
-                                                </Label>
-                                            </FormGroup>
-                                        );
-                                    })}
-                                </Col>
-                            </Row>
-                        </Container>
-                        
-                       
+                                </Row>
+                            </Container>
+                            {/* </Col> */}
+                        </Collapse>
+
+                        <Collapse isOpen={this.state.cSelected.includes('feature')} >
+
+                            <Label for="Features">Features: </Label>
+                            {this.state.allFeatures.map((feature) => {
+                                return (
+                                    <FormGroup check key={feature._id}>
+                                        <Label check>
+                                            <Input
+                                                type="checkbox"
+                                                data-id={feature._id}
+                                                onChange={(event) => {
+                                                    !!event.target.checked
+                                                        ? this.setState({ features: this.state.features.concat(feature._id) })
+                                                        : this.setState({ features: this.state.features.filter(featureId => featureId !== feature._id) })
+                                                }}
+                                            />
+                                            {feature.name}
+                                        </Label>
+                                    </FormGroup>
+                                );
+                            })}
+
+                        </Collapse>
+
+                        <Collapse isOpen={this.state.cSelected.includes('capacity')} >
+
+                            <FormGroup>
+                                <Label>Person capacity needed:</Label>
+                                <Input
+                                    value={this.state.capacity}
+                                    type='number'
+                                    min='1'
+                                    max='100'
+                                    onChange={(event) => this.setState({ capacity: event.target.value })}
+                                />
+                            </FormGroup>
+
+                        </Collapse>
+
                     </Form>
-                    <Form>
-                        <FormGroup>
-                            <Label>Person capacity needed:</Label>
-                            <Input
-                                value={this.state.capacity}
-                                type='number'
-                                min='1'
-                                max='100'
-                                onChange={(event) => this.setState({ capacity: event.target.value })}
-                            />
-                        </FormGroup>
-                    </Form>
+
 
                     <Form>
                         <FormGroup>

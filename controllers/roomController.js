@@ -6,9 +6,9 @@ module.exports = {
         console.log(req.query);
         db.Room
             .find({ 
-                location: { $in: req.query.locations },
+                ...req.query.locations && {location: { $in: req.query.locations }},
                 capacity: { $gte: req.query.capacity },
-                features: { $all: req.query.features }
+                ...req.query.features && {features: { $all: req.query.features }}
              })
             .sort({ roomName: 1 })
             .then(dbModel => res.json(dbModel))
