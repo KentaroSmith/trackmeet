@@ -9,8 +9,8 @@ import {
 } from 'reactstrap';
 import API from "../../utils/api";
 import "./style.css";
-import LocationForm from "../../components/LocationForm";
 import LocationsList from "../../components/LocationsList";
+import LocationForm from "../../components/LocationForm";
 import RoomForm from "../../components/RoomForm";
 
 const mongojs = require("mongojs");
