@@ -2,6 +2,9 @@
   "name": "trackmeet",
   "version": "1.0.0",
   "description": "A room booking app",
+  "engines": {
+    "node": "12.16.x"
+  },
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
