@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { withRouter, Redirect } from "react-router";
-import { AuthContext } from "../../components/Firebase/auth";
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router";
+// import { AuthContext } from "../../components/Firebase/auth";
 import {
     Button, Form, FormGroup, Input, Label,
     Card, CardBody, CardHeader,
@@ -16,7 +16,6 @@ import RoomForm from "../../components/RoomForm";
 const mongojs = require("mongojs");
 
 const Rooms = () => {
-    const { currentUser } = useContext(AuthContext);
     const [name, setName] = useState("");
     const [location, setLocation] = useState(""); // actually a location ID
     const [description, setDescription] = useState("");
@@ -90,17 +89,6 @@ const Rooms = () => {
         setActiveLocationId(optionElement.getAttribute('data-id'));
     };
 
-    const handleFeatureChange = event => {
-        const featureId = event.target.getAttribute('data-id');
-        if (event.target.checked) {
-            setSelectedFeatureIds([...selectedFeatureIds, featureId]);
-        } else {
-            setSelectedFeatureIds(selectedFeatureIds.filter((id) => (id !== featureId)));
-        }
-    };
-
- 
-
     const addRoom = event => {
         event.preventDefault();
         console.log("Add room location: " + location); // not working. = null
@@ -163,15 +151,13 @@ const Rooms = () => {
     };
 
     const deleteRoom = async (id) => {
-        const res = await API.deleteRoom(id);
+        await API.deleteRoom(id);
         getRooms(activeLocationId);
         getRoomCounts();
     };
 
     return (
         <div>
-            
-
             <Container>
                 <Row>
                     <Col xs="6">
@@ -203,7 +189,6 @@ const Rooms = () => {
                 <Row>
                     <Col xs="6">
                         <LocationsList
-                            name={name}
                             locations={locations}
                             roomCounts={roomCounts}
                             activeLocationId={activeLocationId}

@@ -34,10 +34,10 @@ const Room = ({ room, onClick, onClickDelete }) => {
 
 const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocation, onClickLocation, onClickAdd, onClickDelete, onClickRoom }) => {
 
-    const handleMouseOver = (event) => {
-        // console.log("hi");
-        console.log(event.target);
-    };
+    // const handleMouseOver = (event) => {
+    //     // console.log("hi");
+    //     console.log(event.target);
+    // };
 
     const roomCount = (locId) => {
         const result = roomCounts.find((loc) => loc._id === locId);
