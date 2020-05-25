@@ -179,8 +179,8 @@ class RoomSearch extends Component {
                                 <Row>
                                     {this.state.allLocations.map((location) => {
                                         return (
-                                            <Col xs='12' sm='6' md='4' xl='3'>
-                                                <FormGroup check key={location._id}>
+                                            <Col xs='12' sm='6' md='4' xl='3' key={location._id}>
+                                                <FormGroup check >
                                                     <Label check>
                                                         <Input
                                                             type="checkbox"

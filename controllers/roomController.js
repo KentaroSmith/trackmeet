@@ -7,7 +7,7 @@ module.exports = {
         db.Room
             .find({ 
                 ...req.query.locations && {location: { $in: req.query.locations }},
-                capacity: { $gte: req.query.capacity },
+                ...req.query.capacity && {capacity: { $gte: req.query.capacity }},
                 ...req.query.features && {features: { $all: req.query.features }}
              })
             .sort({ roomName: 1 })

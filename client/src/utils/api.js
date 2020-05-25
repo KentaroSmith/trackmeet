@@ -24,17 +24,14 @@ export default {
 
   // *** ROOMS ***
   searchRooms: function (params) {
-    //console.log(query);
     return axios.get("/api/rooms", params);
   },
   searchRoomsByName: function (name) {
     return axios.get("/api/rooms/?roomName=" + name);
   },
-  searchRoomsByFeature: function (features) {
-    return axios.get("/api/rooms/?features=" + features);
-  },
+  // single location
   getRoomsByLocation: function (location) {
-    return axios.get("/api/rooms/?location=" + location);
+    return axios.get("/api/rooms", { params: { locations: [location] }});
   },
   saveRoom: function (roomData) {
     return axios.post("/api/rooms", roomData);

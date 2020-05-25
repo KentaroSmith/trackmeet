@@ -62,6 +62,7 @@ const Rooms = () => {
 
     // handles a click on a location
     const getRooms = async (locationId) => {
+        console.log(locationId);
         const res = await API.getRoomsByLocation(locationId);
         console.log(res.data);
         let newRooms = [...roomsByLocation].filter((loc) => loc.locationId !== locationId); // removes the location if it's in roomsByLocation
