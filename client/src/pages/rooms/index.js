@@ -5,12 +5,19 @@ import {
     Button, Form, FormGroup, Input, Label,
     Card, CardBody, CardHeader,
     Modal, ModalHeader, ModalBody, ModalFooter,
-    Container, Row, Col
+    Container, Row, Col, UncontrolledCollapse, ListGroup, ListGroupItem
 } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faChevronRight as ArrowIcon,
+    faTrashAlt as DeleteIcon,
+    faPencilAlt as EditIcon
+} from '@fortawesome/free-solid-svg-icons';
 import API from "../../utils/api";
 import "./style.css";
 import LocationsList from "../../components/LocationsList";
 import LocationForm from "../../components/LocationFormUpdate";
+import FeatureForm from "../../components/FeatureForm";
 import RoomForm from "../../components/RoomForm";
 
 const mongojs = require("mongojs");
@@ -18,12 +25,15 @@ const mongojs = require("mongojs");
 const Rooms = () => {
     const [name, setName] = useState("");
     const [location, setLocation] = useState(""); // actually a location ID
+    const [featureId, setFeatureId] = useState(); // ID of the feature being edited
     const [description, setDescription] = useState("");
     const [locations, setLocations] = useState([]);
     const [features, setFeatures] = useState([]);
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
+    const [modalCreateFeature, setModalCreateFeature] = useState(false);
+    const [modalEditFeature, setModalEditFeature] = useState(false);
     const [activeLocationId, setActiveLocationId] = useState();
     const [activeLocationName, setActiveLocationName] = useState();
     const [activeRoomId, setActiveRoomId] = useState();
@@ -32,6 +42,7 @@ const Rooms = () => {
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [roomCounts, setRoomCounts] = useState([]);
+    const [hoveringFeature, setHoveringFeature] = useState();
 
     useEffect(() => {
         getLocations();
@@ -41,6 +52,9 @@ const Rooms = () => {
 
     const toggleCreateLocation = () => setModalCreate(!modalCreate);
     const toggleUpdateLocation = () => setModalUpdate(!modalUpdate);
+    const toggleCreateFeature = () => setModalCreateFeature(!modalCreateFeature);
+    const toggleEditFeature = () => setModalEditFeature(!modalEditFeature);
+    
 
     const getLocations = async () => {
         const res = await API.getLocations();
@@ -157,6 +171,14 @@ const Rooms = () => {
         getRoomCounts();
     };
 
+    const featureEdit = () => {
+        return;
+    };
+
+    const featureDelete = () => {
+        return;
+    };
+
     return (
         <div>
             <Container>
@@ -189,6 +211,61 @@ const Rooms = () => {
                 </Row>
                 <Row>
                     <Col xs="6">
+                        <Card>
+                            <CardHeader id="features-head">
+                                <FontAwesomeIcon icon={ArrowIcon} size="1x" style={{ marginRight: 10 }} className={'fa-rotate-90'} />
+                                Features
+                                </CardHeader>
+                            <UncontrolledCollapse toggler="#features-head">
+                                <CardBody>
+                                    <ListGroup>
+                                        {
+                                            !features || features.map((feature) => (
+                                                <ListGroupItem
+                                                    key={feature._id}
+                                                    id={feature._id}
+                                                    onMouseEnter={() => setHoveringFeature(feature._id)}
+                                                    onMouseLeave={() => setHoveringFeature()}
+                                                >
+                                                    <Container>
+                                                        <Row>
+                                                            <Col>
+                                                                {feature.name}
+                                                            </Col>
+                                                            <Col className="col-auto">
+                                                                <div style={{ visibility: hoveringFeature === feature._id ? 'visible' : 'hidden' }}>
+                                                                    <Button
+                                                                        className="edit-btn"
+                                                                        onClick={() => {
+                                                                            setFeatureId(feature._id);
+                                                                            toggleEditFeature();
+                                                                            }}
+                                                                    >
+                                                                        <FontAwesomeIcon icon={EditIcon} size="1x" style={{ marginRight: 30 }} />
+                                                                    </Button>
+                                                                    <Button
+                                                                        className="delete-btn"
+                                                                        onClick={featureDelete}
+                                                                    >
+                                                                        <FontAwesomeIcon icon={DeleteIcon} size="1x" />
+                                                                    </Button>
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+
+
+                                                </ListGroupItem>
+                                            ))
+                                        }
+                                    </ListGroup>
+                                </CardBody>
+                            </UncontrolledCollapse>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs="6">
                         <LocationsList
                             locations={locations}
                             roomCounts={roomCounts}
@@ -199,7 +276,7 @@ const Rooms = () => {
                             onClickAdd={() => {
                                 setShowEditForm(false);
                                 setShowAddForm(true);
-                                }}
+                            }}
                             onClickRoom={handleRoomChange}
                             onClickDelete={deleteRoom}
                         />
@@ -243,6 +320,29 @@ const Rooms = () => {
                     <Button color="secondary" onClick={toggleUpdateLocation}>Cancel</Button>
                 </ModalFooter>
             </Modal>
+
+            <Modal isOpen={modalCreateFeature} toggle={toggleCreateFeature} className="location-modal">
+                <ModalHeader toggle={toggleCreateFeature}>Create New Feature</ModalHeader>
+                <ModalBody>
+                    <FeatureForm />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={toggleCreateFeature}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleCreateFeature}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={modalEditFeature} toggle={toggleEditFeature} className="location-modal">
+                <ModalHeader toggle={toggleEditFeature}>Edit Feature</ModalHeader>
+                <ModalBody>
+                    <FeatureForm featureId={featureId} />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={toggleEditFeature}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleEditFeature}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
         </div>
     );
 

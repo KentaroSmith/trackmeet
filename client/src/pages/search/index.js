@@ -137,9 +137,6 @@ class RoomSearch extends Component {
     }
 
     render() {
-        let hiddenElements = {
-            display: "none"
-        }
         return (
             <div className="search">
                 <Jumbotron >
@@ -161,17 +158,6 @@ class RoomSearch extends Component {
                         <Button color="primary" onClick={() => this.onCheckboxBtnClick('capacity')} active={this.state.cSelected.includes('capacity')}>Capacity</Button>
                     </ButtonGroup>
 
-                    {/* <Form id="roomNameList" style={hiddenElements}>
-                        <FormGroup>
-                            <Label>Rooms:</Label>
-                            <Input type="select" name="select" id="roomName" onChange={this.locationSelect}>
-                                <option value="all">All Rooms</option>
-                                <option value="Study Room A">Study Room A</option>
-                                <option value="Study Room B">Study Room B</option>
-                                <option value="Study Room C">Study Room C</option>
-                            </Input>
-                        </FormGroup>
-                    </Form> */}
                     <Form>
                         <Collapse isOpen={this.state.cSelected.includes('location')} >
                             <Label>Locations:</Label>

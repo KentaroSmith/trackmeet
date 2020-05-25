@@ -84,5 +84,11 @@ export default {
   },
   getFeatures: function () {
     return axios.get("/api/features");
-  }
+  },
+  getFeature: function (id) {
+    return axios.get("/api/features/" + id);
+  },
+  updateFeature: function (id, featureData) {
+    return axios.put("/api/features/" + id, featureData);
+  },
 };
