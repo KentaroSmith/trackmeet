@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import Reservation from "../../components/Reservation/index";
+import Reservation from "../../components/ReservationUpdate";
 import { useSelector, useDispatch } from 'react-redux';
 import {
     Container, Row, Col, Button,
