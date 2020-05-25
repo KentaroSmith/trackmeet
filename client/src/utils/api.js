@@ -23,8 +23,9 @@ export default {
   },
 
   // *** ROOMS ***
-  searchRooms: function (query) {
-    return axios.get("/api/rooms", query);
+  searchRooms: function (params) {
+    //console.log(query);
+    return axios.get("/api/rooms", params);
   },
   searchRoomsByName: function (name) {
     return axios.get("/api/rooms/?roomName=" + name);
@@ -43,6 +44,9 @@ export default {
   },
   updateRoom: function (id, roomData) {
     return axios.put("/api/rooms/" + id, roomData);
+  },
+  getRoomCountPerLocation: function () {
+    return axios.get("/api/rooms/count");
   },
 
   // *** EVENTS ***

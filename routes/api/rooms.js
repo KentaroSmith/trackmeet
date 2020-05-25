@@ -11,4 +11,7 @@ router.route("/:id")
     .delete(roomsController.remove)
 	.put(roomsController.update);
 
+router.route("/count")
+    .get(roomsController.getCountPerLocation)
+
 module.exports = router;

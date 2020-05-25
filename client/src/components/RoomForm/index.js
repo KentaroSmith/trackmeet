@@ -4,9 +4,9 @@ import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup,
     InputGroup, InputGroupAddon } from 'reactstrap';
 
 const RoomForm = ({ location, room, features, onSubmit }) => {
-    const [name, setName] = useState(!!room.roomName ? room.roomName : "");
-    const [description, setDescription] = useState(!!room.description ? room.description : "");
-    const [capacity, setCapacity] = useState(!!room.capacity ? room.capacity : 1);
+    const [name, setName] = useState(!!room ? room.roomName : "");
+    const [description, setDescription] = useState(!!room ? room.description : "");
+    const [capacity, setCapacity] = useState(!!room ? room.capacity : 1);
     const [selectedFeatureIds, setSelectedFeatureIds] = useState(!!room ? room.features : []);
 
     useEffect(() => {

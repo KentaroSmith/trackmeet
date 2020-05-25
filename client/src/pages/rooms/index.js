@@ -1,27 +1,21 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { withRouter, Redirect } from "react-router";
-import { Link } from "react-router-dom";
-import app from "../../components/Firebase/firebase";
-import { AuthContext } from "../../components/Firebase/auth";
+import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router";
+// import { AuthContext } from "../../components/Firebase/auth";
 import {
     Button, Form, FormGroup, Input, Label,
-    Card, CardImg, CardBody, CardText, CardHeader,
+    Card, CardBody, CardHeader,
     Modal, ModalHeader, ModalBody, ModalFooter,
     Container, Row, Col
 } from 'reactstrap';
 import API from "../../utils/api";
-import { useDispatch } from 'react-redux';
-import { updateUser } from "../../actions";
 import "./style.css";
-import { set } from "mongoose";
+import LocationsList from "../../components/LocationsList";
 import LocationForm from "../../components/LocationForm";
-import LocationsList from "../../components/LocationsList"
 import RoomForm from "../../components/RoomForm";
 
 const mongojs = require("mongojs");
 
 const Rooms = () => {
-    const { currentUser } = useContext(AuthContext);
     const [name, setName] = useState("");
     const [location, setLocation] = useState(""); // actually a location ID
     const [description, setDescription] = useState("");
@@ -37,10 +31,12 @@ const Rooms = () => {
     const [roomsByLocation, setRoomsByLocation] = useState([]); // the rooms for all locations that have been expanded
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
+    const [roomCounts, setRoomCounts] = useState([]);
 
     useEffect(() => {
         getLocations();
         getFeatures();
+        getRoomCounts();
     }, []);
 
     const toggleCreateLocation = () => setModalCreate(!modalCreate);
@@ -48,14 +44,20 @@ const Rooms = () => {
 
     const getLocations = async () => {
         const res = await API.getLocations();
-        console.log(res.data);
+        // console.log(res.data);
         setLocations(res.data);
     };
 
     const getFeatures = async () => {
-        const res = await API.getFeatures()
-        console.log(res.data);
+        const res = await API.getFeatures();
+        // console.log(res.data);
         setFeatures(res.data);
+    };
+
+    const getRoomCounts = async () => {
+        const res = await API.getRoomCountPerLocation();
+        console.log(res.data);
+        setRoomCounts(res.data);
     };
 
     // handles a click on a location
@@ -86,17 +88,6 @@ const Rooms = () => {
         setLocation(optionElement.getAttribute('data-id'));
         setActiveLocationId(optionElement.getAttribute('data-id'));
     };
-
-    const handleFeatureChange = event => {
-        const featureId = event.target.getAttribute('data-id');
-        if (event.target.checked) {
-            setSelectedFeatureIds([...selectedFeatureIds, featureId]);
-        } else {
-            setSelectedFeatureIds(selectedFeatureIds.filter((id) => (id !== featureId)));
-        }
-    };
-
- 
 
     const addRoom = event => {
         event.preventDefault();
@@ -130,6 +121,7 @@ const Rooms = () => {
         ).then(res => {
             console.log(res.data);
             getRooms(activeLocationId);
+            getRoomCounts();
             setShowAddForm(false);
         })
             .catch(err => console.log(err));
@@ -159,14 +151,13 @@ const Rooms = () => {
     };
 
     const deleteRoom = async (id) => {
-        const res = await API.deleteRoom(id);
+        await API.deleteRoom(id);
         getRooms(activeLocationId);
+        getRoomCounts();
     };
 
     return (
         <div>
-            
-
             <Container>
                 <Row>
                     <Col xs="6">
@@ -198,8 +189,8 @@ const Rooms = () => {
                 <Row>
                     <Col xs="6">
                         <LocationsList
-                            name={name}
                             locations={locations}
+                            roomCounts={roomCounts}
                             activeLocationId={activeLocationId}
                             roomsByLocation={roomsByLocation}
                             onNameChange={(event) => console.log(event.target.value)}

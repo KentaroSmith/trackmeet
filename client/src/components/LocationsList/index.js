@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ListGroup, ListGroupItem, Collapse, Button, Container, Row, Col } from 'reactstrap';
+import { ListGroup, ListGroupItem, Collapse, Button, Container, Row, Col, Badge } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
@@ -22,7 +22,7 @@ const Room = ({ room, onClick, onClickDelete }) => {
                             className="delete-btn"
                             onClick={onClickDelete}
                         >
-                            <FontAwesomeIcon icon={faTrashAlt} size="1x" style={{ visibility: hovering ? 'visible' : 'hidden' }}/>
+                            <FontAwesomeIcon icon={faTrashAlt} size="1x" style={{ visibility: hovering ? 'visible' : 'hidden' }} />
                         </Button>
                     </Col>
                 </Row>
@@ -32,12 +32,17 @@ const Room = ({ room, onClick, onClickDelete }) => {
 }
 
 
-const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLocation, onClickAdd, onClickDelete, onClickRoom }) => {
+const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocation, onClickLocation, onClickAdd, onClickDelete, onClickRoom }) => {
 
-    const handleMouseOver = (event) => {
-        // console.log("hi");
-        console.log(event.target);
-    };
+    // const handleMouseOver = (event) => {
+    //     // console.log("hi");
+    //     console.log(event.target);
+    // };
+
+    const roomCount = (locId) => {
+        const result = roomCounts.find((loc) => loc._id === locId);
+        return !!result ? result.count : 0;
+    }
 
     return (
         <ListGroup>
@@ -45,12 +50,12 @@ const LocationsList = ({ locations, activeLocationId, roomsByLocation, onClickLo
                 <ListGroupItem
                     key={location._id}
                     tag="a"
-                    action
+                    action  
                     onClick={() => onClickLocation(location._id)}
                 >
                     <Container>
                         <Row>
-                            <Col>{location.name}</Col>
+                            <Col>{location.name} <Badge pill>{roomCount(location._id)}</Badge></Col>
                             {activeLocationId === location._id
                                 ? <Col className="col-auto">
                                     <Button className="add-btn" onClick={onClickAdd}><FontAwesomeIcon icon={faPlus} size="1x" /> </Button>
