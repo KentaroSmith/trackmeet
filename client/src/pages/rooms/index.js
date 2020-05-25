@@ -10,7 +10,7 @@ import {
 import API from "../../utils/api";
 import "./style.css";
 import LocationsList from "../../components/LocationsList";
-import LocationForm from "../../components/LocationForm";
+import LocationForm from "../../components/LocationFormUpdate";
 import RoomForm from "../../components/RoomForm";
 
 const mongojs = require("mongojs");
