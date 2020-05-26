@@ -11,7 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faChevronRight as ArrowIcon,
     faTrashAlt as DeleteIcon,
-    faPencilAlt as EditIcon
+    faPencilAlt as EditIcon,
+    faPlus as AddIcon
 } from '@fortawesome/free-solid-svg-icons';
 import API from "../../utils/api";
 import "./style.css";
@@ -32,7 +33,7 @@ const Rooms = () => {
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
     const [modalCreate, setModalCreate] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
-    const [modalCreateFeature, setModalCreateFeature] = useState(false);
+    const [modalAddFeature, setModalAddFeature] = useState(false);
     const [modalEditFeature, setModalEditFeature] = useState(false);
     const [activeLocationId, setActiveLocationId] = useState();
     const [activeLocationName, setActiveLocationName] = useState();
@@ -52,7 +53,7 @@ const Rooms = () => {
 
     const toggleCreateLocation = () => setModalCreate(!modalCreate);
     const toggleUpdateLocation = () => setModalUpdate(!modalUpdate);
-    const toggleCreateFeature = () => setModalCreateFeature(!modalCreateFeature);
+    const toggleAddFeature = () => setModalAddFeature(!modalAddFeature);
     const toggleEditFeature = () => setModalEditFeature(!modalEditFeature);
     
 
@@ -64,7 +65,7 @@ const Rooms = () => {
 
     const getFeatures = async () => {
         const res = await API.getFeatures();
-        // console.log(res.data);
+        console.log(res.data);
         setFeatures(res.data);
     };
 
@@ -171,13 +172,26 @@ const Rooms = () => {
         getRoomCounts();
     };
 
-    const featureEdit = () => {
-        return;
+    const addFeature = async (feature) => {
+        const res = await API.saveFeature(feature)    
+        //console.log(res.data);
+        getFeatures();
+        toggleAddFeature();
     };
 
-    const featureDelete = () => {
-        return;
+    const updateFeature = async (id, feature) => {
+        const res = await API.updateFeature(id, feature);  
+        //console.log(res.data);
+        getFeatures();
+        toggleEditFeature();
     };
+
+    const deleteFeature = async (id) => {
+        await API.deleteFeature(id);
+        getFeatures();
+    };
+
+
 
     return (
         <div>
@@ -213,9 +227,23 @@ const Rooms = () => {
                     <Col xs="6">
                         <Card>
                             <CardHeader id="features-head">
-                                <FontAwesomeIcon icon={ArrowIcon} size="1x" style={{ marginRight: 10 }} className={'fa-rotate-90'} />
-                                Features
-                                </CardHeader>
+                                <Container>
+                                    <Row>
+                                        <Col>
+                                            <FontAwesomeIcon icon={ArrowIcon} size="1x" style={{ marginRight: 10 }} className={'fa-rotate-90'} />
+                                            Features
+                                        </Col>
+                                        <Col className="col-auto">
+                                            <Button
+                                                className="add-btn"
+                                                onClick={toggleAddFeature}
+                                            >
+                                                <FontAwesomeIcon icon={AddIcon} size="1x" />
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Container>
+                            </CardHeader>
                             <UncontrolledCollapse toggler="#features-head">
                                 <CardBody>
                                     <ListGroup>
@@ -236,16 +264,17 @@ const Rooms = () => {
                                                                 <div style={{ visibility: hoveringFeature === feature._id ? 'visible' : 'hidden' }}>
                                                                     <Button
                                                                         className="edit-btn"
+                                                                        style={{ marginRight: 30 }}
                                                                         onClick={() => {
                                                                             setFeatureId(feature._id);
                                                                             toggleEditFeature();
                                                                             }}
                                                                     >
-                                                                        <FontAwesomeIcon icon={EditIcon} size="1x" style={{ marginRight: 30 }} />
+                                                                        <FontAwesomeIcon icon={EditIcon} size="1x" />
                                                                     </Button>
                                                                     <Button
                                                                         className="delete-btn"
-                                                                        onClick={featureDelete}
+                                                                        onClick={() => deleteFeature(feature._id)}
                                                                     >
                                                                         <FontAwesomeIcon icon={DeleteIcon} size="1x" />
                                                                     </Button>
@@ -321,21 +350,27 @@ const Rooms = () => {
                 </ModalFooter>
             </Modal>
 
-            <Modal isOpen={modalCreateFeature} toggle={toggleCreateFeature} className="location-modal">
-                <ModalHeader toggle={toggleCreateFeature}>Create New Feature</ModalHeader>
+            <Modal isOpen={modalAddFeature} toggle={toggleAddFeature} className="location-modal">
+                <ModalHeader toggle={toggleAddFeature}>Create New Feature</ModalHeader>
                 <ModalBody>
-                    <FeatureForm />
+                    <FeatureForm 
+                        onSave={addFeature}
+                    />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggleCreateFeature}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleCreateFeature}>Cancel</Button>
+                    <Button color="primary" onClick={toggleAddFeature}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleAddFeature}>Cancel</Button>
                 </ModalFooter>
             </Modal>
 
             <Modal isOpen={modalEditFeature} toggle={toggleEditFeature} className="location-modal">
                 <ModalHeader toggle={toggleEditFeature}>Edit Feature</ModalHeader>
                 <ModalBody>
-                    <FeatureForm featureId={featureId} />
+                    <FeatureForm 
+                        featureId={featureId} 
+                        features={features}
+                        onSave={updateFeature}
+                    />
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={toggleEditFeature}>Save</Button>{' '}

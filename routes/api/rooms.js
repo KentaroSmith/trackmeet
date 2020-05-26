@@ -5,7 +5,7 @@ const roomsController = require("../../controllers/roomController");
 router.route("/")
     .get(roomsController.findAll)
 	.post(roomsController.create);
-	
+
 // "/api/rooms/:id"
 router.route("/:id")
     .delete(roomsController.remove)

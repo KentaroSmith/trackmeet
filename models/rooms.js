@@ -12,9 +12,7 @@ const roomSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Location"
     },
-    capacity: { type: Number, required: true },
-    timeOpen: String,
-    timeClosed: String
+    capacity: { type: Number, required: true }
 });
 
 const Room = mongoose.model("Room", roomSchema);

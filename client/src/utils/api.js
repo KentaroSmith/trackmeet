@@ -91,4 +91,7 @@ export default {
   updateFeature: function (id, featureData) {
     return axios.put("/api/features/" + id, featureData);
   },
+  deleteFeature: function (id) {
+    return axios.delete("/api/features/" + id);
+  },
 };
