@@ -5,7 +5,7 @@ import {
     Button, Form, FormGroup, Input, Label,
     Card, CardBody, CardHeader,
     Modal, ModalHeader, ModalBody, ModalFooter,
-    Container, Row, Col, UncontrolledCollapse, ListGroup, ListGroupItem
+    Container, Row, Col, Collapse, Fade, ListGroup, ListGroupItem
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -44,6 +44,7 @@ const Rooms = () => {
     const [showEditForm, setShowEditForm] = useState(false);
     const [roomCounts, setRoomCounts] = useState([]);
     const [hoveringFeature, setHoveringFeature] = useState();
+    const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
 
     useEffect(() => {
         getLocations();
@@ -55,7 +56,7 @@ const Rooms = () => {
     const toggleUpdateLocation = () => setModalUpdate(!modalUpdate);
     const toggleAddFeature = () => setModalAddFeature(!modalAddFeature);
     const toggleEditFeature = () => setModalEditFeature(!modalEditFeature);
-    
+
 
     const getLocations = async () => {
         const res = await API.getLocations();
@@ -173,14 +174,14 @@ const Rooms = () => {
     };
 
     const addFeature = async (feature) => {
-        const res = await API.saveFeature(feature)    
+        const res = await API.saveFeature(feature)
         //console.log(res.data);
         getFeatures();
         toggleAddFeature();
     };
 
     const updateFeature = async (id, feature) => {
-        const res = await API.updateFeature(id, feature);  
+        const res = await API.updateFeature(id, feature);
         //console.log(res.data);
         getFeatures();
         toggleEditFeature();
@@ -197,7 +198,7 @@ const Rooms = () => {
         <div>
             <Container>
                 <Row>
-                    <Col xs="6">
+                    <Col xs="12" sm='6'>
                         <Card id="room-card" className="mx-auto shadow-lg">
                             <CardHeader className="login-header">Locations</CardHeader>
                             <CardBody>
@@ -224,27 +225,34 @@ const Rooms = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="6">
+                    <Col xs="12" sm='6'>
                         <Card>
-                            <CardHeader id="features-head">
+                            <CardHeader id="features-head" onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}>
                                 <Container>
                                     <Row>
                                         <Col>
                                             <FontAwesomeIcon icon={ArrowIcon} size="1x" style={{ marginRight: 10 }} className={'fa-rotate-90'} />
-                                            Features
+                                            Room Features
                                         </Col>
                                         <Col className="col-auto">
-                                            <Button
-                                                className="add-btn"
-                                                onClick={toggleAddFeature}
-                                            >
-                                                <FontAwesomeIcon icon={AddIcon} size="1x" />
-                                            </Button>
+                                            <Fade in={isFeaturesOpen}>
+                                                <Button
+                                                    className="add-btn"
+                                                    disabled={!isFeaturesOpen}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation(); // to prevent the Collapse action
+                                                        toggleAddFeature();
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={AddIcon} size="1x" />
+                                                </Button>
+                                            </Fade>
                                         </Col>
                                     </Row>
                                 </Container>
                             </CardHeader>
-                            <UncontrolledCollapse toggler="#features-head">
+                            <Collapse isOpen={isFeaturesOpen}>
+                                {/* <UncontrolledCollapse> */}
                                 <CardBody>
                                     <ListGroup>
                                         {
@@ -253,7 +261,7 @@ const Rooms = () => {
                                                     key={feature._id}
                                                     id={feature._id}
                                                     onMouseEnter={() => setHoveringFeature(feature._id)}
-                                                    onMouseLeave={() => setHoveringFeature()}
+                                                    onMouseExit={() => setHoveringFeature()}
                                                 >
                                                     <Container>
                                                         <Row>
@@ -268,7 +276,7 @@ const Rooms = () => {
                                                                         onClick={() => {
                                                                             setFeatureId(feature._id);
                                                                             toggleEditFeature();
-                                                                            }}
+                                                                        }}
                                                                     >
                                                                         <FontAwesomeIcon icon={EditIcon} size="1x" />
                                                                     </Button>
@@ -289,12 +297,12 @@ const Rooms = () => {
                                         }
                                     </ListGroup>
                                 </CardBody>
-                            </UncontrolledCollapse>
+                            </Collapse>
                         </Card>
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="6">
+                    <Col xs="12" sm='6'>
                         <LocationsList
                             locations={locations}
                             roomCounts={roomCounts}
@@ -353,7 +361,7 @@ const Rooms = () => {
             <Modal isOpen={modalAddFeature} toggle={toggleAddFeature} className="location-modal">
                 <ModalHeader toggle={toggleAddFeature}>Create New Feature</ModalHeader>
                 <ModalBody>
-                    <FeatureForm 
+                    <FeatureForm
                         onSave={addFeature}
                     />
                 </ModalBody>
@@ -366,8 +374,8 @@ const Rooms = () => {
             <Modal isOpen={modalEditFeature} toggle={toggleEditFeature} className="location-modal">
                 <ModalHeader toggle={toggleEditFeature}>Edit Feature</ModalHeader>
                 <ModalBody>
-                    <FeatureForm 
-                        featureId={featureId} 
+                    <FeatureForm
+                        featureId={featureId}
                         features={features}
                         onSave={updateFeature}
                     />
