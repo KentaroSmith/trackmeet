@@ -14,6 +14,7 @@ import {
     faPencilAlt as EditIcon,
     faPlus as AddIcon
 } from '@fortawesome/free-solid-svg-icons';
+import { useMediaQuery } from 'react-responsive';
 import API from "../../utils/api";
 import "./style.css";
 import LocationsList from "../../components/LocationsList";
@@ -51,6 +52,8 @@ const Rooms = () => {
         getFeatures();
         getRoomCounts();
     }, []);
+
+    const isMedium = useMediaQuery({ query: '(min-width: 768px)' })
 
     const toggleCreateLocation = () => setModalCreate(!modalCreate);
     const toggleUpdateLocation = () => setModalUpdate(!modalUpdate);
@@ -198,7 +201,7 @@ const Rooms = () => {
         <div>
             <Container>
                 <Row>
-                    <Col xs="12" sm='6'>
+                    <Col sm="12" md='6'>
                         <Card id="room-card" className="mx-auto shadow-lg">
                             <CardHeader className="login-header">Locations</CardHeader>
                             <CardBody>
@@ -225,7 +228,7 @@ const Rooms = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="12" sm='6'>
+                    <Col sm="12" md='6'>
                         <Card>
                             <CardHeader id="features-head" onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}>
                                 <Container>
@@ -252,7 +255,6 @@ const Rooms = () => {
                                 </Container>
                             </CardHeader>
                             <Collapse isOpen={isFeaturesOpen}>
-                                {/* <UncontrolledCollapse> */}
                                 <CardBody>
                                     <ListGroup>
                                         {
@@ -261,7 +263,7 @@ const Rooms = () => {
                                                     key={feature._id}
                                                     id={feature._id}
                                                     onMouseEnter={() => setHoveringFeature(feature._id)}
-                                                    onMouseExit={() => setHoveringFeature()}
+                                                    onMouseLeave={() => setHoveringFeature()}
                                                 >
                                                     <Container>
                                                         <Row>
@@ -300,9 +302,45 @@ const Rooms = () => {
                             </Collapse>
                         </Card>
                     </Col>
+                    {isMedium && <>
+                        {modalAddFeature &&
+                            <Col sm="12" md='6'>
+                                <Card>
+                                    <CardHeader>Add New Feature
+                                <Button close onClick={() => setModalAddFeature(false)}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </Button>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <FeatureForm
+                                            onSave={addFeature}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        }
+                        {modalEditFeature &&
+                            <Col sm="12" md='6'>
+                                <Card>
+                                    <CardHeader>Edit Feature
+                                        <Button close onClick={() => setModalEditFeature(false)}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </Button>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <FeatureForm
+                                            featureId={featureId}
+                                            features={features}
+                                            onSave={updateFeature}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        }
+                    </>}
                 </Row>
                 <Row>
-                    <Col xs="12" sm='6'>
+                    <Col sm="12" md='6'>
                         <LocationsList
                             locations={locations}
                             roomCounts={roomCounts}
@@ -318,14 +356,14 @@ const Rooms = () => {
                             onClickDelete={deleteRoom}
                         />
                     </Col>
-                    {!showAddForm || <Col xs="6">
+                    {!showAddForm || <Col sm="12" md='6'>
                         <RoomForm
                             location={activeLocationName}
                             features={features}
                             onSubmit={addRoom2}
                         />
                     </Col>}
-                    {!showEditForm || <Col xs="6">
+                    {!showEditForm || <Col sm="12" md='6'>
                         <RoomForm
                             location={activeLocationName}
                             room={activeRoom}
@@ -358,34 +396,37 @@ const Rooms = () => {
                 </ModalFooter>
             </Modal>
 
-            <Modal isOpen={modalAddFeature} toggle={toggleAddFeature} className="location-modal">
-                <ModalHeader toggle={toggleAddFeature}>Create New Feature</ModalHeader>
-                <ModalBody>
-                    <FeatureForm
-                        onSave={addFeature}
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={toggleAddFeature}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleAddFeature}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
+            {!isMedium &&
+                (<>
+                    <Modal isOpen={modalAddFeature} toggle={toggleAddFeature} className="location-modal">
+                        <ModalHeader toggle={toggleAddFeature}>Add New Feature</ModalHeader>
+                        <ModalBody>
+                            <FeatureForm
+                                onSave={addFeature}
+                            />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={toggleAddFeature}>Save</Button>{' '}
+                            <Button color="secondary" onClick={toggleAddFeature}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
 
-            <Modal isOpen={modalEditFeature} toggle={toggleEditFeature} className="location-modal">
-                <ModalHeader toggle={toggleEditFeature}>Edit Feature</ModalHeader>
-                <ModalBody>
-                    <FeatureForm
-                        featureId={featureId}
-                        features={features}
-                        onSave={updateFeature}
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={toggleEditFeature}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleEditFeature}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
-
+                    <Modal isOpen={modalEditFeature} toggle={toggleEditFeature} className="location-modal">
+                        <ModalHeader toggle={toggleEditFeature}>Edit Feature</ModalHeader>
+                        <ModalBody>
+                            <FeatureForm
+                                featureId={featureId}
+                                features={features}
+                                onSave={updateFeature}
+                            />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={toggleEditFeature}>Save</Button>{' '}
+                            <Button color="secondary" onClick={toggleEditFeature}>Cancel</Button>
+                        </ModalFooter>
+                    </Modal>
+                </>)
+            }
         </div>
     );
 
