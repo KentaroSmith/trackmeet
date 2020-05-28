@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ListGroup, ListGroupItem, Collapse, Button, Container, Row, Col, Badge } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPlus as addIcon, faTrashAlt as deleteIcon } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
 
 const Room = ({ room, onClick, onClickDelete }) => {
@@ -20,9 +20,12 @@ const Room = ({ room, onClick, onClickDelete }) => {
                     <Col className="col-auto">
                         <Button
                             className="delete-btn"
-                            onClick={onClickDelete}
+                            onClick={(event) => {
+                                event.stopPropagation(); // to prevent the onClick action for ListGroupItem
+                                onClickDelete()
+                            }}
                         >
-                            <FontAwesomeIcon icon={faTrashAlt} size="1x" style={{ visibility: hovering ? 'visible' : 'hidden' }} />
+                            <FontAwesomeIcon icon={deleteIcon} size="1x" style={{ visibility: hovering ? 'visible' : 'hidden' }} />
                         </Button>
                     </Col>
                 </Row>
@@ -58,7 +61,7 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                             <Col>{location.name} <Badge pill>{roomCount(location._id)}</Badge></Col>
                             {activeLocationId === location._id
                                 ? <Col className="col-auto">
-                                    <Button className="add-btn" onClick={onClickAdd}><FontAwesomeIcon icon={faPlus} size="1x" /> </Button>
+                                    <Button className="add-btn" onClick={onClickAdd}><FontAwesomeIcon icon={addIcon} size="1x" /> </Button>
                                 </Col>
                                 : null}
                         </Row>
