@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup,
+    Label, Input, Button, Form, FormGroup,
     UncontrolledPopover, PopoverBody, PopoverHeader,
     InputGroup, InputGroupAddon
 } from 'reactstrap';

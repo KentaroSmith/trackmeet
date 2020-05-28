@@ -25,24 +25,21 @@ import RoomForm from "../../components/RoomForm";
 const mongojs = require("mongojs");
 
 const Rooms = () => {
-    const [name, setName] = useState("");
-    const [location, setLocation] = useState(""); // actually a location ID
+    const [locationId, setLocationId] = useState(""); // ID of the location being edited
     const [featureId, setFeatureId] = useState(); // ID of the feature being edited
-    const [description, setDescription] = useState("");
     const [locations, setLocations] = useState([]);
     const [features, setFeatures] = useState([]);
-    const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
-    const [modalAddLocation, setModalAddLocation] = useState(false);
-    const [modalEditLocation, setModalEditLocation] = useState(false);
-    const [modalAddFeature, setModalAddFeature] = useState(false);
-    const [modalEditFeature, setModalEditFeature] = useState(false);
+    const [showAddLocationForm, setShowAddLocationForm] = useState(false);
+    const [showEditLocationForm, setShowEditLocationForm] = useState(false);
+    const [showAddRoomForm, setShowAddRoomForm] = useState(false);
+    const [showEditRoomForm, setShowEditRoomForm] = useState(false);
+    const [showAddFeatureForm, setShowAddFeatureForm] = useState(false);
+    const [showEditFeatureForm, setShowEditFeatureForm] = useState(false);
     const [activeLocationId, setActiveLocationId] = useState();
     const [activeLocationName, setActiveLocationName] = useState();
     const [activeRoomId, setActiveRoomId] = useState();
     const [activeRoom, setActiveRoom] = useState();
     const [roomsByLocation, setRoomsByLocation] = useState([]); // the rooms for all locations that have been expanded
-    const [showAddRoomForm, setShowAddRoomForm] = useState(false);
-    const [showEditRoomForm, setShowEditRoomForm] = useState(false);
     const [roomCounts, setRoomCounts] = useState([]);
     const [hoveringFeature, setHoveringFeature] = useState();
     const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
@@ -57,12 +54,12 @@ const Rooms = () => {
 
     const isMedium = useMediaQuery({ query: '(min-width: 768px)' })
 
-    const toggleAddLocation = () => setModalAddLocation(!modalAddLocation);
-    const toggleEditLocation = () => setModalEditLocation(!modalEditLocation);
+    const toggleAddLocation = () => setShowAddLocationForm(!showAddLocationForm);
+    const toggleEditLocation = () => setShowEditLocationForm(!showEditLocationForm);
     const toggleAddRoom = () => setShowAddRoomForm(!showAddRoomForm);
     const toggleEditRoom = () => setShowEditRoomForm(!showEditRoomForm);
-    const toggleAddFeature = () => setModalAddFeature(!modalAddFeature);
-    const toggleEditFeature = () => setModalEditFeature(!modalEditFeature);
+    const toggleAddFeature = () => setShowAddFeatureForm(!showAddFeatureForm);
+    const toggleEditFeature = () => setShowEditFeatureForm(!showEditFeatureForm);
 
 
     //***** Location Functions *****//
@@ -85,6 +82,12 @@ const Rooms = () => {
         //console.log(res.data);
         getLocations();
         toggleEditLocation();
+    };
+
+    const deleteLocation = async (id) => {
+        const res = await API.deleteLocation(id);
+        //console.log(res.data);
+        getLocations();
     };
 
     //***** Room Functions *****//
@@ -119,13 +122,6 @@ const Rooms = () => {
         setActiveRoom(activeRooms.find((room) => room._id === roomId));
         setShowAddRoomForm(false);
         setShowEditRoomForm(true);
-    };
-
-    const handleLocationChange = event => {
-        const index = event.target.selectedIndex;
-        const optionElement = event.target.childNodes[index];
-        setLocation(optionElement.getAttribute('data-id'));
-        setActiveLocationId(optionElement.getAttribute('data-id'));
     };
 
     const addRoom = (event, name, description, capacity, selectedFeatureIds) => {
@@ -244,11 +240,20 @@ const Rooms = () => {
                                         roomsByLocation={roomsByLocation}
                                         onNameChange={(event) => console.log(event.target.value)}
                                         onClickLocation={getRooms}
+                                        // add room to location
                                         onClickAdd={() => {
                                             setShowEditRoomForm(false);
                                             setShowAddRoomForm(true);
                                         }}
+                                        // edit location
+                                        onClickEdit={() => {
+                                            setShowAddRoomForm(false);
+                                            setShowEditLocationForm(true);
+                                        }}
+                                        // delete location
+                                        onClickDeleteLocation={deleteLocation}
                                         onClickRoom={handleRoomChange}
+                                        // delete room
                                         onClickDelete={deleteRoom}
                                     />
                                 </CardBody>
@@ -257,6 +262,42 @@ const Rooms = () => {
                         </Card>
                     </Col>
                     {isMedium && <>
+                        {!showAddLocationForm ||
+                            <Col sm="12" md='6'>
+                                <Card id="room-card" className="mx-auto shadow-lg">
+                                    <CardHeader className="login-header">
+                                        Add a new location
+                                        <Button close onClick={() => setShowAddLocationForm(false)}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </Button>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <LocationForm
+                                            onSave={addLocation}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        }
+                        {!showEditLocationForm ||
+                            <Col sm="12" md='6'>
+                                <Card id="room-card" className="mx-auto shadow-lg">
+                                    <CardHeader className="login-header">
+                                        Edit a location
+                                        <Button close onClick={() => setShowEditLocationForm(false)}>
+                                            <span aria-hidden="true">&times;</span>
+                                        </Button>
+                                    </CardHeader>
+                                    <CardBody>
+                                        <LocationForm
+                                            locationId={activeLocationId}
+                                            locations={locations}
+                                            onSave={updateLocation}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        }
                         {!showAddRoomForm ||
                             <Col sm="12" md='6'>
                                 <Card id="room-card" className="mx-auto shadow-lg">
@@ -374,11 +415,11 @@ const Rooms = () => {
                         </Card>
                     </Col>
                     {isMedium && <>
-                        {modalAddFeature &&
+                        {showAddFeatureForm &&
                             <Col sm="12" md='6'>
                                 <Card>
                                     <CardHeader>Add New Feature
-                                        <Button close onClick={() => setModalAddFeature(false)}>
+                                        <Button close onClick={() => setShowAddFeatureForm(false)}>
                                             <span aria-hidden="true">&times;</span>
                                         </Button>
                                     </CardHeader>
@@ -390,11 +431,11 @@ const Rooms = () => {
                                 </Card>
                             </Col>
                         }
-                        {modalEditFeature &&
+                        {showEditFeatureForm &&
                             <Col sm="12" md='6'>
                                 <Card>
                                     <CardHeader>Edit Feature
-                                        <Button close onClick={() => setModalEditFeature(false)}>
+                                        <Button close onClick={() => setShowEditFeatureForm(false)}>
                                             <span aria-hidden="true">&times;</span>
                                         </Button>
                                     </CardHeader>
@@ -411,35 +452,29 @@ const Rooms = () => {
                     </>}
                 </Row>
             </Container>
-
-            <Modal isOpen={modalAddLocation} toggle={toggleAddLocation} className="location-modal">
-                <ModalHeader toggle={toggleAddLocation}>Create New Location</ModalHeader>
-                <ModalBody>
-                    <LocationForm
-                        onSave={addLocation}
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={toggleAddLocation}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleAddLocation}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
-
-            <Modal isOpen={modalEditLocation} toggle={toggleEditLocation} className="location-modal">
-                <ModalHeader toggle={toggleEditLocation}>Edit Location</ModalHeader>
-                <ModalBody>
-                    <LocationForm
-                        locationId={location}
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={toggleEditLocation}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleEditLocation}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
-
+            {/* **** Modal Forms **** */}
             {!isMedium &&
                 (<>
+                    <Modal isOpen={showAddLocationForm} toggle={toggleAddLocation} className="location-modal">
+                        <ModalHeader toggle={toggleAddLocation}>Add New Location</ModalHeader>
+                        <ModalBody>
+                            <LocationForm
+                                onSave={addLocation}
+                            />
+                        </ModalBody>
+                    </Modal>
+
+                    <Modal isOpen={showEditLocationForm} toggle={toggleEditLocation} className="location-modal">
+                        <ModalHeader toggle={toggleEditLocation}>Edit Location {locationId}</ModalHeader>
+                        <ModalBody>
+                            <LocationForm
+                                locationId={activeLocationId}
+                                locations={locations}
+                                onSave={updateLocation}
+                            />
+                        </ModalBody>
+                    </Modal>
+
                     <Modal isOpen={showAddRoomForm} toggle={toggleAddRoom} className="location-modal">
                         <ModalHeader toggle={toggleAddRoom}>Add New Room</ModalHeader>
                         <ModalBody>
@@ -463,20 +498,16 @@ const Rooms = () => {
                         </ModalBody>
                     </Modal>
 
-                    <Modal isOpen={modalAddFeature} toggle={toggleAddFeature} className="location-modal">
+                    <Modal isOpen={showAddFeatureForm} toggle={toggleAddFeature} className="location-modal">
                         <ModalHeader toggle={toggleAddFeature}>Add New Feature</ModalHeader>
                         <ModalBody>
                             <FeatureForm
                                 onSave={addFeature}
                             />
                         </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={toggleAddFeature}>Save</Button>{' '}
-                            <Button color="secondary" onClick={toggleAddFeature}>Cancel</Button>
-                        </ModalFooter>
                     </Modal>
 
-                    <Modal isOpen={modalEditFeature} toggle={toggleEditFeature} className="location-modal">
+                    <Modal isOpen={showEditFeatureForm} toggle={toggleEditFeature} className="location-modal">
                         <ModalHeader toggle={toggleEditFeature}>Edit Feature</ModalHeader>
                         <ModalBody>
                             <FeatureForm
@@ -485,10 +516,6 @@ const Rooms = () => {
                                 onSave={updateFeature}
                             />
                         </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={toggleEditFeature}>Save</Button>{' '}
-                            <Button color="secondary" onClick={toggleEditFeature}>Cancel</Button>
-                        </ModalFooter>
                     </Modal>
                 </>)
             }

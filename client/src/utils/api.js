@@ -77,6 +77,9 @@ export default {
     console.log("after");
     return axios.put("/api/locations/" + id, locationData);
   },
+  deleteLocation: function (id) {
+    return axios.delete("/api/locations/" + id);
+  },
 
   // *** FEATURES ***
   saveFeature: function (featureData) {

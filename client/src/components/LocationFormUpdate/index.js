@@ -3,49 +3,18 @@ import {
     Button, Container, Row, Col,
     Form, FormGroup, Input, Label
 } from 'reactstrap';
-import API from "../../utils/api.js";
 
-const LocationForm = ({ locationId, onSave }) => {
+const LocationForm = ({ locationId, locations, onSave }) => {
     // if locationId is passed in, form is in UPDATE mode
     // else, form is in CREATE mode
     const [location, setLocation] = useState({timeOpen: "09:00", timeClose: "17:00"});
 
     useEffect(() => {
-        console.log("useEffect, locationId = " + locationId);
+        console.log("LocationForm, useEffect, locationId = " + locationId);
         if (!!locationId) {
-            getLocation(locationId);
+            setLocation(locations.find((loc) => loc._id === locationId));
         }
     }, [locationId]);
-
-    const getLocation = (id) => {
-        console.log("in getLocation, id = " + id);
-        API.getLocation(id)
-            .then(res => {
-                console.log(res.data);
-                setLocation(res.data);
-            });
-    };
-
-    // const updateLocation = (event) => {
-    //     console.log("updating location");
-    //     event.preventDefault();
-
-    //     API.updateLocation(locationId, location)
-    //         .then(res => {
-    //             console.log(res.data);
-    //         });
-    // };
-
-    // const createLocation = (event) => {
-    //     console.log("creating location");
-
-    //     event.preventDefault();
-
-    //     API.saveLocation(location)
-    //         .then(res => {
-    //             console.log(res.data);
-    //         });
-    // };
 
     return (
         <Form onSubmit={(event) => {
