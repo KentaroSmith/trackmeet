@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup,
+import {
+    Card, CardHeader, CardBody, Label, Input, Button, Form, FormGroup,
     UncontrolledPopover, PopoverBody, PopoverHeader,
-    InputGroup, InputGroupAddon } from 'reactstrap';
+    InputGroup, InputGroupAddon
+} from 'reactstrap';
 
 const RoomForm = ({ location, room, features, onSubmit }) => {
     const [name, setName] = useState(!!room ? room.roomName : "");
@@ -28,66 +30,61 @@ const RoomForm = ({ location, room, features, onSubmit }) => {
     };
 
     return (
-        <Card id="room-card" className="mx-auto shadow-lg">
-            <CardHeader className="login-header">Create a room at {location}</CardHeader>
-            <CardBody>
-                <Form onSubmit={event => onSubmit(event, name, description, capacity, selectedFeatureIds)}>
-                    <FormGroup>
-                        <Input name="name" type="text" placeholder="Room name"
-                            value={name}
-                            onChange={event => setName(event.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Input name="description" type="text" placeholder="Description"
-                            value={description}
-                            onChange={event => setDescription(event.target.value)}
-                        />
-                    </FormGroup>
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">Room capacity:</InputGroupAddon>
-                        <Input 
-                            min={1} max={100} 
-                            type="number" 
-                            step="1" 
-                            value={capacity}
-                            onChange={event => setCapacity(event.target.value)}
-                        />
-                        <InputGroupAddon addonType="append">people</InputGroupAddon>
-                    </InputGroup>
-                    {!features || features.map((feature) => (
-                        <FormGroup check key={feature.name}>
-                            <Label check>
-                                <Input type="checkbox" data-id={feature._id}
-                                    checked={selectedFeatureIds.includes(feature._id)}
-                                    onClick={handleFeatureChange}
-                                />{' '}
-                                <Button 
-                                    id={"feature-"+ feature._id}
-                                    type="button"
-                                >
-                                    {feature.name}
-                                </Button>
-                            </Label>
-                            <UncontrolledPopover
-                                trigger="focus"
-                                placement="right"
-                                // isOpen={feature._id === displayedPopover}
-                                target={"feature-" + feature._id}
-                                // toggle={() => setDisplayedPopover(feature._id)}
-                            >
-                                <PopoverHeader>{feature.name}</PopoverHeader>
-                                <PopoverBody>
-                                    {feature.description}
-                                </PopoverBody>
-                            </UncontrolledPopover>
-                        </FormGroup>
-                    ))
-                    }
-                    <Button type="submit" className="btn-block">Create room</Button>
-                </Form>
-            </CardBody>
-        </Card>
+        <Form onSubmit={event => onSubmit(event, name, description, capacity, selectedFeatureIds)}>
+            <FormGroup>
+                <Input name="name" type="text" placeholder="Room name"
+                    value={name}
+                    onChange={event => setName(event.target.value)}
+                />
+            </FormGroup>
+            <FormGroup>
+                <Input name="description" type="text" placeholder="Description"
+                    value={description}
+                    onChange={event => setDescription(event.target.value)}
+                />
+            </FormGroup>
+            <InputGroup>
+                <InputGroupAddon addonType="prepend">Room capacity:</InputGroupAddon>
+                <Input
+                    min={1} max={100}
+                    type="number"
+                    step="1"
+                    value={capacity}
+                    onChange={event => setCapacity(event.target.value)}
+                />
+                <InputGroupAddon addonType="append">people</InputGroupAddon>
+            </InputGroup>
+            {!features || features.map((feature) => (
+                <FormGroup check key={feature.name}>
+                    <Label check>
+                        <Input type="checkbox" data-id={feature._id}
+                            checked={selectedFeatureIds.includes(feature._id)}
+                            onClick={handleFeatureChange}
+                        />{' '}
+                        <Button
+                            id={"feature-" + feature._id}
+                            type="button"
+                        >
+                            {feature.name}
+                        </Button>
+                    </Label>
+                    <UncontrolledPopover
+                        trigger="focus"
+                        placement="right"
+                        // isOpen={feature._id === displayedPopover}
+                        target={"feature-" + feature._id}
+                    // toggle={() => setDisplayedPopover(feature._id)}
+                    >
+                        <PopoverHeader>{feature.name}</PopoverHeader>
+                        <PopoverBody>
+                            {feature.description}
+                        </PopoverBody>
+                    </UncontrolledPopover>
+                </FormGroup>
+            ))
+            }
+            <Button type="submit" className="btn-block">Save</Button>
+        </Form>
     );
 };
 
