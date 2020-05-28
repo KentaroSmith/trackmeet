@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
     Button, Form, FormGroup, Input,
 } from 'reactstrap';
-// import API from "../../utils/api.js";
 
 const FeatureForm = ({ featureId, features, onSave }) => {
     // if featureId is passed in, form is in UPDATE mode

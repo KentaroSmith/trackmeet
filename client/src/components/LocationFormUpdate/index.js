@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import API from "../../utils/api.js";
 
-const LocationForm = ({ locationId }) => {
+const LocationForm = ({ locationId, onSave }) => {
     // if locationId is passed in, form is in UPDATE mode
     // else, form is in CREATE mode
     const [location, setLocation] = useState({timeOpen: "09:00", timeClose: "17:00"});
@@ -26,30 +26,35 @@ const LocationForm = ({ locationId }) => {
             });
     };
 
-    const updateLocation = (event) => {
-        console.log("updating location");
-        event.preventDefault();
+    // const updateLocation = (event) => {
+    //     console.log("updating location");
+    //     event.preventDefault();
 
-        API.updateLocation(locationId, location)
-            .then(res => {
-                console.log(res.data);
-            });
-    };
+    //     API.updateLocation(locationId, location)
+    //         .then(res => {
+    //             console.log(res.data);
+    //         });
+    // };
 
-    const createLocation = (event) => {
-        console.log("creating location");
+    // const createLocation = (event) => {
+    //     console.log("creating location");
 
-        event.preventDefault();
+    //     event.preventDefault();
 
-        API.saveLocation(location)
-            .then(res => {
-                console.log(res.data);
-            });
-    };
+    //     API.saveLocation(location)
+    //         .then(res => {
+    //             console.log(res.data);
+    //         });
+    // };
 
     return (
-        <Form onSubmit={!!locationId ? updateLocation : createLocation}>
-            location: {locationId}
+        <Form onSubmit={(event) => {
+            event.preventDefault();
+            !locationId 
+                ? onSave(location)
+                : onSave(locationId, location);
+            }}
+        >
             <FormGroup>
                 <Input name="name" type="text" placeholder="Location name"
                     value={location.name}
@@ -100,7 +105,7 @@ const LocationForm = ({ locationId }) => {
                     </Row>
                 </Container>
             </FormGroup>
-            <Button type="submit" className="btn-block">Update</Button>
+            <Button type="submit" className="btn-block">{!!locationId ? "Update" : "Save"}</Button>
         </Form>
     );
 };

@@ -32,8 +32,8 @@ const Rooms = () => {
     const [locations, setLocations] = useState([]);
     const [features, setFeatures] = useState([]);
     const [selectedFeatureIds, setSelectedFeatureIds] = useState([]);
-    const [modalCreate, setModalCreate] = useState(false);
-    const [modalUpdate, setModalUpdate] = useState(false);
+    const [modalAddLocation, setModalAddLocation] = useState(false);
+    const [modalEditLocation, setModalEditLocation] = useState(false);
     const [modalAddFeature, setModalAddFeature] = useState(false);
     const [modalEditFeature, setModalEditFeature] = useState(false);
     const [activeLocationId, setActiveLocationId] = useState();
@@ -46,6 +46,8 @@ const Rooms = () => {
     const [roomCounts, setRoomCounts] = useState([]);
     const [hoveringFeature, setHoveringFeature] = useState();
     const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
+    const [isLocationsOpen, setIsLocationsOpen] = useState(false);
+
 
     useEffect(() => {
         getLocations();
@@ -55,11 +57,13 @@ const Rooms = () => {
 
     const isMedium = useMediaQuery({ query: '(min-width: 768px)' })
 
-    const toggleCreateLocation = () => setModalCreate(!modalCreate);
-    const toggleUpdateLocation = () => setModalUpdate(!modalUpdate);
+    const toggleAddLocation = () => setModalAddLocation(!modalAddLocation);
+    const toggleEditLocation = () => setModalEditLocation(!modalEditLocation);
     const toggleAddFeature = () => setModalAddFeature(!modalAddFeature);
     const toggleEditFeature = () => setModalEditFeature(!modalEditFeature);
 
+
+    //***** Location Functions *****//
 
     const getLocations = async () => {
         const res = await API.getLocations();
@@ -67,11 +71,21 @@ const Rooms = () => {
         setLocations(res.data);
     };
 
-    const getFeatures = async () => {
-        const res = await API.getFeatures();
-        console.log(res.data);
-        setFeatures(res.data);
+    const addLocation = async (location) => {
+        const res = await API.saveLocation(location)
+        // console.log(res.data);
+        getLocations();
+        toggleAddLocation();
     };
+
+    const updateLocation = async (id, location) => {
+        const res = await API.updateLocation(id, location);
+        //console.log(res.data);
+        getLocations();
+        toggleEditLocation();
+    };
+
+    //***** Room Functions *****//
 
     const getRoomCounts = async () => {
         const res = await API.getRoomCountPerLocation();
@@ -81,8 +95,11 @@ const Rooms = () => {
 
     // handles a click on a location
     const getRooms = async (locationId) => {
+        // roomsByLocation is built up by location as the user clicks different locations.
+        // In other words, room data is only loaded for locations that are clicked.
+        // Maintaining the past data in memory is important for the collapse transitions in the location list.
         console.log(locationId);
-        const res = await API.getRoomsByLocation(locationId);
+        const res = await API.getRoomsByLocation(locationId); // all rooms for the given location
         console.log(res.data);
         let newRooms = [...roomsByLocation].filter((loc) => loc.locationId !== locationId); // removes the location if it's in roomsByLocation
         newRooms.push({ locationId, rooms: res.data }); // adds it back
@@ -109,26 +126,7 @@ const Rooms = () => {
         setActiveLocationId(optionElement.getAttribute('data-id'));
     };
 
-    const addRoom = event => {
-        event.preventDefault();
-        console.log("Add room location: " + location); // not working. = null
-        API.saveRoom({
-            location: mongojs.ObjectId(location),
-            roomName: name,
-            description: description,
-            features: selectedFeatureIds.map((featureId) => (mongojs.ObjectId(featureId)))
-        }
-        ).then(res => {
-            console.log(res.data);
-            getRooms(location);
-            setShowAddForm(false);
-        })
-            .catch(err => console.log(err));
-
-    };
-
-    const addRoom2 = (event, name, description, capacity, selectedFeatureIds) => {
-        console.log("addRoom2!!!!");
+    const addRoom = (event, name, description, capacity, selectedFeatureIds) => {
         event.preventDefault();
         console.log("Add room location: " + activeLocationId); // not working. = null
         API.saveRoom({
@@ -176,6 +174,13 @@ const Rooms = () => {
         getRoomCounts();
     };
 
+    //***** Feature Functions *****//
+    const getFeatures = async () => {
+        const res = await API.getFeatures();
+        console.log(res.data);
+        setFeatures(res.data);
+    };
+
     const addFeature = async (feature) => {
         const res = await API.saveFeature(feature)
         //console.log(res.data);
@@ -195,35 +200,58 @@ const Rooms = () => {
         getFeatures();
     };
 
-
-
     return (
         <div>
             <Container>
                 <Row>
                     <Col sm="12" md='6'>
                         <Card id="room-card" className="mx-auto shadow-lg">
-                            <CardHeader className="login-header">Locations</CardHeader>
-                            <CardBody>
-                                <Form onSubmit={addRoom}>
-                                    <FormGroup>
-                                        <Label for="selectLocation">Select a location</Label>
-                                        <Button color="danger" onClick={toggleUpdateLocation}>Edit</Button>
-                                        <Button color="secondary" onClick={toggleCreateLocation}>Add</Button>
-                                        <Input type="select" name="select" id="selectLocation"
-                                            onChange={handleLocationChange}
-                                        >
-                                            <option check="true">Select a location</option>
-                                            {!locations || locations.map((loc) => (
-                                                <option check="true" key={loc._id} data-id={loc._id}>
-                                                    {loc.name}
-                                                </option>
-                                            ))
-                                            }
-                                        </Input>
-                                    </FormGroup>
-                                </Form>
-                            </CardBody>
+                            <CardHeader 
+                                className="login-header"
+                                onClick={() => setIsLocationsOpen(!isLocationsOpen)}
+                            >
+                                <Container>
+                                    <Row>
+                                        <Col>
+                                            <FontAwesomeIcon icon={ArrowIcon} size="1x" style={{ marginRight: 10 }} className={'fa-rotate-90'} />
+                                            Locations
+                                        </Col>
+                                        <Col className="col-auto">
+                                            <Fade in={isLocationsOpen}>
+                                                <Button
+                                                    className="add-btn"
+                                                    disabled={!isLocationsOpen}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation(); // to prevent the Collapse action
+                                                        toggleAddLocation();
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={AddIcon} size="1x" />
+                                                </Button>
+                                            </Fade>
+                                        </Col>
+                                    </Row>
+                                </Container>
+                            </CardHeader>   
+                            <Collapse isOpen={isLocationsOpen}>
+                                <CardBody>
+                                    <LocationsList
+                                        locations={locations}
+                                        roomCounts={roomCounts}
+                                        activeLocationId={activeLocationId}
+                                        roomsByLocation={roomsByLocation}
+                                        onNameChange={(event) => console.log(event.target.value)}
+                                        onClickLocation={getRooms}
+                                        onClickAdd={() => {
+                                            setShowEditForm(false);
+                                            setShowAddForm(true);
+                                        }}
+                                        onClickRoom={handleRoomChange}
+                                        onClickDelete={deleteRoom}
+                                    />
+                                </CardBody>
+                            </Collapse>
+                            
                         </Card>
                     </Col>
                 </Row>
@@ -341,7 +369,7 @@ const Rooms = () => {
                 </Row>
                 <Row>
                     <Col sm="12" md='6'>
-                        <LocationsList
+                        {/* <LocationsList
                             locations={locations}
                             roomCounts={roomCounts}
                             activeLocationId={activeLocationId}
@@ -354,13 +382,13 @@ const Rooms = () => {
                             }}
                             onClickRoom={handleRoomChange}
                             onClickDelete={deleteRoom}
-                        />
+                        /> */}
                     </Col>
                     {!showAddForm || <Col sm="12" md='6'>
                         <RoomForm
                             location={activeLocationName}
                             features={features}
-                            onSubmit={addRoom2}
+                            onSubmit={addRoom}
                         />
                     </Col>}
                     {!showEditForm || <Col sm="12" md='6'>
@@ -374,25 +402,29 @@ const Rooms = () => {
                 </Row>
             </Container>
 
-            <Modal isOpen={modalCreate} toggle={toggleCreateLocation} className="location-modal">
-                <ModalHeader toggle={toggleCreateLocation}>Create New Location</ModalHeader>
+            <Modal isOpen={modalAddLocation} toggle={toggleAddLocation} className="location-modal">
+                <ModalHeader toggle={toggleAddLocation}>Create New Location</ModalHeader>
                 <ModalBody>
-                    <LocationForm />
+                    <LocationForm 
+                        onSave={addLocation}
+                    />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggleCreateLocation}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleCreateLocation}>Cancel</Button>
+                    <Button color="primary" onClick={toggleAddLocation}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleAddLocation}>Cancel</Button>
                 </ModalFooter>
             </Modal>
 
-            <Modal isOpen={modalUpdate} toggle={toggleUpdateLocation} className="location-modal">
-                <ModalHeader toggle={toggleUpdateLocation}>Edit Location</ModalHeader>
+            <Modal isOpen={modalEditLocation} toggle={toggleEditLocation} className="location-modal">
+                <ModalHeader toggle={toggleEditLocation}>Edit Location</ModalHeader>
                 <ModalBody>
-                    <LocationForm locationId={location} />
+                    <LocationForm 
+                        locationId={location} 
+                    />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggleUpdateLocation}>Save</Button>{' '}
-                    <Button color="secondary" onClick={toggleUpdateLocation}>Cancel</Button>
+                    <Button color="primary" onClick={toggleEditLocation}>Save</Button>{' '}
+                    <Button color="secondary" onClick={toggleEditLocation}>Cancel</Button>
                 </ModalFooter>
             </Modal>
 

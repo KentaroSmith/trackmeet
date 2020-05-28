@@ -50,7 +50,7 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                 <ListGroupItem
                     key={location._id}
                     tag="a"
-                    action  
+                    action
                     onClick={() => onClickLocation(location._id)}
                 >
                     <Container>
@@ -66,18 +66,23 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
 
                     <Collapse isOpen={activeLocationId === location._id}>
                         <ListGroup>
-                            {roomsByLocation.map((loc) => {
-                                return loc.locationId === location._id
-                                    ? loc.rooms.map((room) => (
-                                        <Room
-                                            key={room._id}
-                                            room={room}
-                                            onClick={() => onClickRoom(room._id)}
-                                            onClickDelete={() => onClickDelete(room._id)}
-                                        />
-                                    ))
-                                    : null
-                            })}
+                            {(roomCount(location._id) === 0)
+                                ? (<ListGroupItem>No rooms yet.</ListGroupItem>)
+                                : <>
+                                    {roomsByLocation.map((loc) => {
+                                        return (loc.locationId === location._id) 
+                                            ? loc.rooms.map((room) => (
+                                                <Room
+                                                    key={room._id}
+                                                    room={room}
+                                                    onClick={() => onClickRoom(room._id)}
+                                                    onClickDelete={() => onClickDelete(room._id)}
+                                                />
+                                            ))
+                                            : null
+                                    })}
+                                </>
+                            }
                         </ListGroup>
                     </Collapse>
                 </ListGroupItem>
