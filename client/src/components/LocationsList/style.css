@@ -20,6 +20,11 @@
     background-color: transparent;
 }
 
+.delete-btn:disabled {
+    color: gray;
+    background-color: transparent;
+}
+
 .not-sign {
     color: red;
     opacity: 0;

@@ -61,12 +61,19 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                             <Col>{location.name} <Badge pill>{roomCount(location._id)}</Badge></Col>
                             {activeLocationId === location._id
                                 ? <Col className="col-auto">
-                                    <Button className="delete-btn fa-stack" onClick={() => onClickDeleteLocation(location._id)} style={{ marginRight: '20' }}>
-                                        <FontAwesomeIcon icon={deleteIcon} className="fa-stack-1x"  /> 
-                                        <FontAwesomeIcon icon={notAllowedIcon} className="not-sign fa-stack-2x"  /> 
+                                    <Button
+                                        className="delete-btn fa-stack"
+                                        onClick={() => onClickDeleteLocation(location._id)}
+                                        style={{ marginRight: 10 }}
+                                        disabled={roomCount(location._id) > 0}
+                                    >
+                                        <FontAwesomeIcon icon={deleteIcon} className="fa-stack-1x" />
+                                        { (roomCount(location._id) > 0) &&
+                                            <FontAwesomeIcon icon={notAllowedIcon} className="not-sign fa-stack-2x" />
+                                        }
                                     </Button>
-                                    <Button className="edit-btn" onClick={onClickEdit} style={{ marginRight: '20' }}>
-                                        <FontAwesomeIcon icon={editIcon} size="1x" /> 
+                                    <Button className="edit-btn" onClick={onClickEdit} style={{ marginRight: 15 }}>
+                                        <FontAwesomeIcon icon={editIcon} size="1x" />
                                     </Button>
                                     <Button className="add-btn" onClick={onClickAdd}>
                                         <FontAwesomeIcon icon={addIcon} size="1x" />
