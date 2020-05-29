@@ -44,6 +44,9 @@ const NavigationBar = ({ activePage }) => {
                                     {currentUser.email}
                                 </DropdownToggle>
                                 <DropdownMenu right>
+                                    <DropdownItem tag={Link} to="/profile">
+                                        Profile
+                                    </DropdownItem>
                                     <DropdownItem tag={Link} to="/reservations">
                                         Reservations
                                     </DropdownItem>
