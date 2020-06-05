@@ -95,7 +95,8 @@ const Confirm = ({ history }) => {
                 <CardHeader><h3>Reservation summary:</h3></CardHeader>
                 <CardBody>
                     <h4>Location:</h4>
-                    <p>{locationName}, {roomData.roomName}
+                    <p>{locationName}
+                        <br />{roomData.roomName}
                         <br />Max capacity: {roomData.capacity}
                         <br />Features:
                     <ul>
