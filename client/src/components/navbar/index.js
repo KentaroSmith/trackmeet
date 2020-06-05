@@ -1,4 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateUser } from "../../actions";
 import { Link, NavLink as RRNavLink } from 'react-router-dom';
 import {
     Collapse,
@@ -13,12 +15,39 @@ import {
 import app from "../Firebase/firebase";
 import { AuthContext } from "../Firebase/auth";
 import "./style.css";
+import API from "../../utils/api";
 
 const NavigationBar = ({ activePage }) => {
     const { currentUser } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
 
     const toggle = () => setIsOpen(!isOpen);
+
+
+    useEffect(
+        () => {
+            // load user info into global state (Redux) if we haven't already
+            if (!!currentUser) {
+                getUserData(currentUser.email, (user) => {
+                    dispatch(updateUser(user));
+                });
+            };
+        },
+        [currentUser]);
+
+    const getUserData = (email, callback) => {
+        console.log("getting user for email: " + email);
+        API.getUser(email)
+            .then(res => {
+                //console.log(res);
+                console.log(res.data[0]);
+                // now push the user data into global state
+                callback(res.data[0]);
+            })
+            .catch(err => console.log(err));
+    }
+
 
     return (
         <div>

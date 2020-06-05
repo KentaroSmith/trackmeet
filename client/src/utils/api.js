@@ -11,6 +11,11 @@ export default {
   getUser: function (email) {
     return axios.get("/api/users/?email=" + email);
   },
+  // Updates the user with the given email address
+  updateUser: function (user) {
+    console.log( "updateUser for " + user.email);
+    return axios.put("/api/users/" + user.email, user);
+  },
   // Deletes the User with the given id
   deleteUser: function (id) {
     return axios.delete("/api/users/" + id);
