@@ -37,11 +37,9 @@ const NavigationBar = ({ activePage }) => {
         [currentUser]);
 
     const getUserData = (email, callback) => {
-        console.log("getting user for email: " + email);
+        //console.log("getting user for email: " + email);
         API.getUser(email)
             .then(res => {
-                //console.log(res);
-                console.log(res.data[0]);
                 // now push the user data into global state
                 callback(res.data[0]);
             })

@@ -1,23 +1,18 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Row, Col, Card, CardHeader, CardBody, Label, Form, FormGroup, Input, Button } from 'reactstrap';
-import { AuthContext } from "../../components/Firebase/auth";
 import API from "../../utils/api";
 
 const ProfilePage = () => {
-    const { currentUser } = useContext(AuthContext);
     const user = useSelector(state => state.user);
-
     const [userCopy, setUserCopy] = useState();
 
     useEffect(() => {
-        console.log(user);
         setUserCopy(user);
     }, [user])
 
     const saveUser = (event) => {
         event.preventDefault();
-        console.log(userCopy);
         API.updateUser(userCopy);
     }
 
@@ -73,8 +68,6 @@ const ProfilePage = () => {
             </Container>
         </>
     );
-
-
 };
 
 export default ProfilePage;
