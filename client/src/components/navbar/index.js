@@ -49,11 +49,11 @@ const NavigationBar = ({ activePage }) => {
 
     return (
         <div>
-            <Navbar className="navbar" color="light" light expand="md">
+            <Navbar className="navbar" color="light" light expand="md" >
                 <NavbarBrand tag={RRNavLink} to="/" className="trackmeet-logo">TrackMeet</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
+                    <Nav className="ml-auto" navbar onClick={isOpen && toggle}> 
                         <NavItem>
                             <NavLink tag={RRNavLink} to="/calendar" activeClassName="chosen">Calendar</NavLink>
                         </NavItem>
@@ -67,17 +67,17 @@ const NavigationBar = ({ activePage }) => {
                             </NavItem>
                             :
                             <UncontrolledDropdown nav inNavbar>
-                                <DropdownToggle nav caret>
+                                <DropdownToggle nav caret onClick={event => event.stopPropagation()}>
                                     {currentUser.email}
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem tag={Link} to="/profile">
+                                    <DropdownItem tag={RRNavLink} to="/profile" activeClassName="chosen" >
                                         Profile
                                     </DropdownItem>
-                                    <DropdownItem tag={Link} to="/reservations">
+                                    <DropdownItem tag={RRNavLink} to="/reservations" activeClassName="chosen">
                                         Reservations
                                     </DropdownItem>
-                                    <DropdownItem tag={Link} to="/rooms">
+                                    <DropdownItem tag={RRNavLink} to="/rooms" activeClassName="chosen">
                                         Rooms
                                     </DropdownItem>
                                     <DropdownItem divider />
@@ -96,21 +96,3 @@ const NavigationBar = ({ activePage }) => {
 
 
 export default NavigationBar;
-/* function Navbar() {
-    return (
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="\">Welcome to Trackmeet!</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="/saved">Calendar</a>
-                </div>
-            </div>
-        </nav>
-    )
-}
-
-export default Navbar */
