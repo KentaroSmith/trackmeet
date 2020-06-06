@@ -19,7 +19,7 @@
 
 .location {
     text-transform: uppercase;
-    opacity: 50%;
+    opacity: 0.5;
 }
 
 .badge {
