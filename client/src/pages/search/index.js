@@ -54,7 +54,9 @@ class RoomSearch extends Component {
                 locations: this.state.cSelected.includes('location') 
                     ? this.state.locations
                     : this.state.allLocations.map((loc) => loc._id),
-                capacity: this.state.capacity,
+                capacity: this.state.cSelected.includes('capacity') 
+                    ? this.state.capacity
+                    : 1,
                 features: this.state.cSelected.includes('feature') 
                     ? this.state.features
                     : []
@@ -140,18 +142,6 @@ class RoomSearch extends Component {
         return (
             <div className="search">
                 <Jumbotron >
-                    {/* <Form>
-                        <FormGroup>
-                            <Label>Search Method: </Label>
-                            <Input type="select" name="select" id="filterChoice" onChange={this.chooseFilter}>
-                                <option value="none"> </option>
-                                <option value="roomName">Sort by Room Name</option>
-                                <option value="featureList">Sort by Room Feature</option>
-                            </Input>
-
-                        </FormGroup>
-                    </Form> */}
-
                     <ButtonGroup>
                         <Button color="primary" onClick={() => this.onCheckboxBtnClick('location')} active={this.state.cSelected.includes('location')}>Location</Button>
                         <Button color="primary" onClick={() => this.onCheckboxBtnClick('feature')} active={this.state.cSelected.includes('feature')}>Feature</Button>
