@@ -42,10 +42,13 @@ const Room = ({ room, onClick, onClickDelete }) => {
 
 
 const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocation, onClickLocation, onClickAdd, onClickEdit, onClickDeleteLocation, onClickDelete, onClickRoom }) => {
-    const activeLoc = useRef(0); // used to capture the ID of the location to be deleted
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const activeLoc = useRef(0); // used to capture the LOCATION to be deleted
+    const activeRoom = useRef(0); // used to capture the ROOM to be deleted
+    const [showDeleteLocationModal, setShowDeleteLocationModal] = useState(false);
+    const [showDeleteRoomModal, setShowDeleteRoomModal] = useState(false);
 
-    const toggleDeleteModal = () => setShowDeleteModal(!showDeleteModal);
+    const toggleDeleteLocationModal = () => setShowDeleteLocationModal(!showDeleteLocationModal);
+    const toggleDeleteRoomModal = () => setShowDeleteRoomModal(!showDeleteRoomModal);
 
     const roomCount = (locId) => {
         const result = roomCounts.find((loc) => loc._id === locId);
@@ -70,9 +73,8 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                                         <Button
                                             className="delete-btn fa-stack"
                                             onClick={() => {
-                                                activeLoc.current = location._id;
-                                                toggleDeleteModal();
-                                                //onClickDeleteLocation(location._id);
+                                                activeLoc.current = location;
+                                                toggleDeleteLocationModal();
                                             }}
                                             style={{ marginRight: 10 }}
                                             disabled={roomCount(location._id) > 0}
@@ -105,7 +107,10 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                                                         key={room._id}
                                                         room={room}
                                                         onClick={() => onClickRoom(room._id)}
-                                                        onClickDelete={() => onClickDelete(room._id)}
+                                                        onClickDelete={() => {
+                                                            activeRoom.current = room;
+                                                            toggleDeleteRoomModal();
+                                                        }}
                                                     />
                                                 ))
                                                 : null
@@ -119,22 +124,41 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                 )}
             </ListGroup>
 
-            <Modal isOpen={showDeleteModal} toggle={toggleDeleteModal} className="delete-modal">
-                <ModalHeader toggle={toggleDeleteModal}>
+            <Modal isOpen={showDeleteLocationModal} toggle={toggleDeleteLocationModal} className="delete-modal">
+                <ModalHeader toggle={toggleDeleteLocationModal}>
                     Delete location?
                 </ModalHeader>
                 <ModalBody>
-                    Are you sure you want to delete <strong>{showDeleteModal && locations.find(loc => loc._id === activeLoc.current).name}</strong>?
+                    Are you sure you want to delete <strong>{activeLoc.current.name}</strong>?
                 </ModalBody>
                 <ModalFooter>
                     <Button color="danger"
                         onClick={() => {
-                            onClickDeleteLocation(activeLoc.current);
-                            toggleDeleteModal();
+                            onClickDeleteLocation(activeLoc.current._id);
+                            toggleDeleteLocationModal();
                         }}>
                         Yes, delete it
                     </Button>{' '}
-                    <Button color="secondary" onClick={toggleDeleteModal}>Cancel</Button>
+                    <Button color="secondary" onClick={toggleDeleteLocationModal}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal isOpen={showDeleteRoomModal} toggle={toggleDeleteRoomModal} className="delete-modal">
+                <ModalHeader toggle={toggleDeleteRoomModal}>
+                    Delete room?
+                </ModalHeader>
+                <ModalBody>
+                    Are you sure you want to delete <strong>{activeRoom.current.roomName}</strong>?
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger"
+                        onClick={() => {
+                            onClickDelete(activeRoom.current._id)
+                            toggleDeleteRoomModal();
+                        }}>
+                        Yes, delete it
+                    </Button>{' '}
+                    <Button color="secondary" onClick={toggleDeleteRoomModal}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </>
