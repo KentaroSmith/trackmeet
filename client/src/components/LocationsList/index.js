@@ -10,13 +10,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import "./style.css";
 
-const Room = ({ room, onClick, onClickDelete }) => {
+const Room = ({ room, onClickEdit, onClickDelete }) => {
     const [hovering, setHovering] = useState(false);
 
     return (
         <ListGroupItem
             key={room._id}
-            onClick={onClick}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
         >
@@ -26,13 +25,18 @@ const Room = ({ room, onClick, onClickDelete }) => {
                     <Col className="col-auto">
                         <Button
                             className="delete-btn"
-                            onClick={(event) => {
-                                event.stopPropagation(); // to prevent the onClick action for ListGroupItem
-                                onClickDelete()
-                            }}
+                            onClick={onClickDelete}
+                            style={{marginRight: 20}}
                         >
                             <FontAwesomeIcon icon={deleteIcon} size="1x" style={{ visibility: hovering ? 'visible' : 'hidden' }} />
                         </Button>
+                        <Button
+                            className="delete-btn"
+                            onClick={onClickEdit}
+                        >
+                            <FontAwesomeIcon icon={editIcon} size="1x" style={{ visibility: hovering ? 'visible' : 'hidden' }} />
+                        </Button>
+                        
                     </Col>
                 </Row>
             </Container>
@@ -106,7 +110,7 @@ const LocationsList = ({ locations, roomCounts, activeLocationId, roomsByLocatio
                                                     <Room
                                                         key={room._id}
                                                         room={room}
-                                                        onClick={() => onClickRoom(room._id)}
+                                                        onClickEdit={() => onClickRoom(room._id)}
                                                         onClickDelete={() => {
                                                             activeRoom.current = room;
                                                             toggleDeleteRoomModal();
