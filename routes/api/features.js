@@ -8,6 +8,8 @@ router.route("/")
 
 // Matches with "/api/features/:id"
 router.route("/:id")
+  .get(featuresController.findById)
+  .put(featuresController.update)
   .delete(featuresController.remove);
 
 module.exports = router;

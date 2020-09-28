@@ -22,7 +22,14 @@ const getUserData = (email, callback) => {
             // now push the user data into global state
             callback(res.data[0]);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log("User does not exist. Creating it now.");
+            //console.log(err);
+            // create a user for the email address
+            const newUser = { email, type: "User" };
+            API.saveUser(newUser);
+            callback(newUser);
+        });
 }
 
 const Login = ({ history }) => {

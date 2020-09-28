@@ -1,0 +1,35 @@
+.add-btn {
+    border: 0;
+    background-color: transparent;
+    color:  #327508;
+    padding: 0;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.delete-btn {
+    border: 0;
+    background-color: transparent;
+    color:  #327508; /*#594246;*/
+    padding: 0;
+    /* position: relative; */
+}
+
+.delete-btn:hover {
+    color: #97BF7E; /*#8C7075;*/
+    background-color: transparent;
+}
+
+.delete-btn:disabled {
+    color: gray;
+    background-color: transparent;
+}
+
+.not-sign {
+    color: red;
+    opacity: 0;
+}
+
+.not-sign:hover {
+    opacity: 1;
+}

@@ -1,0 +1,27 @@
+.search-result {
+    margin-bottom: 1rem;
+}
+
+.search-result h4 {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 900;
+}
+
+.search-result button,
+.search-result p,
+.search-result .capacity {
+    font-family: 'Lato', sans-serif;
+}
+
+.search-result .col-6 {
+    padding: 0;
+}
+
+.location {
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+
+.badge {
+    font-weight: 600;
+}

@@ -1,0 +1,13 @@
+.delete-btn, 
+.edit-btn {
+    border: 0;
+    background-color: transparent;
+    color:  #327508; /*#594246;*/
+    padding: 0;
+}
+
+.delete-btn:hover,
+.edit-btn:hover {
+    color: #97BF7E; /*#8C7075;*/
+    background-color: transparent;
+}
